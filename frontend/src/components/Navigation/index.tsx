@@ -1,25 +1,23 @@
 import React from "react";
 import {
   Flex,
-  Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Box,
   SimpleGrid,
   Container,
   Stack,
   Button,
   Icon,
+  Heading,
 } from "@chakra-ui/react";
+
 import {
-  SearchIcon,
   AddIcon,
   StarIcon,
   ArrowForwardIcon,
   HamburgerIcon,
 } from "@chakra-ui/icons";
 
+import SearchBar from "../SearchBar";
 import styles from "./index.module.scss";
 
 const TopNavBar: React.FC = () => {
@@ -35,18 +33,6 @@ const TopNavBar: React.FC = () => {
         </Button>
       </Flex>
     </Box>
-  );
-};
-
-const SearchBar: React.FC = () => {
-  return (
-    <InputGroup>
-      <InputLeftElement
-        pointerEvents="none"
-        children={<SearchIcon color={"gray.300"} />}
-      />
-      <Input placeholder="Search" />
-    </InputGroup>
   );
 };
 
@@ -68,9 +54,9 @@ const NavigationCard: React.FC<NavigationProps> = ({ title, icon }) => {
 
 const Navigation: React.FC = () => {
   const navigationTitles: NavigationProps[] = [
-    { title: "Browse Spaces", icon: <ArrowForwardIcon /> },
-    { title: "Your Crews", icon: <ArrowForwardIcon /> },
-    { title: "Create Your Space", icon: <AddIcon /> },
+    { title: "Browse Competitions", icon: <ArrowForwardIcon /> },
+    { title: "Your Groups", icon: <ArrowForwardIcon /> },
+    // { title: "Create Your Space", icon: <AddIcon /> },
     { title: "Applications Sent", icon: <StarIcon /> },
   ];
   return (
@@ -84,11 +70,7 @@ const Navigation: React.FC = () => {
             </Flex>
           ))}
         </SimpleGrid>
-      </Stack>
-      <Stack>
-        <Heading size="md">Challenges</Heading>
-        <Heading size="md">Upcoming Milestones</Heading>
-        <Heading size="md">New Spaces</Heading>
+        <Heading size="md">New</Heading>
       </Stack>
     </Container>
   );
