@@ -1,14 +1,17 @@
 import { Session } from "next-auth";
-import { ChakraProvider } from "@chakra-ui/react";
 import { SessionProvider } from "next-auth/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
     <SessionProvider session={pageProps.session}>
-      <ChakraProvider>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <RecoilRoot>
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </RecoilRoot>
     </SessionProvider>
   );
 };

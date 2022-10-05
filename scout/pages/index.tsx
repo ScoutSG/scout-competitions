@@ -26,7 +26,7 @@ type Props = {
   feed: PostProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const LandingPage: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
@@ -57,4 +57,4 @@ const Blog: React.FC<Props> = (props) => {
   );
 };
 
-export default Blog;
+export default LandingPage;

@@ -11,6 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.11",
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
@@ -22,7 +23,8 @@
     "nodemailer": "^6.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-markdown": "8.0.3"
+    "react-markdown": "8.0.3",
+    "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@types/next-auth": "3.13.0",
