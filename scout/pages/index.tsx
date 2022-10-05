@@ -1,19 +1,11 @@
-import LoginPage from "../components/Login";
-import Navigation from "../components/Navigation";
-import Competition from "../components/Competition/Detail";
-import NavigationBar from "../components/NavigationBar";
+import NavigationBar from "../components/NavBar";
 import CallToAction from "../components/CallToAction";
-
-import { Container } from "@chakra-ui/react";
 
 const Page: React.FC = () => {
   return (
     <>
-      <Container maxW={"7xl"}>
-        <NavigationBar />
-        <CallToAction />
-        <LoginPage />
-      </Container>
+      <NavigationBar />
+      <CallToAction />
     </>
   );
 };
