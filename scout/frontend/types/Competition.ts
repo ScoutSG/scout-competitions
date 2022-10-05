@@ -3,6 +3,7 @@ export interface CompetitionData {
     deadline: string;
     organiserName: string;
     description: string;
+    urlLink: string;
     maxSize: number | null;
     minSize: number | null;
   }
