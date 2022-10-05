@@ -1,5 +1,14 @@
 import React from "react";
-import { Heading, Box, Stack, SimpleGrid } from "@chakra-ui/react";
+import {
+  Heading,
+  Box,
+  Stack,
+  SimpleGrid,
+  Text,
+  Button,
+} from "@chakra-ui/react";
+
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import { CompetitionDataSummary } from "../../../types/CompetitionDetail";
 
@@ -34,11 +43,21 @@ const CompetitionSummaryView: React.FC<{
 }> = ({ competitions }) => {
   return (
     <Box p={{ base: 3, md: 6 }} w={"100%"}>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }}>
-        {competitions.map((competition) => (
-          <CompetitionSummaryCard competition={competition} />
-        ))}
-      </SimpleGrid>
+      {competitions.length === 0 ? (
+        <Stack spacing={4}>
+          <Text>Oops! There is no competition ongoing now.</Text>
+          <Heading size="md">Know of One?</Heading>
+          <Button rightIcon={<ChevronRightIcon />}>
+            Submit the competition details here
+          </Button>
+        </Stack>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }}>
+          {competitions.map((competition) => (
+            <CompetitionSummaryCard competition={competition} />
+          ))}
+        </SimpleGrid>
+      )}
     </Box>
   );
 };

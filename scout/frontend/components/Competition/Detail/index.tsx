@@ -84,15 +84,25 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
         {/* <Box>
           <SearchBar />
         </Box> */}
-        <Box>
-          <Button rightIcon={<ChevronRightIcon />}>Be the leader</Button>
-        </Box>
+        {groups.length === 0 ? null : (
+          <Box>
+            <Button rightIcon={<ChevronRightIcon />}>Lead a team</Button>
+          </Box>
+        )}
       </Stack>
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
-        {groups.map((group) => (
-          <GroupSummaryCard group={group} />
-        ))}
-      </SimpleGrid>
+      {groups.length === 0 ? (
+        <Stack spacing={4} mt={10}>
+          <Text>No groups have been formed yet!</Text>
+          <Heading size="md">Want to participate?</Heading>
+          <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+        </Stack>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2 }}>
+          {groups.map((group) => (
+            <GroupSummaryCard group={group} />
+          ))}
+        </SimpleGrid>
+      )}
     </Box>
   );
 };
