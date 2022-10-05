@@ -2,7 +2,6 @@ import React from "react";
 import {
   Heading,
   Box,
-  Container,
   Stack,
   Text,
   Badge,
@@ -14,11 +13,14 @@ import {
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import SearchBar from "../../SearchBar";
-import { CompetitionData } from "../../../types/Competition";
+import {
+  CompetitionData,
+  GroupSummaryData,
+} from "../../../types/CompetitionDetail";
+
+import GroupSummaryCard from "../../Group/Summary";
 
 const CompetitionDetails: React.FC = () => {
-  const groups = [];
-
   const response: CompetitionData = {
     name: "Hack For Public Good 2023",
     deadline: "12 Dec 2022",
@@ -28,6 +30,7 @@ const CompetitionDetails: React.FC = () => {
     urlLink: "https://www.open.gov.sg/hackathon/2023/",
     maxSize: 6,
     minSize: 1,
+    groups: [modelGroup, modelGroup, modelGroup, modelGroup],
   };
 
   return (
@@ -36,7 +39,7 @@ const CompetitionDetails: React.FC = () => {
       py={{ base: 5, md: 28 }}
       direction={{ base: "column", md: "row" }}
     >
-      <Stack flex={1} spacing={{ base: 1, md: 10 }}>
+      <Stack flex={2} spacing={{ base: 1, md: 10 }}>
         <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
           <Heading>{response.name}</Heading>
         </Box>
@@ -48,36 +51,45 @@ const CompetitionDetails: React.FC = () => {
           urlLink={response.urlLink}
           maxSize={response.maxSize}
           minSize={response.minSize}
+          groups={response.groups}
         />
       </Stack>
       <Flex
-        flex={1}
+        flex={3}
         justify={"center"}
         // align={"center"}
         position={"relative"}
         w={"100%"}
       >
-        <Box
-          borderWidth="1px"
-          borderRadius="0.75rem"
-          m={1}
-          p={{ base: 3, md: 6 }}
-          w={"100%"}
-        >
-          <Stack spacing={4}>
-            <Box>
-              <Heading size="md">Groups</Heading>
-            </Box>
-            <Box>{/* <SearchBar /> */}</Box>
-          </Stack>
-          <Box>
-            {groups.map((group) => (
-              <div></div>
-            ))}
-          </Box>
-        </Box>
+        <GroupSummaryView groups={response.groups} />
       </Flex>
     </Stack>
+  );
+};
+
+const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
+  groups,
+}) => {
+  return (
+    <Box
+      borderWidth="1px"
+      borderRadius="0.75rem"
+      m={1}
+      p={{ base: 3, md: 6 }}
+      w={"100%"}
+    >
+      <Stack spacing={4}>
+        <Box>
+          <Heading size="md">Groups</Heading>
+        </Box>
+        <Box>{/* <SearchBar /> */}</Box>
+      </Stack>
+      <SimpleGrid columns={{ base: 1, md: 2 }}>
+        {groups.map((group) => (
+          <GroupSummaryCard group={group} />
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 };
 
@@ -107,12 +119,12 @@ const AboutCard: React.FC<CompetitionData> = (props) => {
         <SimpleGrid columns={3} minChildWidth="90px">
           <Box>
             <Heading size="xs">Deadline</Heading>
-            <Badge>{deadline}</Badge>
+            <Badge borderRadius={"7px"}>{deadline}</Badge>
           </Box>
 
           <Box>
             <Heading size="xs">Group Size</Heading>
-            <Badge>
+            <Badge borderRadius={"7px"}>
               {minSize === null && maxSize === null
                 ? "Unrestricted"
                 : minSize === null
@@ -125,7 +137,7 @@ const AboutCard: React.FC<CompetitionData> = (props) => {
 
           <Box>
             <Heading size="xs">Organiser</Heading>
-            <Badge>{organiserName}</Badge>
+            <Badge borderRadius={"7px"}>{organiserName}</Badge>
           </Box>
         </SimpleGrid>
         <Button
@@ -133,11 +145,27 @@ const AboutCard: React.FC<CompetitionData> = (props) => {
           w={{ base: "full", md: "fit-content" }}
           onClick={onSeeMore}
         >
-          See More
+          Visit Site
         </Button>
       </Stack>
     </Box>
   );
+};
+
+/** TO DELETE */
+const modelGroup: GroupSummaryData = {
+  id: 1,
+  name: "Scout",
+  size: 1,
+  targetSize: 4,
+  description: "This is a test group ",
+  targetSkills: ["React", "Next", "Spring Boot", "UX Design", "Figma"],
+  leader: {
+    name: "Lye Wen Jun",
+    year: 3,
+    major: "Computer Science",
+    specialization: "Database",
+  },
 };
 
 export default CompetitionDetails;
