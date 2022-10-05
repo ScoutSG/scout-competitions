@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
+import Layout from "../frontend/components/Layout";
+import Post, { PostProps } from "../frontend/components/Post";
 import { useSession, getSession } from "next-auth/react";
 import prisma from '../lib/prisma'
 
