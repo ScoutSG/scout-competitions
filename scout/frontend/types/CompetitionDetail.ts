@@ -26,4 +26,22 @@ export interface Member {
     specialization: string;
 }
   
-  
+export interface CompetitionDataSummary {
+    id: number;
+    name: string;
+    deadline: string;
+    organiserName: string;
+    description: string;
+    urlLink: string;
+    maxSize: number | null;
+    minSize: number | null;
+}
+
+export interface CompetitionAboutCard {
+    deadline: string;
+    organiserName: string;
+    description: string;
+    urlLink: string;
+    maxSize: number | null;
+    minSize: number | null;
+}

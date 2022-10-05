@@ -16,6 +16,7 @@ import SearchBar from "../../SearchBar";
 import {
   CompetitionData,
   GroupSummaryData,
+  CompetitionAboutCard,
 } from "../../../types/CompetitionDetail";
 
 import GroupSummaryCard from "../../Group/Summary";
@@ -44,14 +45,12 @@ const CompetitionDetails: React.FC = () => {
           <Heading>{response.name}</Heading>
         </Box>
         <AboutCard
-          name={response.name}
           deadline={response.deadline}
           organiserName={response.organiserName}
           description={response.description}
           urlLink={response.urlLink}
           maxSize={response.maxSize}
           minSize={response.minSize}
-          groups={response.groups}
         />
       </Stack>
       <Flex
@@ -78,24 +77,38 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
       p={{ base: 3, md: 6 }}
       w={"100%"}
     >
-      <Stack spacing={4}>
+      <Stack spacing={10} direction="row" align="center">
         <Box>
           <Heading size="md">Groups</Heading>
         </Box>
-        <Box>{/* <SearchBar /> */}</Box>
+        {/* <Box>
+          <SearchBar />
+        </Box> */}
+        {groups.length === 0 ? null : (
+          <Box>
+            <Button rightIcon={<ChevronRightIcon />}>Lead a team</Button>
+          </Box>
+        )}
       </Stack>
-      <SimpleGrid columns={{ base: 1, md: 2 }}>
-        {groups.map((group) => (
-          <GroupSummaryCard group={group} />
-        ))}
-      </SimpleGrid>
+      {groups.length === 0 ? (
+        <Stack spacing={4} mt={10}>
+          <Text>No groups have been formed yet!</Text>
+          <Heading size="md">Want to participate?</Heading>
+          <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+        </Stack>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2 }}>
+          {groups.map((group) => (
+            <GroupSummaryCard group={group} />
+          ))}
+        </SimpleGrid>
+      )}
     </Box>
   );
 };
 
-const AboutCard: React.FC<CompetitionData> = (props) => {
+export const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
   const {
-    name,
     deadline,
     organiserName,
     description,

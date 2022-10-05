@@ -26,11 +26,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
           >
             {group.targetSize - group.size} spots left!
           </Text>
-          <Heading
-            color={useColorModeValue("gray.700", "white")}
-            fontSize={"2xl"}
-            fontFamily={"body"}
-          >
+          <Heading fontSize={"2xl"} fontFamily={"body"}>
             {group.name}
           </Heading>
           <Text color={"gray.700"}>{group.description}</Text>
