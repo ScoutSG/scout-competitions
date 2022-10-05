@@ -11,8 +11,9 @@ const Page: React.FC = () => {
     <>
       <Container maxW={"7xl"}>
         <NavigationBar />
-        <CallToAction />
-        <LoginPage />
+        <Competition />
+        {/* <CallToAction />
+        <LoginPage /> */}
       </Container>
     </>
   );

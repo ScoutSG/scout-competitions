@@ -33,7 +33,7 @@ const CallToAction: React.FC = () => {
           </Text>
           <br />
           <Text as={"span"} color={"blue.500"}>
-            Use Scouts!
+            Use Scout!
           </Text>
         </Heading>
         <Text color={"gray.500"} fontWeight="550">
