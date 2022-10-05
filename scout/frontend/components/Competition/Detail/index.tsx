@@ -27,32 +27,34 @@ const CompetitionDetails: React.FC = () => {
 
   return (
     <>
-      <Box borderWidth="1px" borderRadius="0.75rem" m={1} p={6}>
+      <Box as={"header"} m={1} p={6}>
         <Heading>{response.name}</Heading>
       </Box>
-      <AboutCard
-        name={response.name}
-        deadline={response.deadline}
-        organiserName={response.organiserName}
-        description={response.description}
-        maxSize={response.maxSize}
-        minSize={response.minSize}
-      />
-      <Box borderWidth="1px" borderRadius="0.75rem" m={1} p={6}>
-        <Stack spacing={4}>
+      <Stack spacing={{ base: 4, md: 6 }} direction={"column"}>
+        <AboutCard
+          name={response.name}
+          deadline={response.deadline}
+          organiserName={response.organiserName}
+          description={response.description}
+          maxSize={response.maxSize}
+          minSize={response.minSize}
+        />
+        <Box borderWidth="1px" borderRadius="0.75rem" m={1} p={6}>
+          <Stack spacing={4}>
+            <Box>
+              <Heading size="md">Groups</Heading>
+            </Box>
+            <Box>
+              <SearchBar />
+            </Box>
+          </Stack>
           <Box>
-            <Heading size="md">Groups</Heading>
+            {groups.map((group) => (
+              <div></div>
+            ))}
           </Box>
-          <Box>
-            <SearchBar />
-          </Box>
-        </Stack>
-        <Box>
-          {groups.map((group) => (
-            <div></div>
-          ))}
         </Box>
-      </Box>
+      </Stack>
     </>
   );
 };
@@ -68,7 +70,7 @@ const AboutCard: React.FC<CompetitionData> = (props) => {
   } = props;
 
   return (
-    <Box borderWidth="1px" borderRadius="0.75rem" m={1} p={6}>
+    <Box m={1} p={6}>
       <Stack spacing={4}>
         <Box>
           <Heading size="md">About</Heading>
