@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/icons";
 import ScoutIconMark from "../Icons/ScoutIconMark";
 import SearchBar from "../SearchBar";
+import AuthButton from "../AuthButton";
 
 const NavigationBar: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -45,6 +46,9 @@ const NavigationBar: React.FC = () => {
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
           </Flex>
+        </Flex>
+        <Flex flex={{ base: 1, md: "end" }} ml={4}>
+          <AuthButton />
         </Flex>
         <Flex
           flex={{ base: 1, md: "end" }}

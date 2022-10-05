@@ -28,4 +28,7 @@ const options = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
+  pages: {
+    signIn: 'auth/signin'
+  }
 };

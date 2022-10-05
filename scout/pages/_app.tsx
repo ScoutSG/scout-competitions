@@ -3,7 +3,6 @@ import { SessionProvider } from "next-auth/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
-import "../frontend/styles/global.scss";
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
