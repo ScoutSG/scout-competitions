@@ -21,17 +21,22 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import ScoutIconMark from "../Icons/ScoutIconMark";
 import SearchBar from "../SearchBar";
 
 const NavigationBar: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box>
-      <Flex minH={"60px"} py={{ base: 2 }} px={{ base: 4 }} align={"center"}>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          {/**TODO: Replace with Logo Icon */}
-          <Text>Logo</Text>
+    // <Box>
+    <>
+      <Flex minH={"60px"} py={{ base: 2 }} px={{ base: 1 }} align={"center"}>
+        <Flex
+          maxH={"70px"}
+          flex={{ base: 1 }}
+          justify={{ base: "center", md: "start" }}
+        >
+          <ScoutIconMark />
         </Flex>
         <Flex flex={{ base: 8, md: "start" }} ml={10}>
           {/* <SearchBar /> */}
@@ -59,7 +64,8 @@ const NavigationBar: React.FC = () => {
       <Collapse in={isOpen} animateOpacity={true}>
         <MobileNav />
       </Collapse>
-    </Box>
+    </>
+    // </Box>
   );
 };
 

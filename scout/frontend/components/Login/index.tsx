@@ -6,9 +6,9 @@ const LoginPage: React.FC = () => {
   return (
     <Flex className={styles.container}>
       <Flex className={styles.container__content} boxShadow="lg">
-        <Box justifyContent="center" alignItems="center">
+        <Flex justify={{ base: "center" }} maxH="100px" mb={5}>
           <ScoutIcon />
-        </Box>
+        </Flex>
         <Input
           placeholder="johndoe@gmail.com"
           type="email"
