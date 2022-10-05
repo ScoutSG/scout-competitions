@@ -1,0 +1,15 @@
+// insert local module stylings here
+.container {
+    height: 100vh;
+    align-items: center;
+    justify-content: center;   
+    background-color: #edf2f7;
+
+
+    &__content {
+        flex-direction: column;
+        border-radius: 2rem;
+        padding: 3rem;
+        background-color: white;
+    }
+}
