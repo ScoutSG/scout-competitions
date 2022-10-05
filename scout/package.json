@@ -25,8 +25,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "8.0.3",
-    "recoil": "^0.7.5",
+<<<<<<< HEAD
+    "recoil": "^0.7.5"
+=======
     "sass": "^1.55.0"
+>>>>>>> f7b95e319c8b270beae295a5a7716a2266d69a03
   },
   "devDependencies": {
     "@types/next-auth": "3.13.0",
