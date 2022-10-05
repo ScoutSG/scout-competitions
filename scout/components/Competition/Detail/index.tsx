@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import SearchBar from "../../SearchBar";
-import { CompetitionData } from "../../../types/Competition";
+import { CompetitionData } from "../../../frontend/types/Competition";
 
 const CompetitionDetails: React.FC = () => {
   const groups = [];
