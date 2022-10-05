@@ -1,13 +1,13 @@
 import { Flex, Input, Button, Box } from "@chakra-ui/react";
 import styles from "./index.module.scss";
-import ScoutsIcon from "../ScoutsIcon";
+import ScoutIcon from "../Icons/ScoutIcon";
 
 const LoginPage: React.FC = () => {
   return (
     <Flex className={styles.container}>
       <Flex className={styles.container__content} boxShadow="lg">
         <Box justifyContent="center" alignItems="center">
-          <ScoutsIcon />
+          <ScoutIcon />
         </Box>
         <Input
           placeholder="johndoe@gmail.com"

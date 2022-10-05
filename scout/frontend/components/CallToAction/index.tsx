@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Stack,
   Flex,
   Box,
@@ -9,11 +8,11 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
-  createIcon,
   IconProps,
   useColorModeValue,
 } from "@chakra-ui/react";
+import CTAVector from "../Icons/CTAVector";
+import ScoutVector from "../Icons/CTAVector";
 
 const CallToAction: React.FC = () => {
   return (
@@ -29,20 +28,7 @@ const CallToAction: React.FC = () => {
           fontWeight={600}
           fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
         >
-          <Text
-            as={"span"}
-            position={"relative"}
-            // _after={{
-            //   content: "''",
-            //   width: "full",
-            //   height: "30%",
-            //   position: "absolute",
-            //   bottom: 1,
-            //   left: 0,
-            //   bg: "blue.200",
-            //   zIndex: -1,
-            // }}
-          >
+          <Text as={"span"} position={"relative"}>
             Can't find a team?
           </Text>
           <br />
@@ -88,25 +74,8 @@ const CallToAction: React.FC = () => {
           zIndex={-1}
           color={useColorModeValue("blue.50", "blue.400")}
         />
-        <Box
-          position={"relative"}
-          height={"300px"}
-          rounded={"2xl"}
-          boxShadow={"2xl"}
-          width={"full"}
-          overflow={"hidden"}
-        >
-          {/**TODO: Replace with Mascot */}
-          <Image
-            alt={"Hero Image"}
-            fit={"cover"}
-            align={"center"}
-            w={"100%"}
-            h={"100%"}
-            src={
-              "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80"
-            }
-          />
+        <Box>
+          <CTAVector />
         </Box>
       </Flex>
     </Stack>
