@@ -49,16 +49,19 @@ model Session {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?       @unique
+  emailVerified DateTime?     @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  createdAt     DateTime      @default(now()) @map(name: "created_at")
+  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
   posts         Post[]
   accounts      Account[]
   sessions      Session[]
+  applications  Application[]
+  groups        Group[]
+  groupId       Int?
 
   @@map(name: "users")
 }
@@ -70,4 +73,72 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
+}
+
+model Question {
+  id             Int    @id @default(autoincrement())
+  questionString String
+
+  form    Form     @relation(fields: [formId], references: [id])
+  formId  Int
+  answers Answer[]
+}
+
+model Answer {
+  id             Int @id @default(autoincrement())
+  answerResponse Int
+
+  application Application @relation(fields: [applicationId], references: [id])
+  question    Question    @relation(fields: [questionId], references: [id])
+
+  applicationId Int
+  questionId    Int
+}
+
+model Form {
+  id Int @id @default(autoincrement())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int   @unique
+
+  questions    Question[]
+  applications Application[]
+}
+
+model Application {
+  id         Int      @id @default(autoincrement())
+  isApproved Boolean?
+
+  form      Form     @relation(fields: [formId], references: [id])
+  applicant User     @relation(fields: [userId], references: [id])
+  answers   Answer[]
+
+  formId  Int
+  userId  Int
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+}
+
+model Group {
+  id           Int      @id @default(autoincrement())
+  name         String
+  size         Int
+  targetSize   Int
+  description  String?
+  targetSkills String[]
+
+  members      User[]
+  form         Form?
+  applications Application[]
+}
+
+model Competition {
+  id            Int      @id @default(autoincrement())
+  name          String
+  deadline      DateTime
+  organiserName String
+  description   String
+  link          String
+  maxSize       Int
+  minSize       Int
 }
