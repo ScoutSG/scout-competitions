@@ -48,15 +48,15 @@ export default function SimpleThreeColumns() {
     <Box p={4}>
       <VStack align="center" justify="center" spacing="20px" mb={10}>
         <Heading size="lg" fontWeight="700">
-          How does Scout work?
+          Get started with Scout
         </Heading>
       </VStack>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={10}>
         <Feature
           icon={<Icon as={ChevronRightIcon} w={10} h={10} />}
           title={"Set up your profile"}
           text={
-            "This allows group mates to be able to contact you for further clarification and team forming"
+            "Group mates will be able to contact you for further clarification and team forming"
           }
         />
         <Feature

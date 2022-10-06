@@ -48,6 +48,7 @@ const Footer: React.FC = () => {
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
+      minH="15vh"
     >
       <Container
         as={Stack}
@@ -66,9 +67,9 @@ const Footer: React.FC = () => {
           <SocialButton label={"LinkedIn"} href={"#"}>
             {/* <FaTwitter /> */}
           </SocialButton>
-          {/* <SocialButton label={"YouTube"} href={"#"}>
-            <FaYoutube />
-          </SocialButton> */}
+          <SocialButton label={"GitHub"} href={"#"}>
+            {/* <FaYoutube /> */}
+          </SocialButton>
         </Stack>
       </Container>
     </Box>

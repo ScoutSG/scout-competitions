@@ -11,15 +11,15 @@ import {
   IconProps,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import CTAVector from "../Icons/CTAVector";
-import ScoutVector from "../Icons/CTAVector";
 
 const CallToAction: React.FC = () => {
   return (
     <Stack
       align={"center"}
       spacing={{ base: 10, md: 10 }}
-      py={{ base: 5, md: 28 }}
+      py={{ base: 5, md: 10 }}
       direction={{ base: "column", md: "row" }}
     >
       <Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -36,7 +36,7 @@ const CallToAction: React.FC = () => {
             Use Scout!
           </Text>
         </Heading>
-        <Text color={"gray.500"} fontWeight="550">
+        <Text color={"gray.500"} fontWeight="500">
           Every ambitious student can achieve their potential by finding a group
           that can complement their skills in order to excel at their
           competitions or modules and simplifying the group management process.
@@ -48,11 +48,12 @@ const CallToAction: React.FC = () => {
           <Button
             rounded={"full"}
             size={"lg"}
-            fontWeight={"normal"}
+            fontWeight={"bold"}
             px={6}
             colorScheme={"blue"}
             bg={"blue.400"}
             _hover={{ bg: "blue.500" }}
+            rightIcon={<ChevronRightIcon />}
           >
             Start now
           </Button>
@@ -67,10 +68,8 @@ const CallToAction: React.FC = () => {
       >
         <Blob
           w={"150%"}
-          h={"150%"}
+          h={"100%"}
           position={"absolute"}
-          top={"-20%"}
-          left={0}
           zIndex={-1}
           color={useColorModeValue("blue.50", "blue.400")}
         />
