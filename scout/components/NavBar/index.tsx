@@ -21,8 +21,8 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import ScoutIconMark from "../Icons/ScoutIconMark";
-import SearchBar from "../SearchBar";
+import ScoutIconMark from "../../frontend/components/Icons/ScoutIconMark";
+// import SearchBar from "../SearchBar";
 import AuthButton from "../AuthButton";
 
 const NavigationBar: React.FC = () => {

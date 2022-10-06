@@ -45,7 +45,7 @@ const CompetitionSummaryCard: React.FC<{
             <Heading fontSize={"2xl"} fontFamily={"body"}>
               {competition.name}
             </Heading>
-            <Button>View Details</Button>
+            <Button w={"100%"}>View Details</Button>
           </Stack>
           <AboutCard
             deadline={competition.deadline}
