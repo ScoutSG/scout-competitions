@@ -25,7 +25,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"  ],
+    "**/*.tsx", "pages/api/competitions/[competitionId].js"  ],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
