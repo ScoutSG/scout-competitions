@@ -86,7 +86,14 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
         </Box> */}
         {groups.length === 0 ? null : (
           <Box>
-            <Button rightIcon={<ChevronRightIcon />}>Lead a team</Button>
+            <Button
+              rightIcon={<ChevronRightIcon />}
+              color="white"
+              bg={"primary"}
+              _hover={{ color: "primaryLight", bg: "gray.200" }}
+            >
+              Lead a team
+            </Button>
           </Box>
         )}
       </Stack>
@@ -157,8 +164,9 @@ export const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
           rightIcon={<ChevronRightIcon />}
           w={{ base: "full", md: "fit-content" }}
           onClick={onSeeMore}
+          fontSize="small"
         >
-          Visit Site
+          Visit site
         </Button>
       </Stack>
     </Box>

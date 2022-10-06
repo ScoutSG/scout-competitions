@@ -23,6 +23,14 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  colors: {
+    primary: "#177DF1",
+    secondary: "#FF9966",
+    primaryLight: "#4FA2FF",
+    secondaryLight: "#FFCC99",
+  },
+});
 
 export default App;

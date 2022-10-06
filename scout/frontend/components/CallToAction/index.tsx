@@ -32,7 +32,7 @@ const CallToAction: React.FC = () => {
             Can't find a team?
           </Text>
           <br />
-          <Text as={"span"} color={"blue.500"}>
+          <Text as={"span"} color={"primary"}>
             Use Scout!
           </Text>
         </Heading>
@@ -50,9 +50,9 @@ const CallToAction: React.FC = () => {
             size={"lg"}
             fontWeight={"bold"}
             px={6}
-            colorScheme={"blue"}
-            bg={"blue.400"}
-            _hover={{ bg: "blue.500" }}
+            color="white"
+            bg={"primary"}
+            _hover={{ color: "primaryLight", bg: "gray.200" }}
             rightIcon={<ChevronRightIcon />}
           >
             Start now

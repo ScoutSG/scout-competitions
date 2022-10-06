@@ -19,7 +19,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
       <Box w={"full"} boxShadow={"xl"} rounded={"md"} p={6} overflow={"hidden"}>
         <Stack>
           <Text
-            color={"orange.500"} // TODO: update color
+            color={"secondary"}
             textTransform={"uppercase"}
             fontWeight={800}
             fontSize={"sm"}

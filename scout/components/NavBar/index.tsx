@@ -33,7 +33,10 @@ const NavigationBar: React.FC = () => {
     <>
       <Flex minH={"60px"} py={{ base: 2 }} px={{ base: 1 }} align={"center"}>
         <Flex
-          maxH={"70px"}
+          minH="60px"
+          minW="40px"
+          maxH="60px"
+          maxW="40px"
           flex={{ base: 1 }}
           justify={{ base: "center", md: "start" }}
         >

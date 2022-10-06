@@ -13,6 +13,7 @@ import {
 
 import { AboutCard } from "../Detail";
 import { CompetitionDataSummary } from "../../../types/CompetitionDetail";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;
@@ -45,7 +46,15 @@ const CompetitionSummaryCard: React.FC<{
             <Heading fontSize={"2xl"} fontFamily={"body"}>
               {competition.name}
             </Heading>
-            <Button w={"100%"}>View Details</Button>
+            <Button
+              w={"100%"}
+              color="white"
+              bg={"primary"}
+              _hover={{ color: "primaryLight", bg: "gray.200" }}
+              rightIcon={<ChevronRightIcon />}
+            >
+              Find a team
+            </Button>
           </Stack>
           <AboutCard
             deadline={competition.deadline}
