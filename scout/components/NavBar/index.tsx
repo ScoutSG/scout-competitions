@@ -78,7 +78,7 @@ const NavigationBar: React.FC = () => {
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
+  const linkHoverColor = useColorModeValue("primaryLight", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
@@ -98,6 +98,7 @@ const DesktopNav = () => {
                   fontWeight={500}
                   color={linkColor}
                   p={2}
+                  borderRadius="10px"
                 >
                   {navItem.label}
                 </Link>
@@ -135,13 +136,13 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       display={"block"}
       p={2}
       rounded={"md"}
-      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+      _hover={{ bg: "primaryLight" }}
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
           <Text
             transition={"all .3s ease"}
-            _groupHover={{ color: "pink.400" }}
+            _groupHover={{ color: "white" }}
             fontWeight={500}
           >
             {label}
@@ -157,7 +158,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           align={"center"}
           flex={1}
         >
-          <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
+          <Icon color={"white"} w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
     </Link>
