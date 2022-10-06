@@ -13,25 +13,17 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TbSend } from "react-icons/tb";
-import { Question } from "../../../../../frontend/types/Group";
+import { Question } from "../../../types/Group";
+import { modelQuestions } from "../../../models/Question";
 
-const questions: Question[] = [
-  {
-    questionId: 123,
-    questionString: "how are you",
-  },
-  {
-    questionId: 5,
-    questionString:
-      "how are you at react typescript javascript next prisma pokemon go taking over the world",
-  },
-];
+const questions: Question[] = modelQuestions;
 
 const labelStyles = {
   mt: "2",
   width: "10px",
   ml: "-5px",
   fontSize: "sm",
+  fontWeight: "500",
 };
 
 type QuestionProps = {
@@ -39,7 +31,7 @@ type QuestionProps = {
   setAnswer: (newAnswer: number) => void;
 };
 
-function Question({ question, setAnswer }) {
+const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
   return (
     <FormControl padding={4}>
       <FormLabel>{question.questionString}</FormLabel>
@@ -50,6 +42,7 @@ function Question({ question, setAnswer }) {
         defaultValue={3}
         step={1}
         onChangeEnd={(value) => setAnswer(value)}
+        colorScheme="primary"
       >
         <SliderMark value={1} {...labelStyles}>
           1
@@ -73,9 +66,9 @@ function Question({ question, setAnswer }) {
       </Slider>
     </FormControl>
   );
-}
+};
 
-export default function Apply() {
+const Application: React.FC = () => {
   const [application, setApplication] = useState([]);
 
   // initialise application state
@@ -94,9 +87,9 @@ export default function Apply() {
   };
 
   return (
-    <Stack>
+    <Stack spacing={5} w={"100%"}>
       <Heading as="h1" size="xl">
-        Apply
+        Questions Required By Team
       </Heading>
       <List spacing={5}>
         {application.map((question) => (
@@ -107,9 +100,16 @@ export default function Apply() {
           />
         ))}
       </List>
-      <Button colorScheme="green" rightIcon={<TbSend />}>
+      <Button
+        color="white"
+        bg={"secondary"}
+        _hover={{ color: "secondary", bg: "gray.50" }}
+        rightIcon={<TbSend />}
+      >
         Submit
       </Button>
     </Stack>
   );
-}
+};
+
+export default Application;

@@ -89,7 +89,7 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
             <Button
               rightIcon={<ChevronRightIcon />}
               color="white"
-              bg={"primary"}
+              bg={"primary.500"}
               _hover={{ color: "primaryLight", bg: "gray.200" }}
             >
               Lead a team

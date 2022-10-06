@@ -10,6 +10,7 @@ import {
   Badge,
   Button,
 } from "@chakra-ui/react";
+import { TbSend } from "react-icons/tb";
 
 import { GroupSummaryData } from "../../../types/CompetitionDetail";
 
@@ -38,12 +39,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
         </Stack>
 
         <Stack direction={"column"} mt={6} align="center">
-          <Text
-            // color={"green.500"}
-            textTransform={"uppercase"}
-            fontWeight={800}
-            fontSize={"sm"}
-          >
+          <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>
             Skills Team is looking for
           </Text>
           <Box maxH="70px" overflow="auto">
@@ -61,7 +57,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
           </Box>
         </Stack>
         <Stack direction={"column"} mt={6} spacing={2} w={"full"}>
-          <Button>Apply</Button>
+          <Button rightIcon={<TbSend />}>Request to join</Button>
         </Stack>
       </Box>
     </Center>

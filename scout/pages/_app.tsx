@@ -26,7 +26,18 @@ const config: ThemeConfig = {
 const theme = extendTheme({
   config,
   colors: {
-    primary: "#177DF1",
+    primary: {
+      50: "#177DF1",
+      100: "#177DF1",
+      200: "#177DF1",
+      300: "#177DF1",
+      400: "#177DF1",
+      500: "#177DF1",
+      600: "#177DF1",
+      700: "#177DF1",
+      800: "#177DF1",
+      900: "#177DF1",
+    },
     secondary: "#FF9966",
     primaryLight: "#4FA2FF",
     secondaryLight: "#FFCC99",

@@ -49,7 +49,7 @@ const CompetitionSummaryCard: React.FC<{
             <Button
               w={"100%"}
               color="white"
-              bg={"primary"}
+              bg={"primary.500"}
               _hover={{ color: "primaryLight", bg: "gray.200" }}
               rightIcon={<ChevronRightIcon />}
             >

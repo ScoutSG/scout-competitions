@@ -51,7 +51,7 @@ const CallToAction: React.FC = () => {
             fontWeight={"bold"}
             px={6}
             color="white"
-            bg={"primary"}
+            bg={"primary.500"}
             _hover={{ color: "primaryLight", bg: "gray.200" }}
             rightIcon={<ChevronRightIcon />}
           >
