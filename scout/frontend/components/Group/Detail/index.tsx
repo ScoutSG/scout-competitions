@@ -44,7 +44,7 @@ const GroupDetail: React.FC = () => {
         </Text>
         <Text>{group.description}</Text>
         <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>
-          Skills Team is Looking for
+          Looking for
         </Text>
         <Box>
           {group.targetSkills.map((skill) => (

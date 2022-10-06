@@ -47,9 +47,7 @@ export default function SimpleThreeColumns() {
   return (
     <Box p={4}>
       <VStack align="center" justify="center" spacing="20px" mb={10}>
-        <Heading size="lg" fontWeight="700">
-          Get started with Scout
-        </Heading>
+        <Heading>Get Started</Heading>
       </VStack>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={10}>
         <Feature

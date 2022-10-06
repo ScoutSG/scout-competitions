@@ -7,7 +7,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from "@chakra-ui/react";
-// import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 import { ReactNode } from "react";
 import ScoutIcon from "../../components/Icons/ScoutIcon";
 
@@ -62,13 +62,13 @@ const Footer: React.FC = () => {
         <Text>© Scout SG 2022. All rights reserved</Text>
         <Stack direction={"row"} spacing={6}>
           <SocialButton label={"Instagram"} href={"#"}>
-            {/* <FaInstagram /> */}
+            <FaInstagram />
           </SocialButton>
           <SocialButton label={"LinkedIn"} href={"#"}>
-            {/* <FaTwitter /> */}
+            <FaLinkedin />
           </SocialButton>
           <SocialButton label={"GitHub"} href={"#"}>
-            {/* <FaYoutube /> */}
+            <FaGithub />
           </SocialButton>
         </Stack>
       </Container>

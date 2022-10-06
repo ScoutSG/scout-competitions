@@ -40,7 +40,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
 
         <Stack direction={"column"} mt={6} align="center">
           <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>
-            Skills Team is looking for
+            Looking for
           </Text>
           <Box maxH="70px" overflow="auto">
             {group.targetSkills.map((skill) => (
