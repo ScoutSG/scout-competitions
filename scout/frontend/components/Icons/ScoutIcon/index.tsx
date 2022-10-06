@@ -9,7 +9,13 @@ const ScoutIcon: React.FC = () => {
   });
   return (
     <>
-      <ProductImage src={logo} alt="icon" />
+      <ProductImage
+        src={logo}
+        alt="icon"
+        layout="fixed"
+        width={100}
+        height={70}
+      />
     </>
   );
 };
