@@ -40,22 +40,12 @@ const CompetitionSummaryCard: React.FC<{
             fontWeight={800}
             fontSize={"sm"}
           >
+            {/* TODO: calculate number of days left */}
             {} days left!
           </Text>
-          <Stack direction={{ base: "column", md: "row" }} spacing={4}>
-            <Heading fontSize={"2xl"} fontFamily={"body"}>
-              {competition.name}
-            </Heading>
-            <Button
-              w={"100%"}
-              color="white"
-              bg={"primary.500"}
-              _hover={{ color: "primaryLight", bg: "gray.200" }}
-              rightIcon={<ChevronRightIcon />}
-            >
-              Find a team
-            </Button>
-          </Stack>
+          <Heading fontSize={"2xl"} fontFamily={"body"}>
+            {competition.name}
+          </Heading>
           <AboutCard
             deadline={competition.deadline}
             organiserName={competition.organiserName}
