@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import { modelGroup } from "../../core/models/Group";
-import ApplicationReview from "../../components/Group/ApplicationReview";
-import Application from "../../components/Group/Application";
+import { modelGroup } from "../../../../core/models/Group";
+import ApplicationReview from "../../../../components/Group/ApplicationReview";
+import Application from "../../../../components/Group/Application";
 
 const GroupDetail: React.FC = () => {
   const router = useRouter();
