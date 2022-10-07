@@ -43,7 +43,7 @@ const CompetitionDetails: React.FC = () => {
       </Head>
       <Stack
         spacing={10}
-        py={{ base: 5, md: 28 }}
+        py={{ base: 5, md: 16 }}
         direction={{ base: "column", md: "row" }}
       >
         <Stack flex={2} spacing={{ base: 1, md: 10 }}>
