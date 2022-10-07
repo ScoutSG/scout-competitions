@@ -46,14 +46,7 @@ const CompetitionSummaryCard: React.FC<{
           <Heading fontSize={"2xl"} fontFamily={"body"}>
             {competition.name}
           </Heading>
-          <AboutCard
-            deadline={competition.deadline}
-            organiserName={competition.organiserName}
-            description={competition.description}
-            urlLink={competition.urlLink}
-            maxSize={competition.maxSize}
-            minSize={competition.minSize}
-          />
+          <AboutCard data={competition} />
         </Stack>
       </Box>
     </Center>
