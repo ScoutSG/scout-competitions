@@ -37,12 +37,12 @@ async function handleRead(req, res) {
 async function handleAdd(req, res) {
   const {
     name,
-    size,
+    currentSize,
     targetSize,
     description,
     targetSkills,
 
-    formId,
+    form,
     members,
     competitionId,
   } = req.body;
@@ -50,17 +50,12 @@ async function handleAdd(req, res) {
   const group = await prisma.group.create({
     data: {
       name,
-      size,
+      currentSize,
       targetSize,
       description,
       targetSkills,
       members: {
         connect: members.map((x) => ({ id: x })),
-      },
-      form: {
-        connect: {
-          id: formId,
-        },
       },
       competition: {
         connect: {
@@ -69,6 +64,21 @@ async function handleAdd(req, res) {
       },
     },
   });
+
+  if (form) {
+    const newForm = await prisma.form.create({
+      data: {
+        groupId: group.id
+      }
+    })
+
+    const questionsData = form.questions.map((question) => ({
+      formId: newForm.id,
+      questionString: question.questionString,
+    }));
+
+    await prisma.question.createMany({ data: questionsData });
+  }
 
   res.status(200).json(group);
 }

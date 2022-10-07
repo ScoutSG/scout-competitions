@@ -39,9 +39,7 @@ export default async function handle(req, res) {
         description,
         targetSkills,
 
-        formId,
         members,
-        competitionId,
       } = req.body;
 
       const group = await prisma.group.update({
