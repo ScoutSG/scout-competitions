@@ -16,13 +16,15 @@ import SearchBar from "../../../components/SearchBar";
 import {
   CompetitionData,
   GroupSummaryData,
-  CompetitionAboutCard,
 } from "../../../core/types/CompetitionDetail";
 
 import GroupSummaryCard from "../../../components/Group/Summary";
+import Head from "next/head";
+import AboutCard from "../../../components/Competition/AboutCard";
 
 const CompetitionDetails: React.FC = () => {
   const response: CompetitionData = {
+    id: 123,
     name: "Hack For Public Good 2023",
     deadline: "12 Dec 2022",
     organiserName: "OGP, GovTech",
@@ -35,36 +37,34 @@ const CompetitionDetails: React.FC = () => {
   };
 
   return (
-    <Stack
-      spacing={10}
-      py={{ base: 5, md: 28 }}
-      direction={{ base: "column", md: "row" }}
-    >
-      <Stack flex={2} spacing={{ base: 1, md: 10 }}>
-        <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
-          <Heading>{response.name}</Heading>
-        </Box>
-        <Box m={1} p={{ base: 2, md: 7 }}>
-          <AboutCard
-            deadline={response.deadline}
-            organiserName={response.organiserName}
-            description={response.description}
-            urlLink={response.urlLink}
-            maxSize={response.maxSize}
-            minSize={response.minSize}
-          />
-        </Box>
-      </Stack>
-      <Flex
-        flex={3}
-        justify={"center"}
-        // align={"center"}
-        position={"relative"}
-        w={"100%"}
+    <>
+      <Head>
+        <title>{response.name} - Scout</title>
+      </Head>
+      <Stack
+        spacing={10}
+        py={{ base: 5, md: 28 }}
+        direction={{ base: "column", md: "row" }}
       >
-        <GroupSummaryView groups={response.groups} />
-      </Flex>
-    </Stack>
+        <Stack flex={2} spacing={{ base: 1, md: 10 }}>
+          <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
+            <Heading>{response.name}</Heading>
+          </Box>
+          <Box m={1} p={{ base: 2, md: 7 }}>
+            <AboutCard data={response} hideFindATeam />
+          </Box>
+        </Stack>
+        <Flex
+          flex={3}
+          justify={"center"}
+          // align={"center"}
+          position={"relative"}
+          w={"100%"}
+        >
+          <GroupSummaryView groups={response.groups} />
+        </Flex>
+      </Stack>
+    </>
   );
 };
 
@@ -112,59 +112,6 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
           ))}
         </SimpleGrid>
       )}
-    </Box>
-  );
-};
-
-export const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
-  const { deadline, organiserName, description, urlLink, maxSize, minSize } =
-    props;
-
-  const onSeeMore = () => {
-    window.open(urlLink, "_blank");
-  };
-
-  return (
-    <Box>
-      <Stack spacing={4}>
-        <Box>
-          <Heading size="md">About</Heading>
-          <Text>{description}</Text>
-        </Box>
-
-        <SimpleGrid columns={3} minChildWidth="90px">
-          <Box>
-            <Heading size="xs">Deadline</Heading>
-            <Badge borderRadius={"7px"}>{deadline}</Badge>
-          </Box>
-
-          <Box>
-            <Heading size="xs">Group Size</Heading>
-            <Badge borderRadius={"7px"}>
-              {minSize === null && maxSize === null
-                ? "Unrestricted"
-                : minSize === null
-                ? maxSize
-                : maxSize === null
-                ? minSize
-                : minSize + " - " + maxSize}
-            </Badge>
-          </Box>
-
-          <Box>
-            <Heading size="xs">Organiser</Heading>
-            <Badge borderRadius={"7px"}>{organiserName}</Badge>
-          </Box>
-        </SimpleGrid>
-        <Button
-          rightIcon={<ChevronRightIcon />}
-          w={{ base: "full", md: "fit-content" }}
-          onClick={onSeeMore}
-          fontSize="small"
-        >
-          Visit site
-        </Button>
-      </Stack>
     </Box>
   );
 };

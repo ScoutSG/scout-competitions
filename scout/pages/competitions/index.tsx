@@ -13,6 +13,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 
 import CompetitionSummaryCard from "../../components/Competition/Summary";
+import Head from "next/head";
 
 const CompetitionDiscovery: React.FC = () => {
   let competitions: CompetitionDataSummary[] = [
@@ -21,20 +22,25 @@ const CompetitionDiscovery: React.FC = () => {
     modelCompetition,
   ];
   return (
-    <Stack
-      spacing={10}
-      py={4}
-      // direction={{ base: "row", md: "row" }}
-      align="center"
-      justify="center"
-    >
-      <Box as={"header"} m={1} p={1}>
-        <Heading>Discover Competitions</Heading>
-      </Box>
-      <Box>
-        <CompetitionSummaryView competitions={competitions} />
-      </Box>
-    </Stack>
+    <>
+      <Head>
+        <title>Competitions - Scout</title>
+      </Head>
+      <Stack
+        spacing={10}
+        py={4}
+        // direction={{ base: "row", md: "row" }}
+        align="center"
+        justify="center"
+      >
+        <Box as={"header"} m={1} p={1}>
+          <Heading>Discover Competitions</Heading>
+        </Box>
+        <Box>
+          <CompetitionSummaryView competitions={competitions} />
+        </Box>
+      </Stack>
+    </>
   );
 };
 
