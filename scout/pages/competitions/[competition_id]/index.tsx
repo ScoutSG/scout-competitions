@@ -12,14 +12,14 @@ import {
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import SearchBar from "../../components/SearchBar";
+import SearchBar from "../../../components/SearchBar";
 import {
   CompetitionData,
   GroupSummaryData,
   CompetitionAboutCard,
-} from "../../core/types/CompetitionDetail";
+} from "../../../core/types/CompetitionDetail";
 
-import GroupSummaryCard from "../../components/Group/Summary";
+import GroupSummaryCard from "../../../components/Group/Summary";
 
 const CompetitionDetails: React.FC = () => {
   const response: CompetitionData = {
@@ -117,14 +117,8 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
 };
 
 export const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
-  const {
-    deadline,
-    organiserName,
-    description,
-    urlLink,
-    maxSize,
-    minSize,
-  } = props;
+  const { deadline, organiserName, description, urlLink, maxSize, minSize } =
+    props;
 
   const onSeeMore = () => {
     window.open(urlLink, "_blank");

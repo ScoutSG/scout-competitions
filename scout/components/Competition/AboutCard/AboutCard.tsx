@@ -7,6 +7,7 @@ import {
   Badge,
   SimpleGrid,
   Button,
+  ButtonGroup,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
@@ -14,14 +15,8 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { CompetitionAboutCard } from "../../../core/types/CompetitionDetail";
 
 const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
-  const {
-    deadline,
-    organiserName,
-    description,
-    urlLink,
-    maxSize,
-    minSize,
-  } = props;
+  const { deadline, organiserName, description, urlLink, maxSize, minSize } =
+    props;
 
   const onSeeMore = () => {
     window.open(urlLink, "_blank");
@@ -59,14 +54,24 @@ const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
             <Badge borderRadius={"7px"}>{organiserName}</Badge>
           </Box>
         </SimpleGrid>
-        <Button
-          rightIcon={<ChevronRightIcon />}
-          w={{ base: "full", md: "fit-content" }}
-          onClick={onSeeMore}
-          fontSize="small"
-        >
-          Visit site
-        </Button>
+        <ButtonGroup>
+          <Button
+            rightIcon={<ChevronRightIcon />}
+            width="100%"
+            onClick={onSeeMore}
+          >
+            Visit site
+          </Button>
+          <Button
+            rightIcon={<ChevronRightIcon />}
+            width="100%"
+            color="white"
+            bg={"primary.500"}
+            _hover={{ color: "primaryLight", bg: "gray.200" }}
+          >
+            Find a team
+          </Button>
+        </ButtonGroup>
       </Stack>
     </Box>
   );

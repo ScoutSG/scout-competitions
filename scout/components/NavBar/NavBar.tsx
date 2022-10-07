@@ -1,9 +1,9 @@
+import NextLink from "next/link";
 import {
   Box,
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
   Icon,
@@ -40,7 +40,11 @@ const NavigationBar: React.FC = () => {
           flex={{ base: 1 }}
           justify={{ base: "center", md: "start" }}
         >
-          <ScoutIconMark />
+          <NextLink href="/">
+            <a>
+              <ScoutIconMark />
+            </a>
+          </NextLink>
         </Flex>
         <Flex flex={{ base: 8, md: "start" }} ml={10}>
           {/* <SearchBar /> */}
@@ -246,7 +250,7 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: "Competitions",
         subLabel: "Hackathons, case competitions, etc",
-        href: "#",
+        href: "/competitions",
       },
       {
         label: "Modules",
@@ -260,7 +264,7 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "#",
   },
   {
-    label: "Personal",
+    label: "Profile",
   },
 ];
 
