@@ -261,10 +261,11 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Applications",
-    href: "#",
+    href: "/applications",
   },
   {
     label: "Profile",
+    href: "/profile",
   },
 ];
 

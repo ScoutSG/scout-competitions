@@ -1,5 +1,13 @@
-import { Box, SimpleGrid, Icon, VStack, Heading } from "@chakra-ui/react";
-
+import React from "react";
+import NextLink from "next/link";
+import {
+  Box,
+  SimpleGrid,
+  Icon,
+  VStack,
+  Heading,
+  Button,
+} from "@chakra-ui/react";
 import Step from "../components/Step";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -16,6 +24,7 @@ const SimpleThreeColumns: React.FC = () => {
           text={
             "Group mates will be able to contact you for further clarification and team forming"
           }
+          href="/profile"
         />
         <Step
           icon={<Icon as={ChevronRightIcon} w={10} h={10} />}
@@ -23,6 +32,7 @@ const SimpleThreeColumns: React.FC = () => {
           text={
             "Find the competitions that best fit your skills and compete with a winning team"
           }
+          href="/competitions"
         />
         <Step
           icon={<Icon as={ChevronRightIcon} w={10} h={10} />}
@@ -30,6 +40,7 @@ const SimpleThreeColumns: React.FC = () => {
           text={
             "Check to see if the group of your interest has accepted your application to join the team"
           }
+          href="/applications"
         />
       </SimpleGrid>
     </Box>

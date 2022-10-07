@@ -1,4 +1,5 @@
 import React from "react";
+import NextLink from "next/link";
 import {
   Stack,
   Flex,
@@ -45,18 +46,20 @@ const LandingPage: React.FC = () => {
           spacing={{ base: 4, sm: 6 }}
           direction={{ base: "column", sm: "row" }}
         >
-          <Button
-            rounded={"full"}
-            size={"lg"}
-            fontWeight={"bold"}
-            px={6}
-            color="white"
-            bg={"primary.500"}
-            _hover={{ color: "primaryLight", bg: "gray.200" }}
-            rightIcon={<ChevronRightIcon />}
-          >
-            Start now
-          </Button>
+          <NextLink href="/home">
+            <Button
+              rounded={"full"}
+              size={"lg"}
+              fontWeight={"bold"}
+              px={6}
+              color="white"
+              bg={"primary.500"}
+              _hover={{ color: "primaryLight", bg: "gray.200" }}
+              rightIcon={<ChevronRightIcon />}
+            >
+              Start now
+            </Button>
+          </NextLink>
         </Stack>
       </Stack>
       <Flex

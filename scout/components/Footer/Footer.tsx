@@ -57,10 +57,16 @@ const Footer: React.FC = () => {
       <ScoutIcon />
       <Text>© Scout SG 2022. All rights reserved</Text>
       <Stack direction={"row"} spacing={6}>
-        <SocialButton label={"Instagram"} href={"#"}>
+        <SocialButton
+          label={"Instagram"}
+          href={"https://www.instagram.com/scoutteamsg/"}
+        >
           <FaInstagram />
         </SocialButton>
-        <SocialButton label={"LinkedIn"} href={"#"}>
+        <SocialButton
+          label={"LinkedIn"}
+          href={"https://www.linkedin.com/company/scoutsg/"}
+        >
           <FaLinkedin />
         </SocialButton>
         <SocialButton label={"GitHub"} href={"#"}>
