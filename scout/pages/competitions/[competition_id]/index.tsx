@@ -18,24 +18,26 @@ import {
 } from "../../../core/types/CompetitionDetail";
 
 import GroupSummaryCard from "../../../components/Group/Summary";
+import NotFound from "../../../components/NotFound";
 import Head from "next/head";
 import AboutCard from "../../../components/Competition/AboutCard";
+import clientApi from "../../../core/api/client";
 
 export async function getServerSideProps(context) {
   const competition_id = context.params.competition_id;
-  const res = await fetch(
-    `${process.env.API_URL}/competitions/${competition_id}`
-  );
-  const competition = await res.json();
+  const response = await clientApi.get(`/competitions/${competition_id}`);
+  const competition = response.data;
   return { props: { competition } };
 }
 
-const CompetitionDetails: React.FC = ({
+const CompetitionDetails = ({
   competition,
 }: {
-  competition: CompetitionData;
+  competition: CompetitionData | null;
 }) => {
-  return (
+  return competition === null ? (
+    <NotFound />
+  ) : (
     <>
       <Head>
         <title>{competition.name} - Scout</title>
