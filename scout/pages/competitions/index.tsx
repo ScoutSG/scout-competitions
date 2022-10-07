@@ -10,12 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
+import clientApi from "../../core/api/client";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
 
 export async function getServerSideProps() {
-  const res = await fetch(`${process.env.API_URL}/competitions`);
-  const competitions = await res.json();
+  const response = await clientApi.get("/competitions");
+  const competitions = response.data;
+
   return { props: { competitions } };
 }
 

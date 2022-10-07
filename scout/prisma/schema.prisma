@@ -78,7 +78,7 @@ model VerificationToken {
 model Question {
   id             Int    @id @default(autoincrement())
   questionString String
-  
+
   form    Form     @relation(fields: [formId], references: [id])
   formId  Int
   answers Answer[]
@@ -137,7 +137,7 @@ model Group {
 model Competition {
   id            Int      @id @default(autoincrement())
   name          String
-  deadline      DateTime 
+  deadline      DateTime
   organiserName String
   description   String
   link          String
