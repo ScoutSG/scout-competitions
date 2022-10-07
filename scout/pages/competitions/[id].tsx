@@ -12,14 +12,14 @@ import {
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import SearchBar from "../../SearchBar";
+import SearchBar from "../../components/SearchBar";
 import {
   CompetitionData,
   GroupSummaryData,
   CompetitionAboutCard,
-} from "../../../core/types/CompetitionDetail";
+} from "../../core/types/CompetitionDetail";
 
-import GroupSummaryCard from "../../Group/Summary";
+import GroupSummaryCard from "../../components/Group/Summary";
 
 const CompetitionDetails: React.FC = () => {
   const response: CompetitionData = {

@@ -9,16 +9,16 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import { modelGroup } from "../../../core/models/Group";
-import ApplicationReview from "../ApplicationReview";
-import Application from "../Application";
+import { modelGroup } from "../../core/models/Group";
+import ApplicationReview from "../../components/Group/ApplicationReview";
+import Application from "../../components/Group/Application";
 
 const GroupDetail: React.FC = () => {
   const router = useRouter();
   /* TODO: Add if-else logic to differentiate if member / leader
-          Member can see Application requests for Review
-          Non-member can see Application Questions to request to join
-      */
+            Member can see Application requests for Review
+            Non-member can see Application Questions to request to join
+        */
   const isMember = true;
   const group = modelGroup;
   return (

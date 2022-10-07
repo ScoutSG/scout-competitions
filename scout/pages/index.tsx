@@ -1,13 +1,11 @@
 import React from "react";
 import CallToAction from "../components/CallToAction";
-import PageContainer from "../components/PageContainer";
 
+// add validation if authenticated go to /home else CTA
 const Page: React.FC = () => {
   return (
     <>
-      <PageContainer>
-        <CallToAction />
-      </PageContainer>
+      <CallToAction />
     </>
   );
 };

@@ -11,7 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { AboutCard } from "../Detail/CompetitionDetails";
+import AboutCard from "../AboutCard";
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -35,7 +35,7 @@ const CompetitionSummaryCard: React.FC<{
       <Box w={"full"} boxShadow={"xl"} rounded={"md"} p={6} overflow={"hidden"}>
         <Stack direction="column" spacing={4}>
           <Text
-            color={"red.300"} // TODO: update color
+            color={"secondary"}
             textTransform={"uppercase"}
             fontWeight={800}
             fontSize={"sm"}

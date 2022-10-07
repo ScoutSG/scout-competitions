@@ -10,9 +10,9 @@ import {
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
+import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 
-import CompetitionSummaryCard from "../Summary";
+import CompetitionSummaryCard from "../../components/Competition/Summary";
 
 const CompetitionDiscovery: React.FC = () => {
   let competitions: CompetitionDataSummary[] = [
