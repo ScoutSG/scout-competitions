@@ -1,6 +1,6 @@
 import React from "react";
-import CallToAction from "../frontend/components/CallToAction";
-import PageContainer from "../frontend/components/PageContainer";
+import CallToAction from "../components/CallToAction";
+import PageContainer from "../components/PageContainer";
 
 const Page: React.FC = () => {
   return (
