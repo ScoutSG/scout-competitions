@@ -115,20 +115,4 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
   );
 };
 
-/** TO DELETE */
-const modelGroup: GroupSummaryData = {
-  id: 1,
-  name: "Scout",
-  size: 2,
-  targetSize: 6,
-  description: "This is a test group ",
-  targetSkills: ["React", "Next", "Spring Boot", "UX Design", "Figma"],
-  leader: {
-    name: "Lye Wen Jun",
-    year: 3,
-    major: "Computer Science",
-    specialization: "Database",
-  },
-};
-
 export default CompetitionDetails;
