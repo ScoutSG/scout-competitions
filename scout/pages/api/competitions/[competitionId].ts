@@ -13,6 +13,10 @@ export default async function handle(req, res) {
         where: {
           id: competitionId,
         },
+        // specific to user
+        include: {
+          groups: true,
+        },
       });
 
       res.status(200).json(competition);
