@@ -179,8 +179,8 @@ export const AboutCard: React.FC<CompetitionAboutCard> = (props) => {
 const modelGroup: GroupSummaryData = {
   id: 1,
   name: "Scout",
-  size: 1,
-  targetSize: 4,
+  size: 2,
+  targetSize: 6,
   description: "This is a test group ",
   targetSkills: ["React", "Next", "Spring Boot", "UX Design", "Figma"],
   leader: {

@@ -10,26 +10,44 @@ import {
   Badge,
   Button,
   Avatar,
+  AvatarGroup,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
+import { ReactElement } from "react-markdown/lib/react-markdown";
 
 const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
+  let groupSize: number = group.size;
+  let targetSize: number = group.targetSize;
+
+  let avatarIcons: ReactElement[] = [];
+  for (let i = 0; i < targetSize; i++) {
+    if (i < groupSize) {
+      avatarIcons.push(<Avatar bgColor="primaryLight" />);
+    } else {
+      avatarIcons.push(<Avatar />);
+    }
+  }
+
+  const isMember = false;
+
   return (
     <Center py={2}>
       <Box w={"full"} boxShadow={"xl"} rounded={"md"} p={6} overflow={"hidden"}>
         <Stack>
-          {/**TODO: Color Icons */}
-          <Stack>
-            <Avatar size="xs" />
-            <Text color={"secondary"} fontWeight={800} fontSize={"sm"}>
-              Color icons
-            </Text>
+          <Stack
+            direction={{ base: "column", sm: "row" }}
+            justify="space-between"
+          >
+            <Heading fontSize={"2xl"} fontFamily={"body"}>
+              {group.name}
+            </Heading>
+            <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
+              {avatarIcons.map((avatar) => avatar)}
+            </AvatarGroup>
           </Stack>
-          <Heading fontSize={"2xl"} fontFamily={"body"}>
-            {group.name}
-          </Heading>
+
           <Text color={"gray.700"}>{group.description}</Text>
           <Text color={"gray.500"} fontSize="xs">
             Led by {group.leader.name}, Year {group.leader.year},{" "}
@@ -58,7 +76,16 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
           </Box>
         </Stack>
         <Stack direction={"column"} mt={6} spacing={2} w={"full"}>
-          <Button rightIcon={<TbSend />}>Request to join</Button>
+          <Button
+            rightIcon={groupSize === targetSize || isMember ? null : <TbSend />}
+            disabled={groupSize === targetSize && !isMember}
+          >
+            {isMember
+              ? "View Group"
+              : groupSize === targetSize
+              ? "Team is full"
+              : "Request to join"}
+          </Button>
         </Stack>
       </Box>
     </Center>
