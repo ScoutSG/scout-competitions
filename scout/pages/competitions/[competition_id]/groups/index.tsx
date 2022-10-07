@@ -77,10 +77,11 @@ const CreateGroupForm = () => {
   };
 
   const handleSubmit = () => {
+    const cleanQuestions = questions.filter((str) => str.length > 0);
     console.log({
       name,
       description,
-      questions,
+      questions: cleanQuestions,
     });
   };
 
