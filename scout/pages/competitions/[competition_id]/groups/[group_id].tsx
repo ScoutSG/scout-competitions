@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { modelGroup } from "../../../../core/models/Group";
 import ApplicationReview from "../../../../components/Group/ApplicationReview";
 import Application from "../../../../components/Group/Application";
+import Head from "next/head";
 
 const GroupDetail: React.FC = () => {
   const router = useRouter();
@@ -22,49 +23,54 @@ const GroupDetail: React.FC = () => {
   const isMember = true;
   const group = modelGroup;
   return (
-    <Stack
-      spacing={10}
-      py={{ base: 5, md: 28 }}
-      direction={{ base: "column", md: "row" }}
-    >
-      <Stack flex={2}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Heading as="h1" size="xl">
-            {group.name}
-          </Heading>
-          <Badge px={4}>{isMember ? "Member" : null}</Badge>
+    <>
+      <Head>
+        <title>{group.name} - Scout</title>
+      </Head>
+      <Stack
+        spacing={10}
+        py={{ base: 5, md: 28 }}
+        direction={{ base: "column", md: "row" }}
+      >
+        <Stack flex={2}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Heading as="h1" size="xl">
+              {group.name}
+            </Heading>
+            <Badge px={4}>{isMember ? "Member" : null}</Badge>
+          </Flex>
+          <Text
+            color={"secondary"}
+            textTransform={"uppercase"}
+            fontWeight={800}
+            fontSize={"sm"}
+          >
+            {group.targetSize - group.size} spots left!
+          </Text>
+          <Text>{group.description}</Text>
+          <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>
+            Looking for
+          </Text>
+          <Box>
+            {group.targetSkills.map((skill) => (
+              <Badge px={2} py={1} bg={"gray.50"} fontWeight={"400"} m={1}>
+                #{skill}
+              </Badge>
+            ))}
+          </Box>
+          {isMember ? (
+            <Button bgColor="secondaryLight">Update Group Details</Button>
+          ) : null}
+        </Stack>
+        <Flex flex={3}>
+          {isMember ? (
+            <ApplicationReview applications={group.applications} />
+          ) : (
+            <Application />
+          )}
         </Flex>
-        <Text
-          color={"secondary"}
-          textTransform={"uppercase"}
-          fontWeight={800}
-          fontSize={"sm"}
-        >
-          {group.targetSize - group.size} spots left!
-        </Text>
-        <Text>{group.description}</Text>
-        <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>
-          Looking for
-        </Text>
-        <Box>
-          {group.targetSkills.map((skill) => (
-            <Badge px={2} py={1} bg={"gray.50"} fontWeight={"400"} m={1}>
-              #{skill}
-            </Badge>
-          ))}
-        </Box>
-        {isMember ? (
-          <Button bgColor="secondaryLight">Update Group Details</Button>
-        ) : null}
       </Stack>
-      <Flex flex={3}>
-        {isMember ? (
-          <ApplicationReview applications={group.applications} />
-        ) : (
-          <Application />
-        )}
-      </Flex>
-    </Stack>
+    </>
   );
 };
 

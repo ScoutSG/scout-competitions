@@ -20,6 +20,7 @@ import {
 } from "../../../core/types/CompetitionDetail";
 
 import GroupSummaryCard from "../../../components/Group/Summary";
+import Head from "next/head";
 
 const CompetitionDetails: React.FC = () => {
   const response: CompetitionData = {
@@ -35,36 +36,41 @@ const CompetitionDetails: React.FC = () => {
   };
 
   return (
-    <Stack
-      spacing={10}
-      py={{ base: 5, md: 28 }}
-      direction={{ base: "column", md: "row" }}
-    >
-      <Stack flex={2} spacing={{ base: 1, md: 10 }}>
-        <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
-          <Heading>{response.name}</Heading>
-        </Box>
-        <Box m={1} p={{ base: 2, md: 7 }}>
-          <AboutCard
-            deadline={response.deadline}
-            organiserName={response.organiserName}
-            description={response.description}
-            urlLink={response.urlLink}
-            maxSize={response.maxSize}
-            minSize={response.minSize}
-          />
-        </Box>
-      </Stack>
-      <Flex
-        flex={3}
-        justify={"center"}
-        // align={"center"}
-        position={"relative"}
-        w={"100%"}
+    <>
+      <Head>
+        <title>{response.name} - Scout</title>
+      </Head>
+      <Stack
+        spacing={10}
+        py={{ base: 5, md: 28 }}
+        direction={{ base: "column", md: "row" }}
       >
-        <GroupSummaryView groups={response.groups} />
-      </Flex>
-    </Stack>
+        <Stack flex={2} spacing={{ base: 1, md: 10 }}>
+          <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
+            <Heading>{response.name}</Heading>
+          </Box>
+          <Box m={1} p={{ base: 2, md: 7 }}>
+            <AboutCard
+              deadline={response.deadline}
+              organiserName={response.organiserName}
+              description={response.description}
+              urlLink={response.urlLink}
+              maxSize={response.maxSize}
+              minSize={response.minSize}
+            />
+          </Box>
+        </Stack>
+        <Flex
+          flex={3}
+          justify={"center"}
+          // align={"center"}
+          position={"relative"}
+          w={"100%"}
+        >
+          <GroupSummaryView groups={response.groups} />
+        </Flex>
+      </Stack>
+    </>
   );
 };
 
