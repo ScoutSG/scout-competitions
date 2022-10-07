@@ -23,7 +23,11 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
-  const competitions = await prisma.competition.findMany();
+  const competitions = await prisma.competition.findMany({
+    include: {
+      groups: true,
+    },
+  });
 
   res.status(200).json(competitions);
 }

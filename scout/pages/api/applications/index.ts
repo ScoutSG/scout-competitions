@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
 
-// GET POST /api/groups
+// GET POST /api/applications
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -23,52 +23,49 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
-  const groups = await prisma.group.findMany({
+  const applications = await prisma.application.findMany({
     include: {
-      members: true,
       form: true,
-      applications: true,
+      applicant: true,
+      answers: true,
+      group: true,
     },
   });
 
-  res.status(200).json(groups);
+  res.status(200).json(applications);
 }
 
 async function handleAdd(req, res) {
-  const {
-    name,
-    size,
-    targetSize,
-    description,
-    targetSkills,
+  const { isApproved, formId, userId, answers, groupId } = req.body;
 
-    formId,
-    members,
-    competitionId,
-  } = req.body;
-
-  const group = await prisma.group.create({
+  const application = await prisma.application.create({
     data: {
-      name,
-      size,
-      targetSize,
-      description,
-      targetSkills,
-      members: {
-        connect: members.map((x) => ({ id: x })),
+      isApproved,
+      applicant: {
+        connect: {
+          id: userId,
+        },
       },
       form: {
         connect: {
           id: formId,
         },
       },
-      competition: {
+      group: {
         connect: {
-          id: competitionId,
+          id: groupId,
         },
       },
     },
   });
 
-  res.status(200).json(group);
+  const answersData = answers.map((answer) => ({
+    applicationId: application.id,
+    answerResponse: answer.answerString,
+    questionId: answer.questionId,
+  }));
+
+  await prisma.answer.createMany({ data: answersData });
+
+  res.status(200).json(application);
 }
