@@ -13,6 +13,7 @@ import {
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
+import { formatDate } from "../../../core/utils/date";
 
 type AboutCardProps = {
   data: CompetitionDataSummary;
@@ -20,11 +21,11 @@ type AboutCardProps = {
 };
 
 const AboutCard: React.FC<AboutCardProps> = (props) => {
-  const { deadline, organiserName, description, urlLink, maxSize, minSize } =
+  const { deadline, organiserName, description, link, maxSize, minSize } =
     props.data;
 
   const onSeeMore = () => {
-    window.open(urlLink, "_blank");
+    window.open(link, "_blank");
   };
 
   return (
@@ -38,7 +39,7 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
         <SimpleGrid columns={3} minChildWidth="90px">
           <Box>
             <Heading size="xs">Deadline</Heading>
-            <Badge borderRadius={"7px"}>{deadline}</Badge>
+            <Badge borderRadius={"7px"}>{formatDate(deadline)}</Badge>
           </Box>
 
           <Box>

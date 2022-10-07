@@ -4,7 +4,6 @@ import {
   Box,
   Stack,
   Text,
-  Badge,
   SimpleGrid,
   Flex,
   Button,
@@ -22,24 +21,24 @@ import GroupSummaryCard from "../../../components/Group/Summary";
 import Head from "next/head";
 import AboutCard from "../../../components/Competition/AboutCard";
 
-const CompetitionDetails: React.FC = () => {
-  const response: CompetitionData = {
-    id: 123,
-    name: "Hack For Public Good 2023",
-    deadline: "12 Dec 2022",
-    organiserName: "OGP, GovTech",
-    description:
-      "Hack for Public Good is an annual fixture of OGP's way of work to keep us identifying and working on building tech to deliver public good in its various shapes and forms.",
-    urlLink: "https://www.open.gov.sg/hackathon/2023/",
-    maxSize: 6,
-    minSize: 1,
-    groups: [modelGroup, modelGroup, modelGroup, modelGroup],
-  };
+export async function getServerSideProps(context) {
+  const competition_id = context.params.competition_id;
+  const res = await fetch(
+    `${process.env.API_URL}/competitions/${competition_id}`
+  );
+  const competition = await res.json();
+  return { props: { competition } };
+}
 
+const CompetitionDetails: React.FC = ({
+  competition,
+}: {
+  competition: CompetitionData;
+}) => {
   return (
     <>
       <Head>
-        <title>{response.name} - Scout</title>
+        <title>{competition.name} - Scout</title>
       </Head>
       <Stack
         spacing={10}
@@ -48,10 +47,10 @@ const CompetitionDetails: React.FC = () => {
       >
         <Stack flex={2} spacing={{ base: 1, md: 10 }}>
           <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
-            <Heading>{response.name}</Heading>
+            <Heading>{competition.name}</Heading>
           </Box>
           <Box m={1} p={{ base: 2, md: 7 }}>
-            <AboutCard data={response} hideFindATeam />
+            <AboutCard data={competition} hideFindATeam />
           </Box>
         </Stack>
         <Flex
@@ -61,7 +60,7 @@ const CompetitionDetails: React.FC = () => {
           position={"relative"}
           w={"100%"}
         >
-          <GroupSummaryView groups={response.groups} />
+          <GroupSummaryView groups={competition.groups} />
         </Flex>
       </Stack>
     </>
@@ -102,7 +101,7 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
       {groups.length === 0 ? (
         <Stack spacing={4} mt={10}>
           <Text>No groups have been formed yet!</Text>
-          <Heading size="md">Want to participate?</Heading>
+          <Heading size="md">Looking for a team?</Heading>
           <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
         </Stack>
       ) : (
