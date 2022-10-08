@@ -20,6 +20,7 @@ import { ReactElement } from "react-markdown/lib/react-markdown";
 const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
   let groupSize: number = group.size;
   let targetSize: number = group.targetSize;
+  console.log(group);
 
   let avatarIcons: ReactElement[] = [];
   for (let i = 0; i < targetSize; i++) {
@@ -49,11 +50,11 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
           </Stack>
 
           <Text color={"gray.700"}>{group.description}</Text>
-          <Text color={"gray.500"} fontSize="xs">
+          {/* <Text color={"gray.500"} fontSize="xs">
             Led by {group.leader.name}, Year {group.leader.year},{" "}
             {group.leader.major} Major, {group.leader.specialization}{" "}
             Specialization
-          </Text>
+          </Text> */}
         </Stack>
 
         <Stack direction={"column"} mt={6} align="center">

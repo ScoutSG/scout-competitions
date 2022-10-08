@@ -4,20 +4,20 @@ import axios, { AxiosRequestConfig } from "axios";
 export const BASE_URL = "";
 
 const client = axios.create({
-  baseURL: `${BASE_URL}/api`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   timeout: 30000,
   headers: {
     Accept: "application/json",
   },
 });
 
-client.interceptors.request.use((config: AxiosRequestConfig) => {
-  const accessToken = null; // getAccessToken
-  if (config.headers) {
-    config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : "";
-  }
-  return config;
-});
+// client.interceptors.request.use((config: AxiosRequestConfig) => {
+//   // const accessToken = null; // getAccessToken
+//   // if (config.headers) {
+//   //   config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : "";
+//   // }
+//   return config;
+// });
 
 const clientApi = {
   get: client.get,

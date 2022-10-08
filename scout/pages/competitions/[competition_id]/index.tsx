@@ -4,13 +4,13 @@ import {
   Box,
   Stack,
   Text,
-  Badge,
   SimpleGrid,
   Flex,
   Button,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import NextLink from "next/link";
 
 import SearchBar from "../../../components/SearchBar";
 import {
@@ -19,27 +19,30 @@ import {
 } from "../../../core/types/CompetitionDetail";
 
 import GroupSummaryCard from "../../../components/Group/Summary";
+import NotFound from "../../../components/NotFound";
 import Head from "next/head";
 import AboutCard from "../../../components/Competition/AboutCard";
+import clientApi from "../../../core/api/client";
 
-const CompetitionDetails: React.FC = () => {
-  const response: CompetitionData = {
-    id: 123,
-    name: "Hack For Public Good 2023",
-    deadline: "12 Dec 2022",
-    organiserName: "OGP, GovTech",
-    description:
-      "Hack for Public Good is an annual fixture of OGP's way of work to keep us identifying and working on building tech to deliver public good in its various shapes and forms.",
-    urlLink: "https://www.open.gov.sg/hackathon/2023/",
-    maxSize: 6,
-    minSize: 1,
-    groups: [modelGroup, modelGroup, modelGroup, modelGroup],
-  };
+export async function getServerSideProps(context) {
+  const competition_id = context.params.competition_id;
+  const response = await clientApi.get(`/competitions/${competition_id}`);
+  const competition = response.data;
 
-  return (
+  return { props: { competition } };
+}
+
+const CompetitionDetails = ({
+  competition,
+}: {
+  competition: CompetitionData | null;
+}) => {
+  return competition === null ? (
+    <NotFound />
+  ) : (
     <>
       <Head>
-        <title>{response.name} - Scout</title>
+        <title>{competition.name} - Scout</title>
       </Head>
       <Stack
         spacing={10}
@@ -48,10 +51,10 @@ const CompetitionDetails: React.FC = () => {
       >
         <Stack flex={2} spacing={{ base: 1, md: 10 }}>
           <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
-            <Heading>{response.name}</Heading>
+            <Heading>{competition.name}</Heading>
           </Box>
           <Box m={1} p={{ base: 2, md: 7 }}>
-            <AboutCard data={response} hideFindATeam />
+            <AboutCard data={competition} hideFindATeam />
           </Box>
         </Stack>
         <Flex
@@ -61,16 +64,19 @@ const CompetitionDetails: React.FC = () => {
           position={"relative"}
           w={"100%"}
         >
-          <GroupSummaryView groups={response.groups} />
+          <GroupSummaryView groups={competition.groups} id={competition.id} />
         </Flex>
       </Stack>
     </>
   );
 };
 
-const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
-  groups,
-}) => {
+type GroupSummaryViewProps = {
+  groups: GroupSummaryData[];
+  id: number;
+};
+
+const GroupSummaryView = ({ groups, id }: GroupSummaryViewProps) => {
   return (
     <Box
       borderWidth="1px"
@@ -102,8 +108,10 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
       {groups.length === 0 ? (
         <Stack spacing={4} mt={10}>
           <Text>No groups have been formed yet!</Text>
-          <Heading size="md">Want to participate?</Heading>
-          <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+          <Heading size="md">Looking for a team?</Heading>
+          <NextLink href={`/competitions/${id}/groups`}>
+            <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+          </NextLink>
         </Stack>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }}>
@@ -114,22 +122,6 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
       )}
     </Box>
   );
-};
-
-/** TO DELETE */
-const modelGroup: GroupSummaryData = {
-  id: 1,
-  name: "Scout",
-  size: 2,
-  targetSize: 6,
-  description: "This is a test group ",
-  targetSkills: ["React", "Next", "Spring Boot", "UX Design", "Figma"],
-  leader: {
-    name: "Lye Wen Jun",
-    year: 3,
-    major: "Computer Science",
-    specialization: "Database",
-  },
 };
 
 export default CompetitionDetails;

@@ -4,7 +4,7 @@ export interface CompetitionData {
   deadline: string;
   organiserName: string;
   description: string;
-  urlLink: string;
+  link: string;
   maxSize: number | null;
   minSize: number | null;
   groups: GroupSummaryData[] | [];
@@ -33,7 +33,7 @@ export interface CompetitionDataSummary {
   deadline: string;
   organiserName: string;
   description: string;
-  urlLink: string;
+  link: string;
   maxSize: number | null;
   minSize: number | null;
 }

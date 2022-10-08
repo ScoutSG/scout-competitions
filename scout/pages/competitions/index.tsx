@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import {
   Heading,
   Box,
@@ -7,20 +8,24 @@ import {
   Text,
   Button,
 } from "@chakra-ui/react";
-
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
+import clientApi from "../../core/api/client";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
-
 import CompetitionSummaryCard from "../../components/Competition/Summary";
-import Head from "next/head";
 
-const CompetitionDiscovery: React.FC = () => {
-  let competitions: CompetitionDataSummary[] = [
-    modelCompetition,
-    modelCompetition,
-    modelCompetition,
-  ];
+export async function getServerSideProps() {
+  const response = await clientApi.get("/competitions");
+  const competitions = response.data;
+
+  return { props: { competitions } };
+}
+
+const CompetitionDiscovery: React.FC = ({
+  competitions,
+}: {
+  competitions: CompetitionDataSummary[];
+}) => {
   return (
     <>
       <Head>
@@ -66,19 +71,6 @@ const CompetitionSummaryView: React.FC<{
       )}
     </Box>
   );
-};
-
-/**TODO: Delete */
-const modelCompetition: CompetitionDataSummary = {
-  id: 1,
-  name: "Hack For Public Good 2023",
-  deadline: "12 Dec 2022",
-  organiserName: "OGP, GovTech",
-  description:
-    "Hack for Public Good is an annual fixture of OGP's way of work to keep us identifying and working on building tech to deliver public good in its various shapes and forms.",
-  urlLink: "https://www.open.gov.sg/hackathon/2023/",
-  maxSize: 6,
-  minSize: 1,
 };
 
 export default CompetitionDiscovery;
