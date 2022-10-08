@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 // GET POST /api/applications
 export default async function handle(
@@ -22,17 +23,24 @@ export default async function handle(
   }
 }
 
-async function handleRead(req, res) {
-  const applications = await prisma.application.findMany({
-    include: {
-      form: true,
-      applicant: true,
-      answers: true,
-      group: true,
-    },
-  });
-
-  res.status(200).json(applications);
+async function handleRead(req: NextApiRequest, res: NextApiResponse) {
+  const session = await unstable_getServerSession(req, res, authOptions)
+  if (!session) {
+      res.status(401).end()
+  } else {
+    const applications = await prisma.application.findMany({
+      where: {
+        id: session.user.id
+      },
+      include: {
+        form: true,
+        applicant: true,
+        answers: true,
+        group: true,
+      },
+    });
+    res.status(200).json(applications);
+  }
 }
 
 async function handleAdd(req, res) {

@@ -152,7 +152,7 @@ const AvatarMenu = (props) => {
           src={avatarImage}
         />
       </MenuButton>
-      <MenuList width={"280px"} boxShadow={"xl"}>
+      <MenuList width={"320px"} boxShadow={"2xl"}>
         <Stack spacing={4} py={4}>
           <Center>
             <Avatar
@@ -337,7 +337,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           align={'start'}>
           {children &&
             children.map((child) => (
-              <Link href={child.href}>
+              <Link href={child.href} key={child.label}>
                 <Flex width={"100%"} cursor={"pointer"} key={child.label} py={2} role="group">
                   <Text
                     transition={'all .3s ease'}
