@@ -39,7 +39,7 @@ const NavigationBar: React.FC = () => {
 
   return(
     <>
-      <Flex width={"100%"} position={"fixed"} as={"header"}>
+      <Flex width={"100%"} position={"fixed"} as={"header"} zIndex={"1100"}>
         <Container maxW={{xl: "8xl"}} px={"0px"}>
           <Flex height={"80px"} px={"4vw"}>
             <Logo />
@@ -56,8 +56,8 @@ const NavigationBar: React.FC = () => {
           </Flex>
         </Container>
       </Flex>
-      <Flex position={"fixed"} top={"80px"} width={"100%"} bgColor={"white"}>
-        <Box as={Collapse} in={isOpen} width={"100%"}>
+      <Flex position={"fixed"} top={"80px"} width={"100%"} bgColor={"white"} zIndex={1100}>
+        <Box as={Collapse} in={isOpen} width={"100%"} pb={"40px"}>
           <MobileNav />
           <MobileSignIn />
         </Box>
