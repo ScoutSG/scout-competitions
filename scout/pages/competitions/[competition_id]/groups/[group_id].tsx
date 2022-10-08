@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
-import { modelGroup } from "../../../../core/models/Group";
 import ApplicationReview from "../../../../components/Group/ApplicationReview";
 import Application from "../../../../components/Group/Application";
 import Head from "next/head";

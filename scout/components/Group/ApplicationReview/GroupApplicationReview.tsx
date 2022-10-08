@@ -7,7 +7,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Badge,
-  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -17,7 +16,6 @@ import {
   Progress,
   Spacer,
   Text,
-  IconButton,
   Stack,
 } from "@chakra-ui/react";
 import {
@@ -48,9 +46,9 @@ const ApplicationReview: React.FC<{
       <Heading size="xl">Review Requests</Heading>
       <Stack spacing={4}>
         <Text>
-          {applications === null
-            ? "No requeusts to review"
-            : "The following have submitted a request to join"}
+          {applications.length === 0
+            ? "No one has requested to join :( Try sharing your group with others to invite them to join your team!"
+            : "The following users have submitted a request to join"}
         </Text>
       </Stack>
       <Accordion allowMultiple>
