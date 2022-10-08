@@ -1,4 +1,4 @@
-import NavigationBar from "../NavBar";
+import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 
 import { Container, Flex, Stack, Box } from "@chakra-ui/react";
@@ -15,10 +15,8 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       <Head>
         <title>Scout</title>
       </Head>
-      <Container maxW={"8xl"} minH="85vh">
-        <NavigationBar />
-        {children}
-      </Container>
+      <NavigationBar />
+      {children}
       <Footer />
     </>
   );

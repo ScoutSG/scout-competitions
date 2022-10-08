@@ -11,13 +11,16 @@ import {
   useColorModeValue,
   Divider,
   HStack,
-  Center
+  Center,
+  useColorMode
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc'
 import { getCsrfToken } from "next-auth/react"
 import { getProviders, signIn } from "next-auth/react"
 
-export default function SignIn({ csrfToken, providers }) {
+export default function SignInPage({ csrfToken, providers }) {
+  const { colorMode } = useColorMode();
+
   return (
     <Flex
       minH={'100vh'}
@@ -26,9 +29,9 @@ export default function SignIn({ csrfToken, providers }) {
       direction={'column'}
       bg={useColorModeValue('gray.50', 'gray.800')}>
       <Stack spacing={4} align={'center'} width='75%'>
-        <Image src='/wordLogo.svg' width="240px" height="94px" />
+        <Image src={colorMode === 'light' ? '/wordLogo.svg': '/wordLogoDark.svg'} width="240px" height="94px" />
         <Heading fontSize={'5xl'} textAlign={'center'}>Enter your email</Heading>
-        <Text fontSize={'lg'} color={'gray.600'} textAlign={'center'}>
+        <Text fontSize={'lg'} textAlign={'center'}>
           We will send you a magic link to login. No password required.
         </Text>
       </Stack>

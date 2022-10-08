@@ -1,4 +1,6 @@
 import React from "react";
+import NavigationBar from "../components/NavigationBar";
+import LandingPage from "../components/LandingPage";
 import NextLink from "next/link";
 import {
   Stack,
@@ -14,73 +16,77 @@ import {
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import CTAVector from "../core/Icons/CTAVector";
 
-// TODO: add validation if authenticated go to /home else CTA
-const LandingPage: React.FC = () => {
+const Index: React.FC = () => {
   return (
-    <Stack
-      align={"center"}
-      spacing={{ base: 10, md: 10 }}
-      py={{ base: 5, md: 10 }}
-      direction={{ base: "column", md: "row" }}
-    >
-      <Stack flex={1} spacing={{ base: 5, md: 10 }}>
-        <Heading
-          lineHeight={1.1}
-          fontWeight={600}
-          fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
-        >
-          <Text as={"span"} position={"relative"}>
-            Can't find a team?
-          </Text>
-          <br />
-          <Text as={"span"} color={"primary"}>
-            Use Scout!
-          </Text>
-        </Heading>
-        <Text color={"gray.500"} fontWeight="500">
-          Every ambitious student can achieve their potential by finding a group
-          that can complement their skills in order to excel at their
-          competitions or modules and simplifying the group management process.
-        </Text>
-        <Stack
-          spacing={{ base: 4, sm: 6 }}
-          direction={{ base: "column", sm: "row" }}
-        >
-          <NextLink href="/home">
-            <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"bold"}
-              px={6}
-              color="white"
-              bg={"primary.500"}
-              _hover={{ color: "primaryLight", bg: "gray.200" }}
-              rightIcon={<ChevronRightIcon />}
-            >
-              Start now
-            </Button>
-          </NextLink>
-        </Stack>
-      </Stack>
-      <Flex
-        flex={1}
-        justify={"center"}
+    <>
+      <NavigationBar />
+      {/*<LandingPage />*/}
+      <Stack
+        mx={"4vw"}
         align={"center"}
-        position={"relative"}
-        w={"full"}
+        pt={"80px"}
+        spacing={{ base: 10, md: 10 }}
+        direction={{ base: "column", md: "row" }}
       >
-        <Blob
-          w={"150%"}
-          h={"100%"}
-          position={"absolute"}
-          zIndex={-1}
-          color={useColorModeValue("blue.50", "blue.400")}
-        />
-        <Box>
-          <CTAVector />
-        </Box>
-      </Flex>
-    </Stack>
+        <Stack flex={1} spacing={{ base: 5, md: 10 }}>
+          <Heading
+            lineHeight={1.1}
+            fontWeight={600}
+            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+          >
+            <Text as={"span"} position={"relative"} fontSize={"7xl"}>
+              Form a dream team
+            </Text>
+            <br />
+            <Text as={"span"} color={"primary"} fontSize={"7xl"}>
+              Use Scout!
+            </Text>
+          </Heading>
+          <Text color={"gray.600"} fontWeight="400" fontSize={"xl"}>
+            Every ambitious student can achieve their potential by finding a group
+            that can complement their skills in order to excel at their
+            competitions or modules and simplifying the group management process.
+          </Text>
+          <Stack
+            spacing={{ base: 4, sm: 6 }}
+            direction={{ base: "column", sm: "row" }}
+          >
+            <NextLink href="/home">
+              <Button
+                rounded={"full"}
+                size={"lg"}
+                fontWeight={"bold"}
+                px={6}
+                color="white"
+                bg={"primary.500"}
+                _hover={{ color: "primaryLight", bg: "gray.200" }}
+                rightIcon={<ChevronRightIcon />}
+              >
+                Start now
+              </Button>
+            </NextLink>
+          </Stack>
+        </Stack>
+        <Flex
+          flex={1}
+          justify={"center"}
+          align={"center"}
+          position={"relative"}
+          w={"full"}
+        >
+          <Blob
+            w={"150%"}
+            h={"100%"}
+            position={"absolute"}
+            zIndex={-1}
+            color={useColorModeValue("blue.50", "blue.400")}
+          />
+          <Box>
+            <CTAVector />
+          </Box>
+        </Flex>
+      </Stack>
+    </>
   );
 };
 
@@ -103,4 +109,4 @@ export const Blob = (props: IconProps) => {
   );
 };
 
-export default LandingPage;
+export default Index;
