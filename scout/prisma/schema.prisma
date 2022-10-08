@@ -122,7 +122,7 @@ model Application {
 model Group {
   id           Int      @id @default(autoincrement())
   name         String
-  size         Int
+  currentSize  Int      @default(1)
   targetSize   Int
   description  String?
   targetSkills String[]
