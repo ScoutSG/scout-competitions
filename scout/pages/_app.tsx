@@ -10,7 +10,9 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
     <SessionProvider session={pageProps.session}>
       <RecoilRoot>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <PageContainer>
+            <Component {...pageProps} />
+          </PageContainer>
         </ChakraProvider>
       </RecoilRoot>
     </SessionProvider>
