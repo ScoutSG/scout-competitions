@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 
-import { Stack, Container } from "@chakra-ui/react";
+import { Stack, Container, Fade, ScaleFade } from "@chakra-ui/react";
 import { ReactNode } from "react-markdown/lib/react-markdown";
+
 import Head from "next/head";
 
 interface PageContainerProps {
@@ -17,7 +19,11 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       </Head>
       <NavigationBar />
       <Stack pt={"80px"} pb={{ base: "200px", md: "100px" }} w="100%">
-        <Stack spacing={0}>{children}</Stack>
+        <Stack spacing={0}>
+          <ScaleFade in={true} initialScale={0.9}>
+            {children}
+          </ScaleFade>
+        </Stack>
       </Stack>
       <Footer />
     </Stack>
