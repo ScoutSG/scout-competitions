@@ -125,6 +125,7 @@ model Group {
   currentSize  Int      @default(1)
   targetSize   Int
   description  String?
+  telegramLink  String?
   targetSkills String[]
 
   members       User[]

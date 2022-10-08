@@ -28,7 +28,11 @@ async function handleRead(req, res) {
       form: true,
       applicant: true,
       answers: true,
-      group: true,
+      group: {
+        include: {
+          members: true,
+        },
+      },
     },
   });
 
