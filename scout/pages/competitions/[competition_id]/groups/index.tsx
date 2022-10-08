@@ -14,14 +14,18 @@ import {
   InputRightElement,
   IconButton,
   Spacer,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { TbMinus, TbPlus, TbSend } from "react-icons/tb";
-import {
-  CompetitionData,
-  GroupSummaryData,
-} from "../../../../core/types/CompetitionDetail";
+import { CompetitionData } from "../../../../core/types/CompetitionDetail";
 import AboutCard from "../../../../components/Competition/AboutCard";
+import clientApi from "../../../../core/api/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 type QuestionProps = {
@@ -56,10 +60,16 @@ const Question = ({
   );
 };
 
-const CreateGroupForm = () => {
+type CreateGroupFormProps = {
+  competition: CompetitionData;
+};
+
+const CreateGroupForm = ({ competition }: CreateGroupFormProps) => {
+  const session = useSession();
   const router = useRouter();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [targetSize, setTargetSize] = useState(competition.maxSize);
   const [questions, setQuestions] = useState([""]);
 
   const setNthQuestion = (n: number) => (newValue: string) => {
@@ -76,13 +86,25 @@ const CreateGroupForm = () => {
     setQuestions((questions) => questions.filter((_, i) => i !== n));
   };
 
-  const handleSubmit = () => {
-    const cleanQuestions = questions.filter((str) => str.length > 0);
-    console.log({
+  const handleSubmit = async () => {
+    // TODO: add error validation; block if name and description are empty
+    const body = {
+      competitionId: competition.id,
       name,
       description,
-      questions: cleanQuestions,
-    });
+      currentSize: 1,
+      targetSize,
+      members: [session.data.user.id],
+      targetSkills: [], // TODO: implement targetSkills
+      form: {
+        questions: questions
+          .filter((str) => str.length > 0)
+          .map((questionString) => ({ questionString })),
+      },
+    };
+
+    const response = await clientApi.post("/groups", body);
+    router.push(`/competitions/${competition.id}/groups/${response.data.id}`);
   };
 
   return (
@@ -104,6 +126,21 @@ const CreateGroupForm = () => {
           value={description}
           onChange={(event) => setDescription(event.target.value)}
         />
+      </FormControl>
+      <FormControl>
+        <FormLabel>Target group size</FormLabel>
+        <NumberInput
+          value={targetSize}
+          onChange={(value) => setTargetSize(parseInt(value))}
+          min={competition.minSize}
+          max={competition.maxSize}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </FormControl>
       <Stack>
         <Heading as="h3" size="md">
@@ -145,10 +182,8 @@ const CreateGroupForm = () => {
 
 export async function getServerSideProps(context) {
   const competition_id = context.params.competition_id;
-  const res = await fetch(
-    `${process.env.API_URL}/competitions/${competition_id}`
-  );
-  const competition = await res.json();
+  const response = await clientApi.get(`/competitions/${competition_id}`);
+  const competition = response.data;
   return { props: { competition } };
 }
 
@@ -176,7 +211,7 @@ const CreateGroup = ({ competition }: CreateGroupProps) => {
           </Box>
         </Stack>
         <Flex flex={3} justify={"center"} position={"relative"} w={"100%"}>
-          <CreateGroupForm />
+          <CreateGroupForm competition={competition} />
         </Flex>
       </Stack>
     </>
