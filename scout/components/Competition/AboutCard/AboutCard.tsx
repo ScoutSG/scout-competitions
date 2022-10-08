@@ -9,8 +9,8 @@ import {
   Button,
   ButtonGroup,
 } from "@chakra-ui/react";
-
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import NextLink from "next/link";
 
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
@@ -21,7 +21,7 @@ type AboutCardProps = {
 };
 
 const AboutCard: React.FC<AboutCardProps> = (props) => {
-  const { deadline, organiserName, description, link, maxSize, minSize } =
+  const { id, deadline, organiserName, description, link, maxSize, minSize } =
     props.data;
 
   const onSeeMore = () => {
@@ -69,15 +69,17 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
             Visit site
           </Button>
           {props.hideFindATeam ? null : (
-            <Button
-              rightIcon={<ChevronRightIcon />}
-              width="100%"
-              color="white"
-              bg={"primary.500"}
-              _hover={{ color: "primaryLight", bg: "gray.200" }}
-            >
-              Find a team
-            </Button>
+            <NextLink href={`/competitions/${id}`}>
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                width="100%"
+                color="white"
+                bg={"primary.500"}
+                _hover={{ color: "primaryLight", bg: "gray.200" }}
+              >
+                Find a team
+              </Button>
+            </NextLink>
           )}
         </ButtonGroup>
       </Stack>

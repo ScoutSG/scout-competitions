@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import NextLink from "next/link";
 
 import SearchBar from "../../../components/SearchBar";
 import {
@@ -62,16 +63,19 @@ const CompetitionDetails = ({
           position={"relative"}
           w={"100%"}
         >
-          <GroupSummaryView groups={competition.groups} />
+          <GroupSummaryView groups={competition.groups} id={competition.id} />
         </Flex>
       </Stack>
     </>
   );
 };
 
-const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
-  groups,
-}) => {
+type GroupSummaryViewProps = {
+  groups: GroupSummaryData[];
+  id: number;
+};
+
+const GroupSummaryView = ({ groups, id }: GroupSummaryViewProps) => {
   return (
     <Box
       borderWidth="1px"
@@ -104,7 +108,9 @@ const GroupSummaryView: React.FC<{ groups: GroupSummaryData[] }> = ({
         <Stack spacing={4} mt={10}>
           <Text>No groups have been formed yet!</Text>
           <Heading size="md">Looking for a team?</Heading>
-          <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+          <NextLink href={`/competitions/${id}/groups`}>
+            <Button rightIcon={<ChevronRightIcon />}>Lead a team now</Button>
+          </NextLink>
         </Stack>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }}>

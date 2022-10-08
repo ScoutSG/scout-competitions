@@ -13,15 +13,23 @@ import { modelGroup } from "../../../../core/models/Group";
 import ApplicationReview from "../../../../components/Group/ApplicationReview";
 import Application from "../../../../components/Group/Application";
 import Head from "next/head";
+import clientApi from "../../../../core/api/client";
+import { Group } from "../../../../core/types/Group";
 
-const GroupDetail: React.FC = () => {
+export async function getServerSideProps(context) {
+  const group_id = context.params.group_id;
+  const response = await clientApi.get(`/groups/${group_id}`);
+  const group = response.data;
+  return { props: { group } };
+}
+
+const GroupDetail: React.FC = ({ group }: { group: Group }) => {
   const router = useRouter();
   /* TODO: Add if-else logic to differentiate if member / leader
             Member can see Application requests for Review
             Non-member can see Application Questions to request to join
         */
   const isMember = true;
-  const group = modelGroup;
   return (
     <>
       <Head>
@@ -45,7 +53,7 @@ const GroupDetail: React.FC = () => {
             fontWeight={800}
             fontSize={"sm"}
           >
-            {group.targetSize - group.size} spots left!
+            {group.targetSize - group.currentSize} spots left!
           </Text>
           <Text>{group.description}</Text>
           <Text textTransform={"uppercase"} fontWeight={800} fontSize={"sm"}>

@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from "axios";
 export const BASE_URL = "";
 
 const client = axios.create({
-  baseURL: `${process.env.API_URL}`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   timeout: 30000,
   headers: {
     Accept: "application/json",

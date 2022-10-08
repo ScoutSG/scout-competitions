@@ -18,7 +18,7 @@ export interface Application {
 export interface Group {
   id: number;
   name: string;
-  size: number;
+  currentSize: number;
   targetSize: number;
   description: string;
   targetSkills: string[];
