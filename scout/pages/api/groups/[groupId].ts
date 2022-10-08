@@ -13,6 +13,11 @@ export default async function handle(req, res) {
         where: {
           id: groupId,
         },
+        include: {
+          members: true,
+          form: true,
+          applications: true,
+        },
       });
 
       res.status(200).json(group);
@@ -24,13 +29,33 @@ export default async function handle(req, res) {
       });
 
       res.status(200).json(group);
+
+      // updates member array of group
     } else if (httpMethod === "PATCH") {
-      const groupData = JSON.parse(req.body);
+      const {
+        name,
+        size,
+        targetSize,
+        description,
+        targetSkills,
+
+        members,
+      } = req.body;
+
       const group = await prisma.group.update({
         where: {
           id: groupId,
         },
-        data: groupData,
+        data: {
+          name,
+          size,
+          targetSize,
+          description,
+          targetSkills,
+          members: {
+            connect: members.map((x) => ({ id: x })),
+          },
+        },
       });
       res.status(200).json(group);
     } else {

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
 
-// GET /api/group/
+// GET POST /api/groups
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -23,17 +23,62 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
-  const groups = await prisma.group.findMany();
+  const groups = await prisma.group.findMany({
+    include: {
+      members: true,
+      form: true,
+      applications: true,
+    },
+  });
 
   res.status(200).json(groups);
 }
 
 async function handleAdd(req, res) {
-  const groupData = JSON.parse(req.body);
+  const {
+    name,
+    currentSize,
+    targetSize,
+    description,
+    targetSkills,
+
+    form,
+    members,
+    competitionId,
+  } = req.body;
 
   const group = await prisma.group.create({
-    data: groupData
+    data: {
+      name,
+      currentSize,
+      targetSize,
+      description,
+      targetSkills,
+      members: {
+        connect: members.map((x) => ({ id: x })),
+      },
+      competition: {
+        connect: {
+          id: competitionId,
+        },
+      },
+    },
   });
+
+  if (form) {
+    const newForm = await prisma.form.create({
+      data: {
+        groupId: group.id
+      }
+    })
+
+    const questionsData = form.questions.map((question) => ({
+      formId: newForm.id,
+      questionString: question.questionString,
+    }));
+
+    await prisma.question.createMany({ data: questionsData });
+  }
 
   res.status(200).json(group);
 }

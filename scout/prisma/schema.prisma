@@ -122,14 +122,16 @@ model Application {
 model Group {
   id           Int      @id @default(autoincrement())
   name         String
-  size         Int
+  currentSize  Int      @default(1)
   targetSize   Int
   description  String?
   targetSkills String[]
 
-  members      User[]
-  form         Form?
-  applications Application[]
+  members       User[]
+  form          Form?
+  applications  Application[]
+  competition   Competition   @relation(fields: [competitionId], references: [id])
+  competitionId Int
 }
 
 model Competition {
@@ -141,4 +143,5 @@ model Competition {
   link          String
   maxSize       Int
   minSize       Int
+  groups        Group[]
 }
