@@ -34,7 +34,7 @@ export default async function handle(req, res) {
     } else if (httpMethod === "PATCH") {
       const {
         name,
-        size,
+        currentSize,
         targetSize,
         description,
         targetSkills,
@@ -48,7 +48,7 @@ export default async function handle(req, res) {
         },
         data: {
           name,
-          size,
+          currentSize,
           targetSize,
           description,
           targetSkills,
