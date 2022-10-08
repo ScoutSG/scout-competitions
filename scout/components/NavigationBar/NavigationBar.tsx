@@ -57,7 +57,7 @@ const NavigationBar: React.FC = () => {
         </Container>
       </Flex>
       <Flex position={"fixed"} top={"80px"} width={"100%"} bgColor={"white"} zIndex={1100}>
-        <Box as={Collapse} in={isOpen} width={"100%"} pb={"40px"}>
+        <Box as={Collapse} in={isOpen} width={"100%"}>
           <MobileNav />
           <MobileSignIn />
         </Box>
@@ -107,7 +107,7 @@ const MobileSignIn = () => {
   const color = useColorModeValue("red.500", "red.400");
   return (
     <Link href="/auth/signin">
-        <Flex width={"100%"} px={"4vw"} mt={"16px"} display={{lg: "none"}}>
+        <Flex width={"100%"} px={"4vw"} mt={"16px"} display={{lg: "none"}} pb="40px">
           <Button width={"100%"} color={color} borderColor={color} variant="outline" size="md">
               Find your team
           </Button>
