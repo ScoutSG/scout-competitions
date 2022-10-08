@@ -4,6 +4,7 @@ import {
   FormControl,
   Input,
   Stack,
+  Image,
   Button,
   Heading,
   Text,
@@ -15,7 +16,6 @@ import {
 import { FcGoogle } from 'react-icons/fc'
 import { getCsrfToken } from "next-auth/react"
 import { getProviders, signIn } from "next-auth/react"
-import { useRouter } from 'next/router';
 
 export default function SignIn({ csrfToken, providers }) {
   return (
@@ -26,12 +26,13 @@ export default function SignIn({ csrfToken, providers }) {
       direction={'column'}
       bg={useColorModeValue('gray.50', 'gray.800')}>
       <Stack spacing={4} align={'center'} width='75%'>
-        <Heading fontSize={'6xl'} textAlign={'center'}>Sign in to your account</Heading>
+        <Image src='/wordLogo.svg' width="240px" height="94px" />
+        <Heading fontSize={'5xl'} textAlign={'center'}>Enter your email</Heading>
         <Text fontSize={'lg'} color={'gray.600'} textAlign={'center'}>
-          Enter your email. We will send you a magic link to login.
+          We will send you a magic link to login. No password required.
         </Text>
       </Stack>
-      <Stack py={8} width='100%' maxW='lg'>
+      <Stack py={8} px={{base: '16px', md: '0px'}} width='100%' maxW='lg'>
         <Box
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
@@ -46,10 +47,10 @@ export default function SignIn({ csrfToken, providers }) {
                   </FormControl>
                   <Button
                     type="submit"
-                    bg={'teal.400'}
+                    bg={'orange.400'}
                     color={'white'}
                     _hover={{
-                      bg: 'teal.500',
+                      bg: 'orange.500',
                     }}>
                     Continue
                   </Button>

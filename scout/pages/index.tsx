@@ -1,16 +1,14 @@
 import React from "react";
 import { Container } from "@chakra-ui/react";
-import NavigationBar from "../components/NavBar";
+import NavigationBar from "../components/NavigationBar";
 import Footer from "../frontend/components/Footer";
 import CallToAction from "../frontend/components/CallToAction";
 
 const Page: React.FC = () => {
   return (
     <>
-      <Container maxW={"7xl"}>
-        <NavigationBar />
-        <CallToAction />
-      </Container>
+      <NavigationBar />
+      <CallToAction />
       <Footer />
     </>
   );

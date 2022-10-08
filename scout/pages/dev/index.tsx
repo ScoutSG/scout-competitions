@@ -1,7 +1,7 @@
 // import LoginPage from "../../frontend/components/Login";
 import Navigation from "../../frontend/components/Navigation";
 import Competition from "../../frontend/components/Competition/Detail";
-import NavigationBar from "../../components/NavBar";
+import NavigationBar from "../../components/NavigationBar";
 import CallToAction from "../../frontend/components/CallToAction";
 import CompetitionDiscovery from "../../frontend/components/Competition/Discover";
 import SimpleThreeColumns from "../../frontend/components/Home/Steps";

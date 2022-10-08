@@ -1,12 +1,13 @@
 import NextLink from "next/link";
-import { Button } from "@chakra-ui/react";
+import { Button, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
 const AuthButton: React.FC = () => {
+    const color = useColorModeValue('red.500', 'white')
     return(
         <NextLink href="/auth/signin" passHref>
-            <Button colorScheme="teal" variant="solid" size="md">
-                Get Started
+            <Button color={color} borderColor={color} variant="outline" size="md">
+                Find your team
             </Button>
         </NextLink>
     );
