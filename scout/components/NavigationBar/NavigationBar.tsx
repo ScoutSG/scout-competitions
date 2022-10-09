@@ -57,10 +57,12 @@ const NavigationBar: React.FC = () => {
       >
         <Container maxW={{ xl: "8xl" }} px={"0px"}>
           <Flex height={"80px"} px={"4vw"} align="center">
-            <Link href="/home">
-              <Stack direction={"row"} spacing={4} align={"center"} pt={2}>
-                <ScoutIcon />
-              </Stack>
+            <Link href="/">
+              <a>
+                <Stack direction={"row"} spacing={4} align={"center"} pt={2}>
+                  <ScoutIcon />
+                </Stack>
+              </a>
             </Link>
             <Flex display={{ base: "none", lg: "flex" }} ml={"32px"} mt={"8px"}>
               <DesktopNav />
