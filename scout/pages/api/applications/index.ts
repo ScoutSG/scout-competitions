@@ -48,11 +48,10 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handleAdd(req, res) {
-  const { isApproved, formId, userId, answers, groupId } = req.body;
+  const { formId, userId, answers, groupId } = req.body;
 
   const application = await prisma.application.create({
     data: {
-      isApproved,
       applicant: {
         connect: {
           id: userId,

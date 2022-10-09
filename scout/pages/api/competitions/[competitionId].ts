@@ -15,7 +15,11 @@ export default async function handle(req, res) {
         },
         // specific to user
         include: {
-          groups: true,
+          groups: {
+            include: {
+              members: true,
+            },
+          },
         },
       });
 
