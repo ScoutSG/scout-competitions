@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Text,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
@@ -34,17 +35,45 @@ const CompetitionDiscovery: React.FC = ({
       <Stack
         spacing={10}
         py={4}
-        // direction={{ base: "row", md: "row" }}
         align="center"
         justify="center"
+        bgColor="primary.500"
+        h={{ base: "300px", md: "300px" }}
+        px={{ base: 10, md: 4 }}
       >
-        <Box as={"header"} m={1} p={1}>
-          <Heading>Discover Competitions</Heading>
-        </Box>
-        <Box>
-          <CompetitionSummaryView competitions={competitions} />
-        </Box>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={20}
+          align="center"
+        >
+          <Box as={"header"} p={1}>
+            <Heading
+              textTransform="uppercase"
+              color="white"
+              fontSize={{ base: "3xl", md: "6xl" }}
+              fontWeight="black"
+              mb={5}
+            >
+              Discover Competitions
+            </Heading>
+            <Text color="white" fontWeight="semibold">
+              From hackathons, to design, there's something for you.
+            </Text>
+          </Box>
+          <Box>
+            <Image
+              src="/banner-discovery.svg"
+              alt="banner"
+              w={"full"}
+              width={{ base: "0px", sm: "0px", md: "300px" }}
+              height={{ base: "0px", sm: "0px", md: "300px" }}
+            />
+          </Box>
+        </Stack>
       </Stack>
+      <Box>
+        <CompetitionSummaryView competitions={competitions} />
+      </Box>
     </>
   );
 };
