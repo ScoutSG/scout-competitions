@@ -7,15 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
 model Account {
   id                 Int     @id @default(autoincrement())
   userId             Int     @map("user_id")
@@ -49,19 +40,23 @@ model Session {
 }
 
 model User {
-  id            Int           @id @default(autoincrement())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?     @map("email_verified")
-  image         String?
-  createdAt     DateTime      @default(now()) @map(name: "created_at")
-  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
-  posts         Post[]
-  accounts      Account[]
-  sessions      Session[]
-  applications  Application[]
-  groups        Group[]
-  groupId       Int?
+  id             Int           @id @default(autoincrement())
+  name           String?
+  email          String?       @unique
+  emailVerified  DateTime?     @map("email_verified")
+  image          String?
+  createdAt      DateTime      @default(now()) @map(name: "created_at")
+  updatedAt      DateTime      @updatedAt @map(name: "updated_at")
+  accounts       Account[]
+  sessions       Session[]
+  applications   Application[]
+  groups         Group[]
+  groupId        Int?
+  yearOfStudy    Int?
+  major          String?
+  specialisation String?
+  linkedinUrl    String?
+  gitHubUrl      String?
 
   @@map(name: "users")
 }
