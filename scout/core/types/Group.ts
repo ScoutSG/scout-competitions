@@ -32,3 +32,13 @@ export interface Question {
   questionId: number;
   questionString: string;
 }
+
+export interface Form {
+  id: number;
+  groupId: number;
+  questions: {
+    id: number;
+    questionString: string;
+    formId: number;
+  }[];
+}

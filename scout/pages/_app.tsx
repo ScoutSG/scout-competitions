@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 import PageContainer from "../components/PageContainer";
@@ -18,8 +18,6 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
     </SessionProvider>
   );
 };
-
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const config: ThemeConfig = {
   initialColorMode: "light",
