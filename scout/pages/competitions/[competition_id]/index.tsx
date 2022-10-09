@@ -94,14 +94,16 @@ const GroupSummaryView = ({ groups, id }: GroupSummaryViewProps) => {
         </Box> */}
         {groups.length === 0 ? null : (
           <Box>
-            <Button
-              rightIcon={<ChevronRightIcon />}
-              color="white"
-              bg={"primary.500"}
-              _hover={{ color: "primaryLight", bg: "gray.200" }}
-            >
-              Lead a team
-            </Button>
+            <NextLink href={`/competitions/${id}/groups`}>
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                color="white"
+                bg={"primary.500"}
+                _hover={{ color: "primaryLight", bg: "gray.200" }}
+              >
+                Lead a team
+              </Button>
+            </NextLink>
           </Box>
         )}
       </Stack>

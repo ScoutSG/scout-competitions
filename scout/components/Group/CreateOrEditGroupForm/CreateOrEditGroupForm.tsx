@@ -30,7 +30,7 @@ type CreateOrEditGroupFormValue = {
   name: string;
   description: string;
   targetSize: number;
-  questions: string[];
+  questions: { questionString: string }[];
 };
 
 type CreateOrEditGroupFormProps = {
@@ -50,15 +50,15 @@ const CreateOrEditGroupForm = ({
     register,
     control,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<CreateOrEditGroupFormValue>({
     defaultValues: {
-      name: group.name ?? "",
-      description: group.description ?? "",
-      targetSize: group.targetSize ?? competition.maxSize,
-      questions: form.questions.map((qn) => qn.questionString) ?? [],
+      name: group?.name ?? "",
+      description: group?.description ?? "",
+      targetSize: group?.targetSize ?? competition.maxSize,
+      questions: form?.questions ?? [],
     },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray<CreateOrEditGroupFormValue>({
     control,
     name: "questions",
   });
@@ -75,9 +75,9 @@ const CreateOrEditGroupForm = ({
       members: [session.data.user.id],
       targetSkills: [], // TODO: implement targetSkills
       form: {
-        questions: values.questions
-          .filter((str) => str.length > 0)
-          .map((questionString) => ({ questionString })),
+        questions: values.questions.filter(
+          (str) => str.questionString.length > 0
+        ),
       },
     };
 
@@ -146,7 +146,7 @@ const CreateOrEditGroupForm = ({
           <InputGroup key={item.id}>
             <Input
               placeholder={`Question ${index + 1}`}
-              {...register(`questions.${index}`)}
+              {...register(`questions.${index}.questionString`)}
             />
             <InputRightElement>
               <IconButton
@@ -160,7 +160,7 @@ const CreateOrEditGroupForm = ({
         ))}
         <Button
           leftIcon={<TbPlus />}
-          onClick={() => append("")}
+          onClick={() => append({ questionString: "" })}
           variant="outline"
         >
           Add Question
