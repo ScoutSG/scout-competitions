@@ -24,19 +24,23 @@ export default async function handle(
 }
 
 async function handleRead(req: NextApiRequest, res: NextApiResponse) {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
-      res.status(401).end()
+    res.status(401).end();
   } else {
     const applications = await prisma.application.findMany({
       where: {
-        id: session.user.id
+        id: session.user.id,
       },
       include: {
         form: true,
         applicant: true,
         answers: true,
-        group: true,
+        group: {
+          include: {
+            members: true,
+          },
+        },
       },
     });
     res.status(200).json(applications);
