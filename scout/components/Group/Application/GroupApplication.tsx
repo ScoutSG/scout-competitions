@@ -13,10 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TbSend } from "react-icons/tb";
-import { Question } from "../../../core/types/Group";
-import { modelQuestions } from "../../../core/models/Question";
-
-const questions: Question[] = modelQuestions;
+import { QuestionsData } from "../../../core/types/Group";
+import clientApi from "../../../core/api/client";
+import { useSession } from "next-auth/react";
 
 const labelStyles = {
   mt: "2",
@@ -30,6 +29,18 @@ type QuestionProps = {
   question: Question;
   setAnswer: (newAnswer: number) => void;
 };
+
+type Answer = {
+  answerString: string | number;
+  questionId: number;
+};
+
+interface RequestBody {
+  groupId: number;
+  userId: number;
+  formId: number;
+  answers: Answer[];
+}
 
 const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
   return (
@@ -68,8 +79,10 @@ const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
   );
 };
 
-const Application: React.FC = () => {
+const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   const [application, setApplication] = useState([]);
+  const questions = questionsData.questions;
+  const session = useSession();
 
   // initialise application state
   useEffect(() => {
@@ -84,6 +97,30 @@ const Application: React.FC = () => {
           : question
       )
     );
+  };
+
+  const submitApplication = () => {
+    const body: RequestBody = {
+      formId: questionsData.id,
+      groupId: questionsData.groupId,
+      userId: session.data.user.id,
+      answers: getAnswers(),
+    };
+    clientApi.post("/applications", body);
+  };
+
+  const getAnswers = () => {
+    let answers = application.map((app) => {
+      [].push({
+        answerString: app.answer,
+        questionId: app.id,
+      });
+      return {
+        answerString: app.answer,
+        questionId: app.id,
+      };
+    });
+    return answers;
   };
 
   return (
@@ -105,6 +142,7 @@ const Application: React.FC = () => {
         bg={"secondary"}
         _hover={{ color: "secondary", bg: "gray.50" }}
         rightIcon={<TbSend />}
+        onClick={submitApplication}
       >
         Submit
       </Button>

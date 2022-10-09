@@ -24,7 +24,7 @@ import { TbPencil, TbTrash } from "react-icons/tb";
 import ApplicationReview from "../../../../../components/Group/ApplicationReview";
 import Application from "../../../../../components/Group/Application";
 import clientApi from "../../../../../core/api/client";
-import { Group } from "../../../../../core/types/Group";
+import { Group, QuestionsData } from "../../../../../core/types/Group";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -74,15 +74,26 @@ export async function getServerSideProps(context) {
   const group_id = context.params.group_id;
   const response = await clientApi.get(`/groups/${group_id}`);
   const group = response.data;
-  return { props: { group } };
+
+  const res = await clientApi.get(`/forms/${group_id}`);
+  const questionsData = res.data;
+
+  return { props: { group, questionsData } };
 }
 
-const GroupDetail: React.FC = ({ group }: { group: Group }) => {
+const GroupDetail: React.FC = ({
+  group,
+  questionsData,
+}: {
+  group: Group;
+  questionsData: QuestionsData;
+}) => {
   /* TODO: Add if-else logic to differentiate if member / leader
             Member can see Application requests for Review
             Non-member can see Application Questions to request to join
         */
-  const isMember = true;
+
+  const isMember = false;
   return (
     <>
       <Head>
@@ -133,7 +144,7 @@ const GroupDetail: React.FC = ({ group }: { group: Group }) => {
           {isMember ? (
             <ApplicationReview applications={group.applications} />
           ) : (
-            <Application />
+            <Application questionsData={questionsData} />
           )}
         </Flex>
       </Stack>

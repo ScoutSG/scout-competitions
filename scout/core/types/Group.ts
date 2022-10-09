@@ -33,6 +33,12 @@ export interface Question {
   questionString: string;
 }
 
+export interface QuestionsData {
+  groupId: number;
+  id: number; // formId
+  questions: Question[]
+}
+
 export interface Form {
   id: number;
   groupId: number;
