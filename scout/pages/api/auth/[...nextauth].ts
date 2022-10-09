@@ -1,14 +1,14 @@
 import { NextApiHandler } from "next";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "../../../lib/prisma";
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
+const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, authOptions);
 export default authHandler;
 
-const options = {
+export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: {
@@ -32,9 +32,8 @@ const options = {
     signIn: "auth/signin",
   },
   callbacks: {
-    async session({ session, token, user }) {
-      session.user.id = user.id;
-
+    async session({ session, user }) {
+      session.user.id = parseInt(user.id);
       return session;
     },
   },

@@ -127,7 +127,7 @@ const SignIn = () => {
 };
 
 const MobileSignIn = () => {
-  const color = useColorModeValue("red.500", "red.400");
+  const color = useColorModeValue("primary.500", "primaryLight");
   return (
     <Link href="/auth/signin">
       <Flex
@@ -193,7 +193,7 @@ const AvatarMenu = (props) => {
       >
         <Avatar size={"sm"} src={avatarImage} />
       </MenuButton>
-      <MenuList width={"280px"} boxShadow={"xl"}>
+      <MenuList width={"320px"} boxShadow={"2xl"}>
         <Stack spacing={4} py={4}>
           <Center>
             <Avatar size={"xl"} src={avatarImage} />
