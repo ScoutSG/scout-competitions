@@ -40,18 +40,23 @@ model Session {
 }
 
 model User {
-  id            Int           @id @default(autoincrement())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?     @map("email_verified")
-  image         String?
-  createdAt     DateTime      @default(now()) @map(name: "created_at")
-  updatedAt     DateTime      @updatedAt @map(name: "updated_at")
-  accounts      Account[]
-  sessions      Session[]
-  applications  Application[]
-  groups        Group[]
-  groupId       Int?
+  id             Int           @id @default(autoincrement())
+  name           String?
+  email          String?       @unique
+  emailVerified  DateTime?     @map("email_verified")
+  image          String?
+  createdAt      DateTime      @default(now()) @map(name: "created_at")
+  updatedAt      DateTime      @updatedAt @map(name: "updated_at")
+  accounts       Account[]
+  sessions       Session[]
+  applications   Application[]
+  groups         Group[]
+  groupId        Int?
+  yearOfStudy    Int?
+  major          String?
+  specialisation String?
+  linkedinUrl    String?
+  gitHubUrl      String?
 
   @@map(name: "users")
 }
