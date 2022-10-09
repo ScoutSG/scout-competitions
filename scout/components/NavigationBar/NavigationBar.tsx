@@ -53,7 +53,8 @@ const NavigationBar: React.FC = () => {
         position={"fixed"}
         as={"header"}
         zIndex={"1100"}
-        bgColor="gray.50"
+        bgColor="white"
+        shadow="md"
       >
         <Container maxW={{ xl: "8xl" }} px={"0px"}>
           <Flex height={"80px"} px={"4vw"} align="center">

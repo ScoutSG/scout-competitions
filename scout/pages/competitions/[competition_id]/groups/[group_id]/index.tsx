@@ -25,6 +25,7 @@ import ApplicationReview from "../../../../../components/Group/ApplicationReview
 import Application from "../../../../../components/Group/Application";
 import clientApi from "../../../../../core/api/client";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
+import { useEffect } from "react";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -87,11 +88,13 @@ const GroupDetail: React.FC = ({
 }: {
   group: Group;
   questionsData: QuestionsData;
+  app: any;
 }) => {
   /* TODO: Add if-else logic to differentiate if member / leader
             Member can see Application requests for Review
             Non-member can see Application Questions to request to join
         */
+
   const isMember = true;
   return (
     <>

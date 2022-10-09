@@ -57,7 +57,7 @@ const CompetitionDiscovery: React.FC = ({
               Discover Competitions
             </Heading>
             <Text color="white" fontWeight="semibold">
-              From hackathons, to design, there's something for you.
+              From hackathons to design, there's something for you.
             </Text>
           </Box>
           <Box>

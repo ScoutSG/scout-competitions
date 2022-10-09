@@ -41,7 +41,8 @@ const inferLinkIcon = (url: string) => {
 const ApplicationReview: React.FC<{
   applications: Group["applications"];
 }> = ({ applications }) => {
-  console.log(applications);
+  applications = [];
+
   return (
     <Stack spacing={4} w={"100%"}>
       <Heading size="xl">Review Requests</Heading>

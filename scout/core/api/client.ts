@@ -3,8 +3,7 @@ import { useSession } from "next-auth/react";
 // import { getAccessToken } from "../localStorage/auth";
 
 export const BASE_URL = "";
-// const session = useSession();
-// console.log(session.data.user.name)
+
 
 const client = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,

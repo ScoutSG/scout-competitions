@@ -37,7 +37,6 @@ const CompetitionDetails = ({
 }: {
   competition: CompetitionData | null;
 }) => {
-  console.log(competition);
   return competition === null ? (
     <NotFound />
   ) : (

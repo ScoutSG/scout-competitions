@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TbSend } from "react-icons/tb";
-import { QuestionsData } from "../../../core/types/Group";
+import { Question, QuestionsData } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
 import { useSession } from "next-auth/react";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";

@@ -4,7 +4,7 @@ import ProfileForm from "../components/ProfileForm";
 
 const Profile = () => {
   return (
-    <Container>
+    <Container pt={10}>
       <ProfileForm displayAll={true} />
     </Container>
   );
