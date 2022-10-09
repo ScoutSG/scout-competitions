@@ -35,7 +35,11 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
       include: {
         form: true,
         applicant: true,
-        answers: true,
+        answers: {
+          include: {
+            question: true,
+          },
+        },
         group: {
           include: {
             members: true,
