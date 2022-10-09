@@ -14,6 +14,7 @@ import clientApi from "../core/api/client";
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
   const [applications, setApplications] = useState([]);
+  console.log(applications);
 
   useEffect(() => {
     async function getApplications() {

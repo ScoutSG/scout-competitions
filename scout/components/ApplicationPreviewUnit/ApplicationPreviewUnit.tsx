@@ -42,38 +42,39 @@ const ApplicationPreviewUnit = ({
     answers: Answer[];
   }[];
 }) => {
-  applications = [
-    {
-      competitionName: "OGP",
-      groupName: "Test",
-      isApproved: true,
-      answers: [
-        {
-          answerVal: 1,
-          questionString: "How are you?",
-        },
-        {
-          answerVal: 3,
-          questionString: "How is today",
-        },
-      ],
-    },
-    {
-      competitionName: "OGP",
-      groupName: "Test",
-      isApproved: false,
-      answers: [
-        {
-          answerVal: 1,
-          questionString: "How are you?",
-        },
-        {
-          answerVal: 3,
-          questionString: "How is today",
-        },
-      ],
-    },
-  ];
+  console.log(applications);
+  // applications = [
+  //   {
+  //     competitionName: "OGP",
+  //     groupName: "Test",
+  //     isApproved: true,
+  //     answers: [
+  //       {
+  //         answerVal: 1,
+  //         questionString: "How are you?",
+  //       },
+  //       {
+  //         answerVal: 3,
+  //         questionString: "How is today",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     competitionName: "OGP",
+  //     groupName: "Test",
+  //     isApproved: false,
+  //     answers: [
+  //       {
+  //         answerVal: 1,
+  //         questionString: "How are you?",
+  //       },
+  //       {
+  //         answerVal: 3,
+  //         questionString: "How is today",
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const approvedApplications = applications.filter(
     (application) => application.isApproved

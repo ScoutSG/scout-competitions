@@ -16,6 +16,7 @@ import { TbSend } from "react-icons/tb";
 import { QuestionsData } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
 import { useSession } from "next-auth/react";
+import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 
 const labelStyles = {
   mt: "2",
@@ -83,6 +84,7 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   const [application, setApplication] = useState([]);
   const questions = questionsData.questions;
   const session = useSession();
+  const { presentToast } = useCustomToast();
 
   // initialise application state
   useEffect(() => {
@@ -99,14 +101,29 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
     );
   };
 
-  const submitApplication = () => {
+  const submitApplication = async () => {
     const body: RequestBody = {
       formId: questionsData.id,
       groupId: questionsData.groupId,
       userId: session.data.user.id,
       answers: getAnswers(),
     };
-    clientApi.post("/applications", body);
+    await clientApi
+      .post("/applications", body)
+      .then((res) => {
+        presentToast({
+          title: "Sent your request to the team!",
+          status: "success",
+          position: "top",
+        });
+      })
+      .catch((err) => {
+        presentToast({
+          title: "Failed to sent your request",
+          position: "top",
+          status: "error",
+        });
+      });
   };
 
   const getAnswers = () => {

@@ -92,8 +92,7 @@ const GroupDetail: React.FC = ({
             Member can see Application requests for Review
             Non-member can see Application Questions to request to join
         */
-
-  const isMember = false;
+  const isMember = true;
   return (
     <>
       <Head>
