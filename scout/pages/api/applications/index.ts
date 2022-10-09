@@ -24,9 +24,9 @@ export default async function handle(
 }
 
 async function handleRead(req: NextApiRequest, res: NextApiResponse) {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
-      res.status(401).end()
+    res.status(401).end();
   } else {
     const applications = await prisma.application.findMany({
       where: {
@@ -35,8 +35,16 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
       include: {
         form: true,
         applicant: true,
-        answers: true,
-        group: true,
+        answers: {
+          include: {
+            question: true,
+          },
+        },
+        group: {
+          include: {
+            members: true,
+          },
+        },
       },
     });
     res.status(200).json(applications);
@@ -44,11 +52,10 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handleAdd(req, res) {
-  const { isApproved, formId, userId, answers, groupId } = req.body;
+  const { formId, userId, answers, groupId } = req.body;
 
   const application = await prisma.application.create({
     data: {
-      isApproved,
       applicant: {
         connect: {
           id: userId,

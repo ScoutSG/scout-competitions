@@ -16,8 +16,16 @@ export default async function handle(req, res) {
         include: {
           form: true,
           applicant: true,
-          answers: true,
-          group: true,
+          answers: {
+            include: {
+              question: true,
+            },
+          },
+          group: {
+            include: {
+              members: true,
+            },
+          },
         },
       });
 
@@ -31,7 +39,7 @@ export default async function handle(req, res) {
 
       res.status(200).json(application);
     } else if (httpMethod === "PATCH") {
-      const { isApproved, formId, userId, answers, groupId } = req.body;
+      const { isApproved, answers } = req.body;
 
       const application = await prisma.application.update({
         where: {
@@ -39,31 +47,33 @@ export default async function handle(req, res) {
         },
         data: {
           isApproved,
-          applicant: {
-            connect: {
-              id: userId,
-            },
-          },
-          form: {
-            connect: {
-              id: formId,
-            },
-          },
-          group: {
-            connect: {
-              id: groupId,
-            },
-          },
+          // applicant: {
+          //   connect: {
+          //     id: userId,
+          //   },
+          // },
+          // form: {
+          //   connect: {
+          //     id: formId,
+          //   },
+          // },
+          // group: {
+          //   connect: {
+          //     id: groupId,
+          //   },
+          // },
         },
       });
 
-      const answersData = answers.map((answer) => ({
-        applicationId: application.id,
-        answerResponse: answer.answerString,
-        questionId: answer.questionId,
-      }));
+      if (answers) {
+        const answersData = answers.map((answer) => ({
+          applicationId: application.id,
+          answerResponse: answer.answerString,
+          questionId: answer.questionId,
+        }));
 
-      await prisma.answer.createMany({ data: answersData });
+        await prisma.answer.createMany({ data: answersData });
+      }
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);
