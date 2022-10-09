@@ -30,7 +30,7 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
   } else {
     const applications = await prisma.application.findMany({
       where: {
-        id: session.user.id,
+        userId: session.user.id
       },
       include: {
         form: true,
