@@ -16,45 +16,21 @@ import {
   IconButton,
   InputGroup,
   InputRightElement,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { TbMinus, TbPlus, TbSend } from "react-icons/tb";
 import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
 
-type QuestionProps = {
-  index: number;
-  value: string;
-  setValue: (newValue: string) => void;
-  removeQuestion: () => void;
-};
-
-const Question = ({
-  index,
-  value,
-  setValue,
-  removeQuestion,
-}: QuestionProps) => {
-  return (
-    <InputGroup>
-      <Input
-        placeholder={`Question ${index + 1}`}
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-      />
-      <InputRightElement>
-        <IconButton
-          aria-label="delete question"
-          icon={<TbMinus />}
-          variant="ghost"
-          onClick={removeQuestion}
-        />
-      </InputRightElement>
-    </InputGroup>
-  );
+type CreateOrEditGroupFormValue = {
+  name: string;
+  description: string;
+  targetSize: number;
+  questions: string[];
 };
 
 type CreateOrEditGroupFormProps = {
@@ -68,49 +44,44 @@ const CreateOrEditGroupForm = ({
   group,
   form,
 }: CreateOrEditGroupFormProps) => {
+  const {
+    setValue,
+    handleSubmit,
+    register,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: group.name ?? "",
+      description: group.description ?? "",
+      targetSize: group.targetSize ?? competition.maxSize,
+      questions: form.questions.map((qn) => qn.questionString) ?? [],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "questions",
+  });
   const session = useSession();
   const router = useRouter();
-  const [name, setName] = useState(group?.name);
-  const [description, setDescription] = useState(group?.description);
-  const [targetSize, setTargetSize] = useState(
-    group?.targetSize ?? competition.maxSize
-  );
-  const [questions, setQuestions] = useState(
-    form?.questions.map((qn) => qn.questionString) ?? [""]
-  );
 
-  const setNthQuestion = (n: number) => (newValue: string) => {
-    setQuestions((questions) =>
-      questions.map((value, i) => (i === n ? newValue : value))
-    );
-  };
-
-  const addQuestion = () => {
-    setQuestions((questions) => questions.concat([""]));
-  };
-
-  const removeQuestion = (n: number) => {
-    setQuestions((questions) => questions.filter((_, i) => i !== n));
-  };
-
-  const handleSubmit = async () => {
-    // TODO: add error validation; block if name and description are empty
+  const onSubmit = async (values: CreateOrEditGroupFormValue) => {
     const body = {
       competitionId: competition.id,
-      name,
-      description,
+      name: values.name,
+      description: values.description,
       currentSize: 1,
-      targetSize,
+      targetSize: values.targetSize,
       members: [session.data.user.id],
       targetSkills: [], // TODO: implement targetSkills
       form: {
-        questions: questions
+        questions: values.questions
           .filter((str) => str.length > 0)
           .map((questionString) => ({ questionString })),
       },
     };
 
-    let group_id;
+    let group_id: number;
     if (group === undefined) {
       const response = await clientApi.post("/groups", body);
       group_id = response.data.id;
@@ -122,42 +93,45 @@ const CreateOrEditGroupForm = ({
   };
 
   return (
-    <Stack width="100%" spacing={5}>
+    <Stack as="form" width="100%" spacing={5} onSubmit={handleSubmit(onSubmit)}>
       <Heading as="h2" size="lg">
         {group === undefined ? "Create a new group" : `Edit ${group.name}`}
       </Heading>
-      <FormControl isRequired>
-        <FormLabel>Group name</FormLabel>
+      <FormControl isInvalid={Boolean(errors.name)}>
+        <FormLabel htmlFor="name">Group name</FormLabel>
         <Input
-          type="text"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
+          id="name"
+          placeholder="Name"
+          {...register("name", { required: "Please enter a group name" })}
         />
+        <FormErrorMessage>
+          {errors.name && errors.name.message.toString()}
+        </FormErrorMessage>
       </FormControl>
       <FormControl>
-        <FormLabel>Description</FormLabel>
+        <FormLabel htmlFor="description">Description</FormLabel>
         <Textarea
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          id="description"
+          placeholder="Description"
+          {...register("description")}
         />
       </FormControl>
       <FormControl>
-        <FormLabel>Target group size</FormLabel>
+        <FormLabel htmlFor="targetSize">Target group size</FormLabel>
         <NumberInput
-          value={targetSize}
-          onChange={(value) => setTargetSize(parseInt(value))}
+          {...register("targetSize", { valueAsNumber: true })}
+          onChange={(valueString) =>
+            setValue("targetSize", parseInt(valueString))
+          }
           min={competition.minSize}
           max={competition.maxSize}
         >
-          <NumberInputField />
+          <NumberInputField name="targetSize" />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
-      </FormControl>
-      <FormControl>
-        <FormLabel>Looking for</FormLabel>
       </FormControl>
       <Stack>
         <Heading as="h3" size="md">
@@ -168,16 +142,27 @@ const CreateOrEditGroupForm = ({
           know their skillsets and personalities better. To keep things quick
           and easy, the questions will be close-ended, on a scale of 1 to 5.
         </Text>
-        {questions.map((question, index) => (
-          <Question
-            key={index}
-            value={question}
-            setValue={setNthQuestion(index)}
-            removeQuestion={() => removeQuestion(index)}
-            index={index}
-          />
+        {fields.map((item, index) => (
+          <InputGroup key={item.id}>
+            <Input
+              placeholder={`Question ${index + 1}`}
+              {...register(`questions.${index}`)}
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label="delete question"
+                icon={<TbMinus />}
+                variant="ghost"
+                onClick={() => remove(index)}
+              />
+            </InputRightElement>
+          </InputGroup>
         ))}
-        <Button leftIcon={<TbPlus />} onClick={addQuestion} variant="outline">
+        <Button
+          leftIcon={<TbPlus />}
+          onClick={() => append("")}
+          variant="outline"
+        >
           Add Question
         </Button>
       </Stack>
@@ -187,9 +172,10 @@ const CreateOrEditGroupForm = ({
         bg={"secondary"}
         _hover={{ color: "secondary", bg: "gray.50" }}
         rightIcon={<TbSend />}
-        onClick={handleSubmit}
         width="fit-content"
         alignSelf="flex-end"
+        type="submit"
+        isLoading={isSubmitting}
       >
         Submit
       </Button>
