@@ -39,7 +39,7 @@ const CompetitionDiscovery: React.FC = ({
         justify="center"
         bgColor="primary.500"
         h={{ base: "300px", md: "300px" }}
-        px={{ base: 10, md: 4 }}
+        px={{ base: 4, md: 10 }}
       >
         <Stack
           direction={{ base: "column", md: "row" }}
@@ -71,9 +71,9 @@ const CompetitionDiscovery: React.FC = ({
           </Box>
         </Stack>
       </Stack>
-      <Box>
+      <Stack px={{ base: 4, md: 10 }}>
         <CompetitionSummaryView competitions={competitions} />
-      </Box>
+      </Stack>
     </>
   );
 };

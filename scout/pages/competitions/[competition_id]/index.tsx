@@ -37,6 +37,7 @@ const CompetitionDetails = ({
 }: {
   competition: CompetitionData | null;
 }) => {
+  console.log(competition);
   return competition === null ? (
     <NotFound />
   ) : (
@@ -48,6 +49,7 @@ const CompetitionDetails = ({
         spacing={10}
         py={{ base: 5, md: 16 }}
         direction={{ base: "column", md: "row" }}
+        px={{ base: 4, md: 10 }}
       >
         <Stack flex={2} spacing={{ base: 1, md: 10 }}>
           <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
