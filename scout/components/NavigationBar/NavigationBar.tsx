@@ -217,7 +217,9 @@ const AvatarMenu = (props) => {
         <Link href="/profile">
           <MenuItem>Profile</MenuItem>
         </Link>
-        <MenuItem>Requests</MenuItem>
+        <Link href="/requests">
+          <MenuItem>Requests</MenuItem>
+        </Link>
         <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
       </MenuList>
     </Menu>

@@ -76,7 +76,7 @@ const Index: React.FC = () => {
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <NextLink href="/home">
+            <NextLink href="/competitions">
               <Button
                 rounded={"full"}
                 size={"lg"}
