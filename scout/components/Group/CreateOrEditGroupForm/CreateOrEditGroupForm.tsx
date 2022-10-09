@@ -124,11 +124,7 @@ const CreateOrEditGroupForm = ({
           </NumberInputStepper>
         </NumberInput>
       </FormControl>
-      <SkillsSubForm
-        control={control}
-        register={register}
-        setValue={setValue}
-      />
+      <SkillsSubForm control={control} />
       <QuestionsSubForm control={control} register={register} />
       <Spacer />
       <Button

@@ -16,14 +16,10 @@ const SKILLS_OPTIONS: OptionType[] = SKILLS.map(toOptionType);
 
 type SkillsSubFormProps = Pick<
   UseFormReturn<CreateOrEditGroupFormValue>,
-  "control" | "register" | "setValue"
+  "control"
 >;
 
-export default function SkillsSubForm({
-  control,
-  register,
-  setValue,
-}: SkillsSubFormProps) {
+export default function SkillsSubForm({ control }: SkillsSubFormProps) {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController<CreateOrEditGroupFormValue>({
