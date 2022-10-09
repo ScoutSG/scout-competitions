@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Text,
   Textarea,
   NumberInput,
   NumberInputField,
@@ -13,25 +12,20 @@ import {
   NumberDecrementStepper,
   Button,
   Spacer,
-  IconButton,
-  InputGroup,
-  InputRightElement,
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useForm, useFieldArray } from "react-hook-form";
-import { TbMinus, TbPlus, TbSend } from "react-icons/tb";
+import { useForm } from "react-hook-form";
+import { TbSend } from "react-icons/tb";
+
 import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
 
-type CreateOrEditGroupFormValue = {
-  name: string;
-  description: string;
-  targetSize: number;
-  questions: { questionString: string }[];
-};
+import QuestionsSubForm from "./QuestionsSubForm";
+import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
+import { CreateOrEditGroupFormValue } from "./types";
 
 type CreateOrEditGroupFormProps = {
   competition: CompetitionData;
@@ -55,12 +49,9 @@ const CreateOrEditGroupForm = ({
       name: group?.name ?? "",
       description: group?.description ?? "",
       targetSize: group?.targetSize ?? competition.maxSize,
+      targetSkills: group?.targetSkills.map(toOptionType) ?? [],
       questions: form?.questions ?? [],
     },
-  });
-  const { fields, append, remove } = useFieldArray<CreateOrEditGroupFormValue>({
-    control,
-    name: "questions",
   });
   const session = useSession();
   const router = useRouter();
@@ -73,7 +64,7 @@ const CreateOrEditGroupForm = ({
       currentSize: 1,
       targetSize: values.targetSize,
       members: [session.data.user.id],
-      targetSkills: [], // TODO: implement targetSkills
+      targetSkills: values.targetSkills.map(({ value }) => value),
       form: {
         questions: values.questions.filter(
           (str) => str.questionString.length > 0
@@ -97,7 +88,7 @@ const CreateOrEditGroupForm = ({
       <Heading as="h2" size="lg">
         {group === undefined ? "Create a new group" : `Edit ${group.name}`}
       </Heading>
-      <FormControl isInvalid={Boolean(errors.name)}>
+      <FormControl isRequired isInvalid={Boolean(errors.name)}>
         <FormLabel htmlFor="name">Group name</FormLabel>
         <Input
           id="name"
@@ -133,39 +124,12 @@ const CreateOrEditGroupForm = ({
           </NumberInputStepper>
         </NumberInput>
       </FormControl>
-      <Stack>
-        <Heading as="h3" size="md">
-          Questions for prospective group members
-        </Heading>
-        <Text>
-          You can ask your prospective group members some questions to get to
-          know their skillsets and personalities better. To keep things quick
-          and easy, the questions will be close-ended, on a scale of 1 to 5.
-        </Text>
-        {fields.map((item, index) => (
-          <InputGroup key={item.id}>
-            <Input
-              placeholder={`Question ${index + 1}`}
-              {...register(`questions.${index}.questionString`)}
-            />
-            <InputRightElement>
-              <IconButton
-                aria-label="delete question"
-                icon={<TbMinus />}
-                variant="ghost"
-                onClick={() => remove(index)}
-              />
-            </InputRightElement>
-          </InputGroup>
-        ))}
-        <Button
-          leftIcon={<TbPlus />}
-          onClick={() => append({ questionString: "" })}
-          variant="outline"
-        >
-          Add Question
-        </Button>
-      </Stack>
+      <SkillsSubForm
+        control={control}
+        register={register}
+        setValue={setValue}
+      />
+      <QuestionsSubForm control={control} register={register} />
       <Spacer />
       <Button
         color="white"
