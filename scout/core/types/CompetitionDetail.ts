@@ -13,7 +13,7 @@ export interface CompetitionData {
 export interface GroupSummaryData {
   id: number;
   name: string;
-  size: number;
+  currentSize: number;
   targetSize: number;
   description: string;
   targetSkills: string[];

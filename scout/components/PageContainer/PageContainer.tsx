@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 
-import { Stack, Container, Fade, ScaleFade } from "@chakra-ui/react";
-import { ReactNode } from "react-markdown/lib/react-markdown";
+import { Stack, ScaleFade } from "@chakra-ui/react";
 
 import Head from "next/head";
 
 interface PageContainerProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {

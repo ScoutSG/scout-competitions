@@ -13,16 +13,18 @@ import {
   AvatarGroup,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
-import { ReactElement } from "react-markdown/lib/react-markdown";
 
 const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
-  let groupSize: number = group.size;
+  const router = useRouter();
+  const groupLink = `/competitions/${router.query.competition_id}/groups/${group.id}`;
+  let groupSize: number = group.currentSize;
   let targetSize: number = group.targetSize;
-  console.log(group);
 
-  let avatarIcons: ReactElement[] = [];
+  let avatarIcons: React.ReactElement[] = [];
   for (let i = 0; i < targetSize; i++) {
     if (i < groupSize) {
       avatarIcons.push(<Avatar bgColor="primaryLight" />);
@@ -32,6 +34,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
   }
 
   const isMember = false;
+  // TODO: implement isMember properly
 
   return (
     <Center py={2}>
@@ -58,35 +61,44 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
         </Stack>
 
         <Stack direction={"column"} mt={6} align="center">
-          <Text textTransform={"capitalize"} fontWeight={800} fontSize={"sm"}>
-            Looking for
-          </Text>
-          <Box maxH="70px" overflow="auto">
-            {group.targetSkills.map((skill) => (
-              <Badge
-                px={2}
-                py={1}
-                bg={useColorModeValue("gray.50", "gray.800")}
-                fontWeight={"400"}
-                m={1}
-                textTransform="capitalize"
+          {group.targetSkills.length === 0 ? null : (
+            <>
+              <Text
+                textTransform={"capitalize"}
+                fontWeight={800}
+                fontSize={"sm"}
               >
-                #{skill}
-              </Badge>
-            ))}
-          </Box>
+                Looking for
+              </Text>
+              <Box maxH="70px" overflow="auto">
+                {group.targetSkills.map((skill) => (
+                  <Badge
+                    px={2}
+                    py={1}
+                    bg={useColorModeValue("gray.50", "gray.800")}
+                    fontWeight={"400"}
+                    m={1}
+                    textTransform="capitalize"
+                  >
+                    #{skill}
+                  </Badge>
+                ))}
+              </Box>
+            </>
+          )}
         </Stack>
         <Stack direction={"column"} mt={6} spacing={2} w={"full"}>
-          <Button
-            rightIcon={groupSize === targetSize || isMember ? null : <TbSend />}
-            disabled={groupSize === targetSize && !isMember}
-          >
-            {isMember
-              ? "View Group"
-              : groupSize === targetSize
-              ? "Team is full"
-              : "Request to join"}
-          </Button>
+          {isMember ? (
+            <Link href={groupLink}>
+              <Button>View group</Button>
+            </Link>
+          ) : groupSize === targetSize ? (
+            <Button disabled>Team is full</Button>
+          ) : (
+            <Link href={groupLink}>
+              <Button rightIcon={<TbSend />}>Request to join</Button>
+            </Link>
+          )}
         </Stack>
       </Box>
     </Center>
