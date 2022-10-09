@@ -74,7 +74,7 @@ model Question {
   id             Int    @id @default(autoincrement())
   questionString String
 
-  form    Form     @relation(fields: [formId], references: [id])
+  form    Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId  Int
   answers Answer[]
 }
@@ -83,8 +83,8 @@ model Answer {
   id             Int @id @default(autoincrement())
   answerResponse Int
 
-  application Application @relation(fields: [applicationId], references: [id])
-  question    Question    @relation(fields: [questionId], references: [id])
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  question    Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   applicationId Int
   questionId    Int
@@ -93,7 +93,7 @@ model Answer {
 model Form {
   id Int @id @default(autoincrement())
 
-  group   Group @relation(fields: [groupId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int   @unique
 
   questions    Question[]
@@ -104,8 +104,8 @@ model Application {
   id         Int      @id @default(autoincrement())
   isApproved Boolean?
 
-  form      Form     @relation(fields: [formId], references: [id])
-  applicant User     @relation(fields: [userId], references: [id])
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  applicant User     @relation(fields: [userId], references: [id], onDelete: SetNull)
   answers   Answer[]
 
   formId  Int
@@ -120,13 +120,13 @@ model Group {
   currentSize  Int      @default(1)
   targetSize   Int
   description  String?
-  telegramLink  String?
+  telegramLink String?
   targetSkills String[]
 
   members       User[]
   form          Form?
   applications  Application[]
-  competition   Competition   @relation(fields: [competitionId], references: [id])
+  competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   competitionId Int
 }
 
