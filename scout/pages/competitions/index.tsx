@@ -14,9 +14,15 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import clientApi from "../../core/api/client";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
+import { AxiosResponse } from "axios";
 
 export async function getServerSideProps() {
-  const response = await clientApi.get("/competitions");
+  let response: AxiosResponse<any, any>;
+  try {
+    response = await clientApi.get("/competitions");
+  } catch (err) {
+    return { notFound: true };
+  }
   const competitions = response.data;
 
   return { props: { competitions } };
