@@ -11,6 +11,7 @@ import {
   Button,
   Avatar,
   AvatarGroup,
+  Divider,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import Link from "next/link";
@@ -38,45 +39,40 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
 
   return (
     <Center py={2}>
-      <Box
+      <Stack
         w={"full"}
-        rounded={"md"}
-        p={6}
+        rounded="xl"
+        px={2}
+        py={2}
         overflow={"hidden"}
-        _hover={{ bgColor: "gray.50" }}
+        spacing={2}
+        borderWidth={1}
+        _hover={{ bgColor: "gray.100" }}
+        borderColor="gray.400"
       >
-        <Stack>
+        <Stack spacing={2}>
           <Stack
             direction={{ base: "column", sm: "row" }}
             justify="space-between"
           >
-            <Heading fontSize={"2xl"} fontFamily={"body"}>
+            <Heading fontSize={"lg"} fontWeight="black">
               {group.name}
             </Heading>
+
             <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
               {avatarIcons.map((avatar) => avatar)}
             </AvatarGroup>
           </Stack>
 
-          <Text color={"gray.700"}>{group.description}</Text>
-          {/* <Text color={"gray.500"} fontSize="xs">
-            Led by {group.leader.name}, Year {group.leader.year},{" "}
-            {group.leader.major} Major, {group.leader.specialization}{" "}
-            Specialization
-          </Text> */}
-        </Stack>
+          <Stack spacing={2}>
+            <Text fontWeight="bold">Description</Text>
+            <Text>{group.description}</Text>
+          </Stack>
 
-        <Stack direction={"column"} mt={6} align="center">
           {group.targetSkills.length === 0 ? null : (
-            <>
-              <Text
-                textTransform={"capitalize"}
-                fontWeight={800}
-                fontSize={"sm"}
-              >
-                Looking for
-              </Text>
-              <Box maxH="70px" overflow="auto">
+            <Stack spacing={2}>
+              <Text fontWeight="semibold">Skills</Text>
+              <Box>
                 {group.targetSkills.map((skill) => (
                   <Badge
                     px={2}
@@ -90,23 +86,32 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
                   </Badge>
                 ))}
               </Box>
-            </>
+            </Stack>
           )}
         </Stack>
-        <Stack direction={"column"} mt={6} spacing={2} w={"full"}>
-          {isMember ? (
-            <Link href={groupLink}>
-              <Button>View group</Button>
-            </Link>
-          ) : groupSize === targetSize ? (
-            <Button disabled>Team is full</Button>
-          ) : (
-            <Link href={groupLink}>
-              <Button rightIcon={<TbSend />}>Request to join</Button>
-            </Link>
-          )}
-        </Stack>
-      </Box>
+
+        {isMember ? (
+          <Link href={groupLink}>
+            <Button color="primary.500" bgColor="transparent" _hover={{}}>
+              View group
+            </Button>
+          </Link>
+        ) : groupSize === targetSize ? (
+          <Button disabled>Team is full</Button>
+        ) : (
+          <Link href={groupLink}>
+            <Button
+              rightIcon={<TbSend />}
+              w="fit-content"
+              color="primary.500"
+              bgColor="transparent"
+              _hover={{}}
+            >
+              Request to join
+            </Button>
+          </Link>
+        )}
+      </Stack>
     </Center>
   );
 };

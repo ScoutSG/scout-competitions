@@ -38,12 +38,17 @@ const CompetitionSummaryCard: React.FC<{
             py={2}
             px={4}
             overflow={"hidden"}
-            _hover={{ bgColor: "gray.50" }}
+            _hover={{ bgColor: "gray.100" }}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
             <Stack direction="column" spacing={4}>
-              <Stack direction="row" align="center" color="red.400">
+              <Stack
+                direction="row"
+                align="center"
+                color="red.400"
+                bgColor="transparent"
+              >
                 <Icon as={MdTimer} />
                 <Text fontWeight={800} fontSize={"sm"}>
                   {daysLeft(competition.deadline)} days left
@@ -93,6 +98,7 @@ const CompetitionSummaryCard: React.FC<{
                     color="primary.500"
                     bgColor="transparent"
                     transition="ease-in-out"
+                    _hover={{}}
                   >
                     See More Details
                   </Button>
