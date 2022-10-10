@@ -39,4 +39,5 @@ export interface CompetitionDataSummary {
   link: string;
   maxSize: number | null;
   minSize: number | null;
+  groups: GroupSummaryData[];
 }

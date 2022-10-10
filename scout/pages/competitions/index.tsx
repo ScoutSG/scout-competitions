@@ -98,11 +98,16 @@ const CompetitionSummaryView: React.FC<{
           </Button>
         </Stack>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }}>
-          {competitions.map((competition) => (
-            <CompetitionSummaryCard competition={competition} />
-          ))}
-        </SimpleGrid>
+        <Stack align="center" spacing={1} justify="center">
+          <Box maxW="3xl" w="100%">
+            <Text fontWeight="black" mb={4}>
+              {competitions.length} Results Found
+            </Text>
+            {competitions.map((competition) => (
+              <CompetitionSummaryCard competition={competition} />
+            ))}
+          </Box>
+        </Stack>
       )}
     </Box>
   );

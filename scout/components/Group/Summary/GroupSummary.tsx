@@ -35,11 +35,16 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
   }
 
   const isMember = userIsMember(group.members);
-  
 
   return (
     <Center py={2}>
-      <Box w={"full"} boxShadow={"xl"} rounded={"md"} p={6} overflow={"hidden"}>
+      <Box
+        w={"full"}
+        rounded={"md"}
+        p={6}
+        overflow={"hidden"}
+        _hover={{ bgColor: "gray.50" }}
+      >
         <Stack>
           <Stack
             direction={{ base: "column", sm: "row" }}

@@ -47,14 +47,14 @@ const CompetitionDetails = ({
       <Stack
         spacing={10}
         py={{ base: 5, md: 16 }}
-        direction={{ base: "column", md: "row" }}
+        // direction={{ base: "column", md: "row" }}
         px={{ base: 4, md: 10 }}
       >
-        <Stack flex={2} spacing={{ base: 1, md: 10 }}>
-          <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
-            <Heading>{competition.name}</Heading>
-          </Box>
-          <Box m={1} p={{ base: 2, md: 7 }}>
+        <Box as={"header"} m={1} w="100%">
+          <Heading>{competition.name}</Heading>
+        </Box>
+        <Stack spacing={{ base: 1, md: 10 }}>
+          <Box m={1}>
             <AboutCard data={competition} hideFindATeam />
           </Box>
         </Stack>
@@ -117,11 +117,7 @@ const GroupSummaryView = ({ groups, id }: GroupSummaryViewProps) => {
           </NextLink>
         </Stack>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2 }}>
-          {groups.map((group) => (
-            <GroupSummaryCard group={group} />
-          ))}
-        </SimpleGrid>
+        groups.map((group) => <GroupSummaryCard group={group} />)
       )}
     </Box>
   );

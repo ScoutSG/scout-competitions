@@ -32,7 +32,7 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
     <Box>
       <Stack spacing={4}>
         <Box>
-          <Heading size="md">About</Heading>
+          <Heading size="sm">About</Heading>
           <Text>{description}</Text>
         </Box>
 
