@@ -15,7 +15,6 @@ import {
   Fade,
 } from "@chakra-ui/react";
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
-import AboutCard from "../AboutCard";
 import { daysLeft } from "../../../core/utils/date";
 import { MdCircle } from "react-icons/md";
 import { VscOctoface } from "react-icons/vsc";

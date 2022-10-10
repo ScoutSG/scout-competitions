@@ -26,17 +26,25 @@ const CreateGroup = ({ competition }: CreateGroupProps) => {
       <Stack
         spacing={10}
         py={{ base: 5, md: 16 }}
+        px={{ base: 4, md: 10 }}
         direction={{ base: "column", md: "row" }}
       >
-        <Stack flex={2} spacing={{ base: 1, md: 10 }}>
-          <Box as={"header"} m={1} p={{ base: 1, md: 6 }}>
+        <Stack flex={2} spacing={{ base: 1, md: 4 }}>
+          <Box as={"header"}>
             <Heading>{competition.name}</Heading>
           </Box>
-          <Box m={1} p={{ base: 2, md: 7 }}>
+          <Box>
             <AboutCard data={competition} hideFindATeam />
           </Box>
         </Stack>
-        <Flex flex={3} justify={"center"} position={"relative"} w={"100%"}>
+        <Flex
+          flex={5}
+          justify={"center"}
+          position={"relative"}
+          w={"100%"}
+          bgColor="gray.50"
+          p={4}
+        >
           <CreateOrEditGroupForm competition={competition} />
         </Flex>
       </Stack>
