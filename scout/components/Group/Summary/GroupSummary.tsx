@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
+import { userIsMember } from "../../../lib/hooks/useUserDetails";
 
 const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
   const router = useRouter();
@@ -33,8 +34,8 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
     }
   }
 
-  const isMember = false;
-  // TODO: implement isMember properly
+  const isMember = userIsMember(group.members);
+  
 
   return (
     <Center py={2}>

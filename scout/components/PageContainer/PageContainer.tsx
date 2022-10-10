@@ -3,6 +3,8 @@ import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 
 import { Stack, ScaleFade } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useUserDetails } from "../../lib/hooks/useUserDetails";
 
 import Head from "next/head";
 
@@ -11,6 +13,16 @@ interface PageContainerProps {
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
+  const { setUserDetails } = useUserDetails();
+  const session = useSession();
+
+  useEffect(() => {
+    if (!session.data) {
+      return;
+    }
+    setUserDetails(session.data.user);
+  }, [session]);
+
   return (
     <Stack minH="100vh" align="center">
       <Head>

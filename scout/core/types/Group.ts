@@ -1,4 +1,6 @@
 export interface Member {
+  id: number;
+  email: string;
   name: string;
   year: number;
   major: string;

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -24,8 +25,10 @@ import { TbPencil, TbTrash } from "react-icons/tb";
 import ApplicationReview from "../../../../../components/Group/ApplicationReview";
 import Application from "../../../../../components/Group/Application";
 import clientApi from "../../../../../core/api/client";
+import { checkUserIsMember } from "../../../../../core/utils/isMember";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
-import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { userIsMember } from "../../../../../lib/hooks/useUserDetails";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -90,12 +93,8 @@ const GroupDetail: React.FC = ({
   questionsData: QuestionsData;
   app: any;
 }) => {
-  /* TODO: Add if-else logic to differentiate if member / leader
-            Member can see Application requests for Review
-            Non-member can see Application Questions to request to join
-        */
+  const isMember = userIsMember(group.members);
 
-  const isMember = true;
   return (
     <>
       <Head>

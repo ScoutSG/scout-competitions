@@ -17,14 +17,17 @@ export interface GroupSummaryData {
   targetSize: number;
   description: string;
   targetSkills: string[];
-  leader: Member;
+  members: Member[];
 }
 
 export interface Member {
+  id: number;
+  email: string;
   name: string;
   year: number;
   major: string;
-  specialization: string;
+  specialisation: string;
+  profileUrl: string[];
 }
 
 export interface CompetitionDataSummary {
