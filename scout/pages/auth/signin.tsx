@@ -16,11 +16,8 @@ import { FcGoogle } from "react-icons/fc";
 import { getCsrfToken } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
-import { useDraftRequest } from "../../lib/hooks/useDraftRequest";
 
 export default function SignInPage({ csrfToken, providers }) {
-  const { draftRequest } = useDraftRequest();
-  console.log(draftRequest);
   return (
     <Flex
       minH={"100vh"}

@@ -1,4 +1,7 @@
 import { atom, useRecoilState } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist();
 
 type DraftRequest =
   | {
@@ -14,6 +17,7 @@ type DraftRequest =
 const draftRequestState = atom<DraftRequest>({
   key: "DRAFT_REQUEST",
   default: {},
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const useDraftRequest = () => {
