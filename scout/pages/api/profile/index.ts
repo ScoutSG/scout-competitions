@@ -15,16 +15,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     where: {
                         id: session.user.id
                     }
-                })
-                res.status(200).json(user)
+                });
+                res.status(200).json(user);
             case "PATCH":
                 const updateUser = await prisma.user.update({
                     where: {
                         id: session.user.id
                     },
                     data: req.body
-                })
-                res.status(200).json(updateUser)
+                });
+                res.status(200).json(updateUser);
         }
     }
 }

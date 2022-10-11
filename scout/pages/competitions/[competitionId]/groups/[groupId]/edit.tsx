@@ -8,10 +8,10 @@ import CreateOrEditGroupForm from "../../../../../components/Group/CreateOrEditG
 import { Form, Group } from "../../../../../core/types/Group";
 
 export async function getServerSideProps(context) {
-  const { competition_id, group_id } = context.params;
+  const { competitionId, groupId } = context.params;
   const [competitionResponse, groupResponse] = await Promise.all([
-    clientApi.get(`/competitions/${competition_id}`),
-    clientApi.get(`/groups/${group_id}`),
+    clientApi.get(`/competitions/${competitionId}`),
+    clientApi.get(`/groups/${groupId}`),
   ]);
 
   const competition = competitionResponse.data;

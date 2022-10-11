@@ -101,7 +101,8 @@ export default async function handle(req, res) {
           data: {
             members: {
               set: updatedMemberIds.map(mem => ({...mem}))
-            }     
+            },
+            currentSize: updatedMembers.length,
           }
         })
       }

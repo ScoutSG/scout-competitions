@@ -26,8 +26,8 @@ import {
 import { formatDate } from "../../../core/utils/date";
 
 export async function getServerSideProps(context) {
-  const competition_id = context.params.competition_id;
-  const response = await clientApi.get(`/competitions/${competition_id}`);
+  const competitionId = context.params.competitionId;
+  const response = await clientApi.get(`/competitions/${competitionId}`);
   const competition = response.data;
 
   return { props: { competition } };
@@ -41,6 +41,8 @@ const CompetitionDetails = ({
   const onSeeMore = () => {
     window.open(competition.link, "_blank");
   };
+
+  console.log(competition.id);
 
   return competition === null ? (
     <NotFound />

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -25,23 +24,21 @@ import { TbPencil, TbTrash } from "react-icons/tb";
 import ApplicationReview from "../../../../../components/Group/ApplicationReview";
 import Application from "../../../../../components/Group/Application";
 import clientApi from "../../../../../core/api/client";
-import { checkUserIsMember } from "../../../../../core/utils/isMember";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
-import { useSession } from "next-auth/react";
 import { userIsMember } from "../../../../../lib/hooks/useUserDetails";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
-  const { competition_id, group_id } = router.query;
+  const { competitionId, groupId } = router.query;
 
   const handleDelete = async () => {
-    const response = clientApi.delete(`/groups/${group_id}`);
-    router.push(`/competitions/${competition_id}`);
+    const response = clientApi.delete(`/groups/${groupId}`);
+    router.push(`/competitions/${competitionId}`);
   };
 
   return (
     <ButtonGroup>
-      <Link href={`/competitions/${competition_id}/groups/${group_id}/edit`}>
+      <Link href={`/competitions/${competitionId}/groups/${groupId}/edit`}>
         <Button width="100%" leftIcon={<TbPencil />}>
           Edit Group
         </Button>
@@ -75,11 +72,11 @@ const ModifyGroupButtons = () => {
 };
 
 export async function getServerSideProps(context) {
-  const group_id = context.params.group_id;
-  const response = await clientApi.get(`/groups/${group_id}`);
+  const groupId = context.params.groupId;
+  const response = await clientApi.get(`/groups/${groupId}`);
   const group = response.data;
 
-  const res = await clientApi.get(`/forms/${group_id}`);
+  const res = await clientApi.get(`/forms/${groupId}`);
   const questionsData = res.data;
 
   return { props: { group, questionsData } };

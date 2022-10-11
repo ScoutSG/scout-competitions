@@ -22,7 +22,7 @@ import { userIsMember } from "../../../lib/hooks/useUserDetails";
 
 const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
   const router = useRouter();
-  const groupLink = `/competitions/${router.query.competition_id}/groups/${group.id}`;
+  const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
   let groupSize: number = group.currentSize;
   let targetSize: number = group.targetSize;
 
