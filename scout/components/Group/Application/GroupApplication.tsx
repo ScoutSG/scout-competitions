@@ -141,6 +141,12 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
         })),
       });
       router.push("/auth/signin");
+      presentToast({
+        title:
+          "Almost there! Login to submit your request to join. Don't worry, your answers will be saved.",
+        position: "top",
+        status: "info",
+      });
     }
   };
 
