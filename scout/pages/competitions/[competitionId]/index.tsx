@@ -42,8 +42,6 @@ const CompetitionDetails = ({
     window.open(competition.link, "_blank");
   };
 
-  console.log(competition.id);
-
   return competition === null ? (
     <NotFound />
   ) : (

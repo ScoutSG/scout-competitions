@@ -53,7 +53,6 @@ const ApplicationReview: React.FC<{
           status: "success",
           position: "top",
         });
-        console.log(res);
         return res;
       })
       .catch((err) =>
@@ -84,11 +83,9 @@ const ApplicationReview: React.FC<{
           status: "success",
           position: "top",
         });
-        console.log(res);
         return res;
       })
       .catch((err) => {
-        console.log(err);
         presentToast({
           title: "Rejection failed!",
           description: "Please try again later",

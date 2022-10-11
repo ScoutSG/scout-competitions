@@ -8,7 +8,6 @@ import CreateOrEditGroupForm from "../../../../components/Group/CreateOrEditGrou
 
 export async function getServerSideProps(context) {
   const competitionId = context.params.competitionId;
-  console.log("here");
   const response = await clientApi.get(`/competitions/${competitionId}`);
   const competition = response.data;
   return { props: { competition } };
