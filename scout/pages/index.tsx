@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import CTAVector from "../core/Icons/CTAVector";
+import { useDraftRequest } from "../lib/hooks/useDraftRequest";
 
 interface CardProps {
   title: string;
@@ -44,7 +45,9 @@ const Card = (props: CardProps) => {
   );
 };
 
-const Index: React.FC = () => {
+const Index = () => {
+  const { draftRequest, setDraftRequest } = useDraftRequest();
+  console.log(draftRequest);
   return (
     <>
       <Stack

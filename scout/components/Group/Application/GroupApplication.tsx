@@ -13,10 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TbSend } from "react-icons/tb";
+import { useSession } from "next-auth/react";
+
 import { Question, QuestionsData } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
-import { useSession } from "next-auth/react";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
+import { useRouter } from "next/router";
+import { useDraftRequest } from "../../../lib/hooks/useDraftRequest";
 
 const labelStyles = {
   mt: "2",
@@ -81,10 +84,12 @@ const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
 };
 
 const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
-  const [application, setApplication] = useState([]);
-  const questions = questionsData.questions;
+  const router = useRouter();
   const session = useSession();
   const { presentToast } = useCustomToast();
+  const [application, setApplication] = useState([]);
+  const { setDraftRequest } = useDraftRequest();
+  const questions = questionsData.questions;
 
   // initialise application state
   useEffect(() => {
@@ -102,42 +107,41 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   };
 
   const submitApplication = async () => {
-    const body: RequestBody = {
-      formId: questionsData.id,
-      groupId: questionsData.groupId,
-      userId: session.data.user.id,
-      answers: getAnswers(),
-    };
-    await clientApi
-      .post("/applications", body)
-      .then((res) => {
+    if (session.status === "authenticated") {
+      const body: RequestBody = {
+        formId: questionsData.id,
+        groupId: questionsData.groupId,
+        userId: session.data.user.id,
+        answers: application.map((app) => ({
+          answerString: app.answer,
+          questionId: app.id,
+        })),
+      };
+      try {
+        await clientApi.post("/applications", body);
         presentToast({
           title: "Sent your request to the team!",
           status: "success",
           position: "top",
         });
-      })
-      .catch((err) => {
+      } catch {
         presentToast({
-          title: "Failed to sent your request",
+          title: "Failed to send your request",
           position: "top",
           status: "error",
         });
+      }
+    } else {
+      setDraftRequest({
+        formId: questionsData.id,
+        groupId: questionsData.groupId,
+        answers: application.map((app) => ({
+          answerString: app.answer,
+          questionId: app.id,
+        })),
       });
-  };
-
-  const getAnswers = () => {
-    let answers = application.map((app) => {
-      [].push({
-        answerString: app.answer,
-        questionId: app.id,
-      });
-      return {
-        answerString: app.answer,
-        questionId: app.id,
-      };
-    });
-    return answers;
+      router.push("/auth/signin");
+    }
   };
 
   return (
