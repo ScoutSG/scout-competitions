@@ -13,6 +13,7 @@ import {
   InputGroup,
   InputLeftElement,
   NumberInput,
+  CircularProgress,
   NumberInputField,
 } from "@chakra-ui/react";
 import { MdOutlineEmail } from "react-icons/md";
@@ -48,16 +49,7 @@ const ProfileForm = ({
   //   gitHubUrl: "";
   // };
 }) => {
-  const [profile, setProfile] = useState<Profile>({
-    id: null,
-    name: "",
-    yearOfStudy: null,
-    email: "",
-    major: "",
-    specialisation: "",
-    linkedinUrl: "",
-    gitHubUrl: "",
-  });
+  const [profile, setProfile] = useState<Profile | null>(null);
   const { presentToast } = useCustomToast();
 
   useEffect(() => {
@@ -95,7 +87,13 @@ const ProfileForm = ({
       });
   };
 
-  return (
+  return profile === null ? (
+    <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
+      <WrapItem>
+        <CircularProgress isIndeterminate color="primary.500" />
+      </WrapItem>
+    </Wrap>
+  ) : (
     <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
       <WrapItem>
         <Box bg="white" borderRadius="lg">

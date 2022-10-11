@@ -55,6 +55,7 @@ const ApplicationRow = ({
                         align={{ base: "left", sm: "center" }}
                         textAlign="left"
                       >
+                        <Text>{group.name}</Text>
                         <Badge
                           fontWeight="550"
                           colorScheme={
@@ -71,7 +72,6 @@ const ApplicationRow = ({
                             ? "Approved"
                             : "Rejected"}
                         </Badge>
-                        <Badge fontWeight="550">{group.name}</Badge>
                       </Stack>
                     </Flex>
                     <Flex gap={2} alignItems="center">

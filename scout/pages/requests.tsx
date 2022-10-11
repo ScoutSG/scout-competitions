@@ -1,13 +1,36 @@
 import React, { useEffect, useState } from "react";
 import ApplicationPreviewUnit from "../components/ApplicationPreviewUnit";
-import { Stack, Text, Button, Badge, Container } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Button,
+  Badge,
+  Container,
+  CircularProgress,
+} from "@chakra-ui/react";
 import { TbLock } from "react-icons/tb";
 import { useSession } from "next-auth/react";
 import clientApi from "../core/api/client";
+import Link from "next/link";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import { Group } from "../core/types/Group";
 
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
-  const [applications, setApplications] = useState([]);
+  const [applications, setApplications] = useState<
+    | {
+        group: Group;
+        isApproved: boolean;
+        answers: {
+          answerResponse: number;
+          question: {
+            id: number;
+            questionString: string;
+          };
+        }[];
+      }[]
+    | null
+  >(null);
 
   useEffect(() => {
     async function getApplications() {
@@ -29,7 +52,11 @@ const ApplicationsPreview = () => {
         <Text fontSize={{ base: "sm" }} textAlign={"left"}>
           We cannot show you your applications until you've signed in!
         </Text>
-        <Button colorScheme="purple">Sign in to view your applications</Button>
+        <Link href="/auth/signin">
+          <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
+            Sign in to view your applications
+          </Button>
+        </Link>
       </Stack>
     </Container>
   ) : (
@@ -38,12 +65,17 @@ const ApplicationsPreview = () => {
         <Stack direction="row" alignItems="center">
           <Text fontWeight="semibold">Your Applications</Text>
         </Stack>
-        <Text fontSize={{ base: "sm" }} textAlign={"left"}>
-          {applications.length === 0
-            ? "You currently have no applications."
-            : "Check the status of your applications below."}
-        </Text>
-        {applications.length === 0 ? null : (
+        {applications === null ? (
+          <CircularProgress isIndeterminate color="primary.500" />
+        ) : (
+          <Text fontSize={{ base: "sm" }} textAlign={"left"}>
+            {applications.length === 0
+              ? "You currently have no applications."
+              : "Check the status of your applications below."}
+          </Text>
+        )}
+
+        {applications === null || applications.length === 0 ? null : (
           <ApplicationPreviewUnit applications={applications} />
         )}
       </Stack>
