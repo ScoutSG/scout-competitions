@@ -8,16 +8,12 @@ import {
   Flex,
   Button,
 } from "@chakra-ui/react";
-
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
-
-import SearchBar from "../../../components/SearchBar";
 import {
   CompetitionData,
   GroupSummaryData,
 } from "../../../core/types/CompetitionDetail";
-
 import GroupSummaryCard from "../../../components/Group/Summary";
 import NotFound from "../../../components/NotFound";
 import Head from "next/head";
@@ -25,7 +21,7 @@ import AboutCard from "../../../components/Competition/AboutCard";
 import clientApi from "../../../core/api/client";
 
 export async function getServerSideProps(context) {
-  const competition_id = context.params.competition_id;
+  const competition_id = context.params.competitionId;
   const response = await clientApi.get(`/competitions/${competition_id}`);
   const competition = response.data;
 

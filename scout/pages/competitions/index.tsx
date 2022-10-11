@@ -13,7 +13,7 @@ import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
 import prisma from "../../lib/prisma";
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   let competitions = await prisma.competition.findMany({
     include: {
       groups: true,
@@ -21,7 +21,12 @@ export async function getServerSideProps() {
   });
   competitions = JSON.parse(JSON.stringify(competitions))
 
-  return { props: { competitions } };
+  return { 
+    props: { 
+      competitions 
+    },
+    revalidate: 60
+  };
 }
 
 const CompetitionDiscovery: React.FC = ({
