@@ -102,7 +102,8 @@ const GroupDetail: React.FC = ({
       </Head>
       <Stack
         spacing={10}
-        py={{ base: 5, md: 16 }}
+        py={{ base: 5, md: 10 }}
+        px={4}
         direction={{ base: "column", md: "row" }}
       >
         <Stack flex={2}>
@@ -141,7 +142,7 @@ const GroupDetail: React.FC = ({
           )}
           {isMember ? <ModifyGroupButtons /> : null}
         </Stack>
-        <Flex flex={3}>
+        <Flex flex={3} bgColor="gray.50" rounded="md" p={4}>
           {isMember ? (
             <ApplicationReview applications={group.applications} />
           ) : (

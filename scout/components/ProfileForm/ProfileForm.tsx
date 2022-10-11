@@ -32,7 +32,22 @@ interface Profile {
   gitHubUrl: string | null;
 }
 
-const ProfileForm = ({ displayAll }: { displayAll?: boolean }) => {
+const ProfileForm = ({
+  displayAll,
+}: // profile,
+{
+  displayAll?: boolean;
+  // profile: {
+  //   id: null;
+  //   name: "";
+  //   yearOfStudy: null;
+  //   email: "";
+  //   major: "";
+  //   specialisation: "";
+  //   linkedinUrl: "";
+  //   gitHubUrl: "";
+  // };
+}) => {
   const [profile, setProfile] = useState<Profile>({
     id: null,
     name: "",

@@ -25,7 +25,7 @@ const CreateGroup = ({ competition }: CreateGroupProps) => {
       </Head>
       <Stack
         spacing={10}
-        py={{ base: 5, md: 16 }}
+        py={5}
         px={{ base: 4, md: 10 }}
         direction={{ base: "column", md: "row" }}
       >

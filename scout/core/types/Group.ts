@@ -5,16 +5,18 @@ export interface Member {
   year: number;
   major: string;
   specialisation: string;
-  profileUrl: string[];
+  linkedinUrl: string;
+  gitHubUrl: string;
 }
 
 export interface Application {
   applicant: Member;
   answers: {
-    question: string;
-    answer: number;
+    question: Question;
+    answerResponse: number;
   }[];
   isApproved: boolean;
+  id: number;
 }
 
 export interface Group {
