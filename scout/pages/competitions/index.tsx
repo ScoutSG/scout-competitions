@@ -9,14 +9,17 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-
-import clientApi from "../../core/api/client";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
+import prisma from "../../lib/prisma";
 
 export async function getServerSideProps() {
-  const response = await clientApi.get("/competitions");
-  const competitions = response.data;
+  let competitions = await prisma.competition.findMany({
+    include: {
+      groups: true,
+    },
+  });
+  competitions = JSON.parse(JSON.stringify(competitions))
 
   return { props: { competitions } };
 }
