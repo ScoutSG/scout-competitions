@@ -34,7 +34,7 @@ export default async function handle(req, res) {
       const application = await prisma.application.delete({
         where: {
           id: applicationId,
-        },
+        }
       });
 
       res.status(200).json(application);
@@ -74,6 +74,40 @@ export default async function handle(req, res) {
 
         await prisma.answer.createMany({ data: answersData });
       }
+
+      if (isApproved) {
+        const approvedMember = await prisma.user.findUnique({
+          where: {
+            id: application.userId
+          }
+        })
+        const currentGroup = await prisma.group.findUnique({
+          where: {
+            id: application.groupId
+          },
+          include: {
+            members: true
+          }
+        });
+  
+        const currentMembers = currentGroup.members;
+        const updatedMembers = [...currentMembers, approvedMember]
+        const updatedMemberIds = updatedMembers.map(mem => ({id: mem.id}));
+
+        await prisma.group.update({
+          where: {
+            id: application.groupId
+          },
+          data: {
+            members: {
+              set: updatedMemberIds.map(mem => ({...mem}))
+            },
+            currentSize: updatedMembers.length,
+          }
+        })
+      }
+
+      res.status(200).json(application);
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);

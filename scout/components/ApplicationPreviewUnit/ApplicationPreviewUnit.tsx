@@ -6,193 +6,139 @@ import {
   AccordionItem,
   AccordionPanel,
   Badge,
-  Box,
-  Button,
-  ButtonGroup,
   Flex,
-  Heading,
   List,
   ListItem,
   Progress,
   Spacer,
   Text,
-  IconButton,
   Stack,
 } from "@chakra-ui/react";
-import {
-  TbBrandGithub,
-  TbBrandLinkedin,
-  TbCheck,
-  TbLink,
-  TbX,
-} from "react-icons/tb";
+
+import { Group } from "../../core/types/Group";
 
 interface Answer {
-  answerVal: number;
-  questionString: string;
+  answerResponse: number;
+  question: {
+    id: number;
+    questionString: string;
+  };
 }
+
+interface ApplicationData {
+  group: Group;
+  isApproved: boolean;
+  answers: Answer[];
+}
+
+const ApplicationRow = ({
+  relevantApplications,
+  title,
+}: {
+  relevantApplications: ApplicationData[];
+  title: string;
+}) => {
+  return relevantApplications.length === 0 ? null : (
+    <>
+      <Text fontWeight="550">{title}</Text>
+      <Accordion allowMultiple>
+        {relevantApplications.map(({ group, answers, isApproved }, index) => (
+          <AccordionItem key={index}>
+            {({ isExpanded }) => (
+              <>
+                <h2>
+                  <AccordionButton>
+                    <Flex flex="1" gap="1">
+                      <Stack
+                        direction={{ base: "column", sm: "row" }}
+                        spacing={2}
+                        align={{ base: "left", sm: "center" }}
+                        textAlign="left"
+                      >
+                        <Badge
+                          fontWeight="550"
+                          colorScheme={
+                            isApproved === null
+                              ? "orange"
+                              : isApproved
+                              ? "green"
+                              : "red"
+                          }
+                        >
+                          {isApproved === null
+                            ? "Pending"
+                            : isApproved
+                            ? "Approved"
+                            : "Rejected"}
+                        </Badge>
+                        <Badge fontWeight="550">{group.name}</Badge>
+                      </Stack>
+                    </Flex>
+                    <Flex gap={2} alignItems="center">
+                      <Spacer />
+                      <AccordionIcon />
+                    </Flex>
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <List spacing={3}>
+                    {answers.map(({ question, answerResponse }) => (
+                      <ListItem display="flex" flexDirection="column">
+                        <Text>{question.questionString}</Text>
+                        <Flex alignItems="center" gap={5}>
+                          <Progress
+                            value={(answerResponse / 5) * 100}
+                            flex="1"
+                            bgColor="gray.200"
+                            borderRadius="10px"
+                            colorScheme="primary"
+                          />
+                          <Text>{answerResponse}/5</Text>
+                        </Flex>
+                      </ListItem>
+                    ))}
+                  </List>
+                </AccordionPanel>
+              </>
+            )}
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </>
+  );
+};
 
 const ApplicationPreviewUnit = ({
   applications,
 }: {
-  applications: {
-    competitionName: string;
-    groupName: string;
-    isApproved: boolean;
-    answers: Answer[];
-  }[];
+  applications: ApplicationData[];
 }) => {
-  applications = [
-    {
-      competitionName: "OGP",
-      groupName: "Test",
-      isApproved: true,
-      answers: [
-        {
-          answerVal: 1,
-          questionString: "How are you?",
-        },
-        {
-          answerVal: 3,
-          questionString: "How is today",
-        },
-      ],
-    },
-    {
-      competitionName: "OGP",
-      groupName: "Test",
-      isApproved: false,
-      answers: [
-        {
-          answerVal: 1,
-          questionString: "How are you?",
-        },
-        {
-          answerVal: 3,
-          questionString: "How is today",
-        },
-      ],
-    },
-  ];
+  const pendingApplications = applications.filter(
+    (application) => application.isApproved === null
+  );
 
   const approvedApplications = applications.filter(
     (application) => application.isApproved
   );
   const rejectedApplications = applications.filter(
-    (application) => !application.isApproved
+    (application) => application.isApproved == false
   );
   return (
     <>
       <Spacer />
       <Spacer />
-      <Text fontWeight="550">Approved</Text>
-      <Accordion allowMultiple>
-        {approvedApplications.map(
-          ({ competitionName, groupName, answers }, index) => (
-            <AccordionItem key={index}>
-              {({ isExpanded }) => (
-                <>
-                  <h2>
-                    <AccordionButton>
-                      <Flex flex="1" gap="1">
-                        <Stack
-                          direction={{ base: "column", sm: "row" }}
-                          spacing={2}
-                          align={{ base: "left", sm: "center" }}
-                          textAlign="left"
-                        >
-                          <Badge fontWeight="550">{competitionName}</Badge>
-                          <Badge fontWeight="550">{groupName}</Badge>
-                        </Stack>
-                      </Flex>
-                      <Flex gap={2} alignItems="center">
-                        <Button size="sm">View group</Button>
-                        <Spacer />
-                        <AccordionIcon />
-                      </Flex>
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <List spacing={3}>
-                      {answers.map(({ questionString, answerVal }) => (
-                        <ListItem display="flex" flexDirection="column">
-                          <Text>{questionString}</Text>
-                          <Flex alignItems="center" gap={5}>
-                            <Progress
-                              value={(answerVal / 5) * 100}
-                              flex="1"
-                              bgColor="gray.200"
-                              borderRadius="10px"
-                              colorScheme="primary"
-                            />
-                            <Text>{answerVal}/5</Text>
-                          </Flex>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </AccordionPanel>
-                </>
-              )}
-            </AccordionItem>
-          )
-        )}
-      </Accordion>
-      {rejectedApplications.length === 0 ? null : (
-        <>
-          {" "}
-          <Text fontWeight="550">Rejected</Text>
-          <Accordion allowMultiple>
-            {rejectedApplications.map(
-              ({ competitionName, groupName, answers }, index) => (
-                <AccordionItem key={index}>
-                  {({ isExpanded }) => (
-                    <>
-                      <h2>
-                        <AccordionButton>
-                          <Flex flex="1" gap="1">
-                            <Stack
-                              direction={{ base: "column", sm: "row" }}
-                              spacing={2}
-                              align={{ base: "left", sm: "center" }}
-                              textAlign="left"
-                            >
-                              <Badge fontWeight="550">{competitionName}</Badge>
-                              <Badge fontWeight="550">{groupName}</Badge>
-                            </Stack>
-                          </Flex>
-                          <Flex gap={2} alignItems="center">
-                            <Spacer />
-                            <AccordionIcon />
-                          </Flex>
-                        </AccordionButton>
-                      </h2>
-                      <AccordionPanel pb={4}>
-                        <List spacing={3}>
-                          {answers.map(({ questionString, answerVal }) => (
-                            <ListItem display="flex" flexDirection="column">
-                              <Text>{questionString}</Text>
-                              <Flex alignItems="center" gap={5}>
-                                <Progress
-                                  value={(answerVal / 5) * 100}
-                                  flex="1"
-                                  bgColor="gray.200"
-                                  borderRadius="10px"
-                                  colorScheme="primary"
-                                />
-                                <Text>{answerVal}/5</Text>
-                              </Flex>
-                            </ListItem>
-                          ))}
-                        </List>
-                      </AccordionPanel>
-                    </>
-                  )}
-                </AccordionItem>
-              )
-            )}
-          </Accordion>
-        </>
-      )}
+      <ApplicationRow
+        title="Pending"
+        relevantApplications={pendingApplications}
+      />
+      <ApplicationRow
+        title="Approved"
+        relevantApplications={approvedApplications}
+      />
+      <ApplicationRow
+        title="Rejected"
+        relevantApplications={rejectedApplications}
+      />
     </>
   );
 };

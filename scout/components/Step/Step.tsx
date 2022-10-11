@@ -1,35 +1,41 @@
 import React, { ReactElement } from "react";
 import NextLink from "next/link";
-import { Box, Text, Stack, Flex } from "@chakra-ui/react";
+import { Stat, StatLabel, StatNumber, Stack } from "@chakra-ui/react";
 
 interface StepProps {
   title: string;
   text: string;
   icon: ReactElement;
   href: string;
+  bgColor?: string;
 }
 
-const Step = ({ title, text, icon, href }: StepProps) => {
+const Step = ({ title, text, icon, href, bgColor }: StepProps) => {
   return (
     <NextLink href={href}>
-      <Box borderWidth={"1px"} borderRadius={10} p={5}>
-        <Stack>
-          <Flex
-            w={16}
-            h={16}
-            align={"center"}
-            justify={"center"}
-            color={"white"}
-            rounded={"full"}
-            bg={"gray.300"}
-            mb={1}
-          >
+      <a>
+        <Stat
+          px={{ base: 4, md: 8 }}
+          py={"5"}
+          shadow={"xl"}
+          rounded={"lg"}
+          bg={bgColor || "gray.50"}
+          h="100%"
+        >
+          <Stack direction="row" spacing={5} align="center">
+            <Stack spacing={5}>
+              <StatNumber fontSize={"2xl"} fontWeight={"semibold"}>
+                {title}
+              </StatNumber>
+
+              <StatLabel fontWeight={"medium"} fontSize="lg">
+                {text}
+              </StatLabel>
+            </Stack>
             {icon}
-          </Flex>
-          <Text fontWeight={600}>{title}</Text>
-          <Text color={"gray.600"}>{text}</Text>
-        </Stack>
-      </Box>
+          </Stack>
+        </Stat>
+      </a>
     </NextLink>
   );
 };

@@ -13,10 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { TbSend } from "react-icons/tb";
-import { Question } from "../../../core/types/Group";
-import { modelQuestions } from "../../../core/models/Question";
-
-const questions: Question[] = modelQuestions;
+import { Question, QuestionsData } from "../../../core/types/Group";
+import clientApi from "../../../core/api/client";
+import { useSession } from "next-auth/react";
+import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 
 const labelStyles = {
   mt: "2",
@@ -30,6 +30,18 @@ type QuestionProps = {
   question: Question;
   setAnswer: (newAnswer: number) => void;
 };
+
+type Answer = {
+  answerString: string | number;
+  questionId: number;
+};
+
+interface RequestBody {
+  groupId: number;
+  userId: number;
+  formId: number;
+  answers: Answer[];
+}
 
 const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
   return (
@@ -68,8 +80,11 @@ const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
   );
 };
 
-const Application: React.FC = () => {
+const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   const [application, setApplication] = useState([]);
+  const questions = questionsData.questions;
+  const session = useSession();
+  const { presentToast } = useCustomToast();
 
   // initialise application state
   useEffect(() => {
@@ -84,6 +99,45 @@ const Application: React.FC = () => {
           : question
       )
     );
+  };
+
+  const submitApplication = async () => {
+    const body: RequestBody = {
+      formId: questionsData.id,
+      groupId: questionsData.groupId,
+      userId: session.data.user.id,
+      answers: getAnswers(),
+    };
+    await clientApi
+      .post("/applications", body)
+      .then((res) => {
+        presentToast({
+          title: "Sent your request to the team!",
+          status: "success",
+          position: "top",
+        });
+      })
+      .catch((err) => {
+        presentToast({
+          title: "Failed to sent your request",
+          position: "top",
+          status: "error",
+        });
+      });
+  };
+
+  const getAnswers = () => {
+    let answers = application.map((app) => {
+      [].push({
+        answerString: app.answer,
+        questionId: app.id,
+      });
+      return {
+        answerString: app.answer,
+        questionId: app.id,
+      };
+    });
+    return answers;
   };
 
   return (
@@ -105,6 +159,7 @@ const Application: React.FC = () => {
         bg={"secondary"}
         _hover={{ color: "secondary", bg: "gray.50" }}
         rightIcon={<TbSend />}
+        onClick={submitApplication}
       >
         Submit
       </Button>

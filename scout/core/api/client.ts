@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
+import { useSession } from "next-auth/react";
 // import { getAccessToken } from "../localStorage/auth";
 
 export const BASE_URL = "";
+
 
 const client = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
@@ -9,6 +11,7 @@ const client = axios.create({
   headers: {
     Accept: "application/json",
   },
+  withCredentials: true
 });
 
 // client.interceptors.request.use((config: AxiosRequestConfig) => {

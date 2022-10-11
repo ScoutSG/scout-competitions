@@ -7,11 +7,30 @@ import {
   SimpleGrid,
   Text,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
+import { AxiosResponse } from "axios";
+import clientApi from "../../core/api/client";
 import prisma from "../../lib/prisma";
+
+// export async function getServerSideProps() {
+//   let response: AxiosResponse<any, any>;
+//   try {
+//     response = await clientApi.get("/competitions");
+//   } catch (err) {
+//     return { notFound: true };
+//   }
+//   const competitions = response.data;
+
+//   return {
+//     props: {
+//       competitions,
+//     },
+//   };
+// }
 
 export async function getStaticProps() {
   let competitions = await prisma.competition.findMany({
@@ -19,13 +38,13 @@ export async function getStaticProps() {
       groups: true,
     },
   });
-  competitions = JSON.parse(JSON.stringify(competitions))
+  competitions = JSON.parse(JSON.stringify(competitions));
 
-  return { 
-    props: { 
-      competitions 
+  return {
+    props: {
+      competitions,
     },
-    revalidate: 60
+    revalidate: 60,
   };
 }
 
@@ -42,16 +61,44 @@ const CompetitionDiscovery: React.FC = ({
       <Stack
         spacing={10}
         py={4}
-        // direction={{ base: "row", md: "row" }}
         align="center"
         justify="center"
+        bgColor="primary.500"
+        h={{ base: "300px", md: "300px" }}
+        px={{ base: 4, md: 10 }}
       >
-        <Box as={"header"} m={1} p={1}>
-          <Heading>Discover Competitions</Heading>
-        </Box>
-        <Box>
-          <CompetitionSummaryView competitions={competitions} />
-        </Box>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          spacing={20}
+          align="center"
+        >
+          <Box as={"header"} p={1}>
+            <Heading
+              textTransform="uppercase"
+              color="white"
+              fontSize={{ base: "3xl", md: "6xl" }}
+              fontWeight="black"
+              mb={5}
+            >
+              Discover Competitions
+            </Heading>
+            <Text color="white" fontWeight="semibold">
+              From hackathons to design, there's something for you.
+            </Text>
+          </Box>
+          <Box>
+            <Image
+              src="/banner-discovery.svg"
+              alt="banner"
+              w={"full"}
+              width={{ base: "0px", sm: "0px", md: "300px" }}
+              height={{ base: "0px", sm: "0px", md: "300px" }}
+            />
+          </Box>
+        </Stack>
+      </Stack>
+      <Stack px={{ base: 4, md: 10 }}>
+        <CompetitionSummaryView competitions={competitions} />
       </Stack>
     </>
   );
@@ -71,11 +118,16 @@ const CompetitionSummaryView: React.FC<{
           </Button>
         </Stack>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }}>
-          {competitions.map((competition) => (
-            <CompetitionSummaryCard competition={competition} />
-          ))}
-        </SimpleGrid>
+        <Stack align="center" spacing={1} justify="center">
+          <Box maxW="3xl" w="100%">
+            <Text fontWeight="black" mb={4}>
+              {competitions.length} Results Found
+            </Text>
+            {competitions.map((competition) => (
+              <CompetitionSummaryCard competition={competition} />
+            ))}
+          </Box>
+        </Stack>
       )}
     </Box>
   );

@@ -1,23 +1,25 @@
 import { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { SessionProvider, useSession } from "next-auth/react";
+import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 import PageContainer from "../components/PageContainer";
+import { useUserDetails } from "../lib/hooks/useUserDetails";
+import { useEffect } from "react";
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
     <SessionProvider session={pageProps.session}>
       <RecoilRoot>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <PageContainer>
+            <Component {...pageProps} />
+          </PageContainer>
         </ChakraProvider>
       </RecoilRoot>
     </SessionProvider>
   );
 };
-
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const config: ThemeConfig = {
   initialColorMode: "light",

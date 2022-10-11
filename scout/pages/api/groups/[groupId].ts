@@ -16,7 +16,16 @@ export default async function handle(req, res) {
         include: {
           members: true,
           form: true,
-          applications: true,
+          applications: {
+            include: {
+              applicant: true,
+              answers: {
+                include: {
+                  question: true
+                }
+              }
+            }
+          },
         },
       });
 

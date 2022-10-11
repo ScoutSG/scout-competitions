@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Heading,
@@ -12,18 +12,97 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  NumberInput,
+  NumberInputField,
 } from "@chakra-ui/react";
 import { MdOutlineEmail } from "react-icons/md";
 import { BsGithub, BsPerson, BsLinkedin } from "react-icons/bs";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import clientApi from "../../core/api/client";
+import { useCustomToast } from "../../lib/hooks/useCustomToast";
 
-const ProfileForm = () => {
+interface Profile {
+  id: string | null;
+  name: string | null;
+  yearOfStudy: string | null;
+  email: string | null;
+  major: string | null;
+  specialisation: string | null;
+  linkedinUrl: string | null;
+  gitHubUrl: string | null;
+}
+
+const ProfileForm = ({
+  displayAll,
+}: // profile,
+{
+  displayAll?: boolean;
+  // profile: {
+  //   id: null;
+  //   name: "";
+  //   yearOfStudy: null;
+  //   email: "";
+  //   major: "";
+  //   specialisation: "";
+  //   linkedinUrl: "";
+  //   gitHubUrl: "";
+  // };
+}) => {
+  const [profile, setProfile] = useState<Profile>({
+    id: null,
+    name: "",
+    yearOfStudy: null,
+    email: "",
+    major: "",
+    specialisation: "",
+    linkedinUrl: "",
+    gitHubUrl: "",
+  });
+  const { presentToast } = useCustomToast();
+
+  useEffect(() => {
+    async function getProfileDetails() {
+      const response = await clientApi.get("/profile");
+
+      setProfile(response.data);
+    }
+
+    getProfileDetails();
+  }, []);
+
+  const updateProfile = async () => {
+    const body = {
+      ...profile,
+      yearOfStudy: parseInt(profile.yearOfStudy) || null,
+    };
+
+    await clientApi
+      .patch("/profile", body)
+      .then((res) => {
+        presentToast({
+          title: "Successfully updated your profile!",
+          status: "success",
+          position: "top",
+        });
+      })
+      .catch((err) => {
+        presentToast({
+          title: "Can't update your profile details",
+          position: "top",
+          description: err.data.message,
+          status: "error",
+        });
+      });
+  };
+
   return (
     <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
       <WrapItem>
         <Box bg="white" borderRadius="lg">
           <Box>
-            <Heading>Your Details</Heading>
+            <Heading fontSize="md" fontWeight="semibold">
+              Your Details
+            </Heading>
             <Text mt={{ sm: 3, md: 3, lg: 5 }} color="gray.500">
               Update your profile details so that your group can easily contact
               you.
@@ -38,7 +117,18 @@ const ProfileForm = () => {
                     pointerEvents="none"
                     children={<BsPerson color="gray.800" />}
                   />
-                  <Input type="text" size="md" />
+                  <Input
+                    type="text"
+                    size="md"
+                    placeholder={"Write your name"}
+                    value={profile.name}
+                    onChange={(event) =>
+                      setProfile({
+                        ...profile,
+                        name: event.target.value,
+                      })
+                    }
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl id="email">
@@ -48,12 +138,33 @@ const ProfileForm = () => {
                     pointerEvents="none"
                     children={<MdOutlineEmail color="gray.800" />}
                   />
-                  <Input type="text" size="md" />
+                  <Input
+                    type="text"
+                    size="md"
+                    value={profile.email}
+                    onChange={(event) =>
+                      setProfile({ ...profile, email: event.target.value })
+                    }
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl id="year">
                 <FormLabel>Year of Study</FormLabel>
-                <Input type="text" size="md" placeholder="e.g. Year 4" />
+                <NumberInput
+                  value={
+                    profile.yearOfStudy === null ? "" : profile.yearOfStudy
+                  }
+                >
+                  <NumberInputField
+                    placeholder="If you're Year 4, enter 4"
+                    onChange={(event) =>
+                      setProfile({
+                        ...profile,
+                        yearOfStudy: event.target.value,
+                      })
+                    }
+                  />
+                </NumberInput>
               </FormControl>
               <FormControl id="major">
                 <FormLabel>Major</FormLabel>
@@ -61,11 +172,26 @@ const ProfileForm = () => {
                   type="text"
                   size="md"
                   placeholder="e.g. Computer Science, Business"
+                  value={profile.major}
+                  onChange={(event) =>
+                    setProfile({ ...profile, major: event.target.value })
+                  }
                 />
               </FormControl>
               <FormControl id="specialization">
                 <FormLabel>Speicalization</FormLabel>
-                <Input type="text" size="md" placeholder="e.g. Finance" />
+                <Input
+                  type="text"
+                  size="md"
+                  placeholder="e.g. Finance"
+                  value={profile.specialisation}
+                  onChange={(event) =>
+                    setProfile({
+                      ...profile,
+                      specialisation: event.target.value,
+                    })
+                  }
+                />
               </FormControl>
               <FormControl id="linkedin">
                 <FormLabel>LinkedIn URL</FormLabel>
@@ -78,6 +204,13 @@ const ProfileForm = () => {
                     type="text"
                     size="md"
                     placeholder="https://www.linkedin.com/in/johndoe"
+                    value={profile.linkedinUrl}
+                    onChange={(event) =>
+                      setProfile({
+                        ...profile,
+                        linkedinUrl: event.target.value,
+                      })
+                    }
                   />
                 </InputGroup>
               </FormControl>
@@ -92,6 +225,13 @@ const ProfileForm = () => {
                     type="text"
                     size="md"
                     placeholder="https://www.github.com/johndoe"
+                    value={profile.gitHubUrl}
+                    onChange={(event) =>
+                      setProfile({
+                        ...profile,
+                        gitHubUrl: event.target.value,
+                      })
+                    }
                   />
                 </InputGroup>
               </FormControl>
@@ -104,6 +244,7 @@ const ProfileForm = () => {
                     color: "primary.500",
                   }}
                   rightIcon={<ChevronRightIcon />}
+                  onClick={updateProfile}
                 >
                   Update
                 </Button>
