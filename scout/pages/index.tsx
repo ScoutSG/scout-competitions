@@ -1,7 +1,4 @@
-import React, { useEffect } from "react";
-
-import LandingPage from "../components/LandingPage";
-import Blob from "../components/Blob";
+import React from "react";
 import NextLink from "next/link";
 import {
   Stack,
@@ -14,15 +11,11 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  chakra,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import Blob from "../components/Blob";
 import CTAVector from "../core/Icons/CTAVector";
-import { useDraftRequest } from "../lib/hooks/useDraftRequest";
-import clientApi from "../core/api/client";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 interface CardProps {
   title: string;
@@ -49,21 +42,6 @@ const Card = (props: CardProps) => {
 };
 
 const Index = () => {
-  const session = useSession();
-  const router = useRouter();
-  const { draftRequest, setDraftRequest } = useDraftRequest();
-  useEffect(() => {
-    if (draftRequest && session.status === "authenticated") {
-      const body = {
-        ...draftRequest,
-        userId: session.data.user.id,
-      };
-      clientApi.post("/applications", body);
-      setDraftRequest(null);
-      router.push("/requests");
-    }
-  }, [draftRequest, session]);
-
   return (
     <>
       <Stack

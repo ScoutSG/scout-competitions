@@ -1,11 +1,9 @@
 import { Session } from "next-auth";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 import PageContainer from "../components/PageContainer";
-import { useUserDetails } from "../lib/hooks/useUserDetails";
-import { useEffect } from "react";
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
