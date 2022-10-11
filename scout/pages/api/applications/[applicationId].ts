@@ -74,6 +74,8 @@ export default async function handle(req, res) {
 
         await prisma.answer.createMany({ data: answersData });
       }
+
+      res.status(200).json(application);
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Accordion,
@@ -23,29 +23,79 @@ import { TbBrandGithub, TbBrandLinkedin, TbCheck, TbX } from "react-icons/tb";
 
 import clientApi from "../../../core/api/client";
 import { Group } from "../../../core/types/Group";
+import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 
 const ApplicationReview: React.FC<{
   applications: Group["applications"];
 }> = ({ applications }) => {
   // only display applications with no decision made
-  const applicationsToDisplay = applications.filter(
-    (application) => application.isApproved === null
+  const [applicationsToDisplay, setApplicationsToDisplay] = useState(
+    applications.filter((application) => application.isApproved === null)
   );
 
-  const approveRequest = (applicationId) => {
+  const { presentToast } = useCustomToast();
+
+  const approveRequest = async (applicationId) => {
     const body = {
       isApproved: true,
     };
 
-    clientApi.patch(`/applications/${applicationId}`, body);
+    await clientApi
+      .patch(`/applications/${applicationId}`, body)
+      .then((res) => {
+        setApplicationsToDisplay(
+          applicationsToDisplay.filter(
+            (application) => application.id != applicationId
+          )
+        );
+        presentToast({
+          title: "Approval was successful!",
+          status: "success",
+          position: "top",
+        });
+        console.log(res);
+        return res;
+      })
+      .catch((err) =>
+        presentToast({
+          title: "Approval failed!",
+          description: "Please try again later",
+          status: "error",
+          position: "top",
+        })
+      );
   };
 
-  const rejectRequest = (applicationId) => {
+  const rejectRequest = async (applicationId) => {
     const body = {
       isApproved: false,
     };
 
-    clientApi.patch(`/applications/${applicationId}`, body);
+    await clientApi
+      .patch(`/applications/${applicationId}`, body)
+      .then((res) => {
+        setApplicationsToDisplay(
+          applicationsToDisplay.filter(
+            (application) => application.id != applicationId
+          )
+        );
+        presentToast({
+          title: "Rejection was successful!",
+          status: "success",
+          position: "top",
+        });
+        console.log(res);
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+        presentToast({
+          title: "Rejection failed!",
+          description: "Please try again later",
+          status: "error",
+          position: "top",
+        });
+      });
   };
 
   return (
