@@ -4,6 +4,8 @@ import { Stack, Text, Button, Badge, Container } from "@chakra-ui/react";
 import { TbLock } from "react-icons/tb";
 import { useSession } from "next-auth/react";
 import clientApi from "../core/api/client";
+import Link from "next/link";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
@@ -29,7 +31,11 @@ const ApplicationsPreview = () => {
         <Text fontSize={{ base: "sm" }} textAlign={"left"}>
           We cannot show you your applications until you've signed in!
         </Text>
-        <Button colorScheme="purple">Sign in to view your applications</Button>
+        <Link href="/auth/signin">
+          <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
+            Sign in to view your applications
+          </Button>
+        </Link>
       </Stack>
     </Container>
   ) : (
