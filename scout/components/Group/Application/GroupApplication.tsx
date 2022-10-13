@@ -107,15 +107,18 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   };
 
   const submitApplication = async () => {
+    const applicationInfo = {
+      formId: questionsData.id,
+      groupId: questionsData.groupId,
+      answers: application.map((app) => ({
+        answerString: app.answer,
+        questionId: app.id,
+      })),
+    };
     if (session.status === "authenticated") {
       const body: RequestBody = {
-        formId: questionsData.id,
-        groupId: questionsData.groupId,
+        ...applicationInfo,
         userId: session.data.user.id,
-        answers: application.map((app) => ({
-          answerString: app.answer,
-          questionId: app.id,
-        })),
       };
       try {
         await clientApi.post("/applications", body);
@@ -132,14 +135,7 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
         });
       }
     } else {
-      setDraftRequest({
-        formId: questionsData.id,
-        groupId: questionsData.groupId,
-        answers: application.map((app) => ({
-          answerString: app.answer,
-          questionId: app.id,
-        })),
-      });
+      setDraftRequest(applicationInfo);
       router.push("/auth/signin");
       presentToast({
         title:

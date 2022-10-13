@@ -22,6 +22,8 @@ import { TbSend } from "react-icons/tb";
 import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
+import { useCustomToast } from "../../../lib/hooks/useCustomToast";
+import { useDraftGroup } from "../../../lib/hooks/useDraftGroup";
 
 import QuestionsSubForm from "./QuestionsSubForm";
 import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
@@ -55,15 +57,16 @@ const CreateOrEditGroupForm = ({
   });
   const session = useSession();
   const router = useRouter();
+  const { setDraftGroup } = useDraftGroup();
+  const { presentToast } = useCustomToast();
 
   const onSubmit = async (values: CreateOrEditGroupFormValue) => {
-    const body = {
+    const groupInfo = {
       competitionId: competition.id,
       name: values.name,
       description: values.description,
       currentSize: 1,
       targetSize: values.targetSize,
-      members: [session.data.user.id],
       targetSkills: values.targetSkills.map(({ value }) => value),
       form: {
         questions: values.questions.filter(
@@ -71,16 +74,31 @@ const CreateOrEditGroupForm = ({
         ),
       },
     };
+    if (session.status === "authenticated") {
+      const body = {
+        ...groupInfo,
+        members: [session.data.user.id],
+      };
 
-    let group_id: number;
-    if (group === undefined) {
-      const response = await clientApi.post("/groups", body);
-      group_id = response.data.id;
+      let group_id: number;
+      if (group === undefined) {
+        const response = await clientApi.post("/groups", body);
+        group_id = response.data.id;
+      } else {
+        const response = await clientApi.patch(`/groups/${group.id}`, body);
+        group_id = response.data.id;
+      }
+      router.push(`/competitions/${competition.id}/groups/${group_id}`);
     } else {
-      const response = await clientApi.patch(`/groups/${group.id}`, body);
-      group_id = response.data.id;
+      setDraftGroup(groupInfo);
+      router.push("/auth/signin");
+      presentToast({
+        title:
+          "Almost there! Login to finish creating your group. Don't worry, your group details will be saved.",
+        position: "top",
+        status: "info",
+      });
     }
-    router.push(`/competitions/${competition.id}/groups/${group_id}`);
   };
 
   return (

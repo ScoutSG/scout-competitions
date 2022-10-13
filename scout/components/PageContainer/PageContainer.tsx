@@ -10,6 +10,7 @@ import { useDraftRequest } from "../../lib/hooks/useDraftRequest";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
+import { useDraftGroup } from "../../lib/hooks/useDraftGroup";
 
 interface PageContainerProps {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   const session = useSession();
   const router = useRouter();
   const { draftRequest, setDraftRequest } = useDraftRequest();
+  const { draftGroup, setDraftGroup } = useDraftGroup();
   const { presentToast } = useCustomToast();
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   }, [session]);
 
   useEffect(() => {
-    if (draftRequest && session.status === "authenticated") {
+    if (draftRequest !== null && session.status === "authenticated") {
       const body = {
         ...draftRequest,
         userId: session.data.user.id,
@@ -45,6 +47,27 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       });
     }
   }, [draftRequest, session]);
+
+  useEffect(() => {
+    if (draftGroup !== null && session.status === "authenticated") {
+      const body = {
+        ...draftGroup,
+        members: [session.data.user.id],
+      };
+      clientApi.post("/groups", body).then((response) => {
+        const group_id = response.data.id;
+        setDraftGroup(null);
+        router.push(
+          `/competitions/${draftGroup.competitionId}/groups/${group_id}`
+        );
+        presentToast({
+          title: "Created group!",
+          status: "success",
+          position: "top",
+        });
+      });
+    }
+  }, [draftGroup, session]);
 
   return (
     <Stack minH="100vh" align="center">
