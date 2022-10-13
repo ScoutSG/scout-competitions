@@ -22,8 +22,7 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -45,20 +44,21 @@ model User {
   email          String?       @unique
   emailVerified  DateTime?     @map("email_verified")
   image          String?
-  createdAt      DateTime      @default(now()) @map(name: "created_at")
-  updatedAt      DateTime      @updatedAt @map(name: "updated_at")
-  accounts       Account[]
-  sessions       Session[]
-  applications   Application[]
-  groups         Group[]
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
   groupId        Int?
   yearOfStudy    Int?
   major          String?
   specialisation String?
   linkedinUrl    String?
   gitHubUrl      String?
+  telegramUrl    String?
+  applications   Application[]
+  accounts       Account[]
+  sessions       Session[]
+  groups         Group[]
 
-  @@map(name: "users")
+  @@map("users")
 }
 
 model VerificationToken {
@@ -71,63 +71,55 @@ model VerificationToken {
 }
 
 model Question {
-  id             Int    @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   questionString String
-
-  form    Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId  Int
-  answers Answer[]
+  formId         Int?
+  form           Form?    @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers        Answer[]
 }
 
 model Answer {
-  id             Int @id @default(autoincrement())
+  id             Int         @id @default(autoincrement())
   answerResponse Int
-
-  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  question    Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  applicationId Int
-  questionId    Int
+  applicationId  Int
+  questionId     Int
+  application    Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  question       Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model Form {
-  id Int @id @default(autoincrement())
-
-  group   Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  groupId Int   @unique
-
-  questions    Question[]
+  id           Int           @id @default(autoincrement())
+  groupId      Int           @unique
+  group        Group         @relation(fields: [groupId], references: [id], onDelete: Cascade)
   applications Application[]
+  questions    Question[]
 }
 
 model Application {
   id         Int      @id @default(autoincrement())
   isApproved Boolean?
-
-  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  applicant User     @relation(fields: [userId], references: [id], onDelete: SetNull)
-  answers   Answer[]
-
-  formId  Int
-  userId  Int
-  group   Group @relation(fields: [groupId], references: [id])
-  groupId Int
+  formId     Int
+  userId     Int
+  groupId    Int
+  form       Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  group      Group    @relation(fields: [groupId], references: [id])
+  applicant  User     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  answers    Answer[]
 }
 
 model Group {
-  id           Int      @id @default(autoincrement())
-  name         String
-  currentSize  Int      @default(1)
-  targetSize   Int
-  description  String?
-  telegramLink String?
-  targetSkills String[]
-
-  members       User[]
-  form          Form?
-  applications  Application[]
-  competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  id            Int           @id @default(autoincrement())
+  name          String
+  currentSize   Int           @default(1)
+  targetSize    Int
+  description   String?
+  telegramLink  String?
+  targetSkills  String[]
   competitionId Int
+  competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  applications  Application[]
+  form          Form?
+  members       User[]
 }
 
 model Competition {
