@@ -13,14 +13,14 @@ import {
   InputGroup,
   InputLeftElement,
   NumberInput,
-  CircularProgress,
   NumberInputField,
 } from "@chakra-ui/react";
 import { MdOutlineEmail } from "react-icons/md";
-import { BsGithub, BsPerson, BsLinkedin } from "react-icons/bs";
+import { BsGithub, BsPerson, BsLinkedin, BsTelegram } from "react-icons/bs";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import clientApi from "../../core/api/client";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
+import Loading from "../Loading";
 
 interface Profile {
   id: string | null;
@@ -31,24 +31,10 @@ interface Profile {
   specialisation: string | null;
   linkedinUrl: string | null;
   gitHubUrl: string | null;
+  telegramUrl: string | null;
 }
 
-const ProfileForm = ({
-  displayAll,
-}: // profile,
-{
-  displayAll?: boolean;
-  // profile: {
-  //   id: null;
-  //   name: "";
-  //   yearOfStudy: null;
-  //   email: "";
-  //   major: "";
-  //   specialisation: "";
-  //   linkedinUrl: "";
-  //   gitHubUrl: "";
-  // };
-}) => {
+const ProfileForm = ({ displayAll }: { displayAll?: boolean }) => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const { presentToast } = useCustomToast();
 
@@ -81,18 +67,14 @@ const ProfileForm = ({
         presentToast({
           title: "Can't update your profile details",
           position: "top",
-          description: err.data.message,
+          description: "Please check that your field entries are accurate",
           status: "error",
         });
       });
   };
 
   return profile === null ? (
-    <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
-      <WrapItem>
-        <CircularProgress isIndeterminate color="primary.500" />
-      </WrapItem>
-    </Wrap>
+    <Loading />
   ) : (
     <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
       <WrapItem>
@@ -228,6 +210,27 @@ const ProfileForm = ({
                       setProfile({
                         ...profile,
                         gitHubUrl: event.target.value,
+                      })
+                    }
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl id="Telegram">
+                <FormLabel>Telegram Username</FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<BsTelegram color="gray.800" />}
+                  />
+                  <Input
+                    type="text"
+                    size="md"
+                    placeholder="@username"
+                    value={profile.telegramUrl}
+                    onChange={(event) =>
+                      setProfile({
+                        ...profile,
+                        telegramUrl: event.target.value,
                       })
                     }
                   />

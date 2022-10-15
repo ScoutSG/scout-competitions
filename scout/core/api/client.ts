@@ -1,11 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { useSession } from "next-auth/react";
-// import { getAccessToken } from "../localStorage/auth";
 
-export const BASE_URL = "";
-
-
-const client = axios.create({
+export const client = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
   timeout: 30000,
   headers: {
@@ -15,10 +10,10 @@ const client = axios.create({
 });
 
 // client.interceptors.request.use((config: AxiosRequestConfig) => {
-//   // const accessToken = null; // getAccessToken
-//   // if (config.headers) {
-//   //   config.headers.Authorization = accessToken ? `Bearer ${accessToken}` : "";
-//   // }
+//   const  = useSession; // getAccessToken
+//   if (config.headers) {
+//     config.headers.Authorization = "Token " + 
+//   }
 //   return config;
 // });
 

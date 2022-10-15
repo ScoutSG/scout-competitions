@@ -14,31 +14,15 @@ import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "../../components/Competition/Summary";
 import { AxiosResponse } from "axios";
 import clientApi from "../../core/api/client";
-import prisma from "../../lib/prisma";
-
-// export async function getServerSideProps() {
-//   let response: AxiosResponse<any, any>;
-//   try {
-//     response = await clientApi.get("/competitions");
-//   } catch (err) {
-//     return { notFound: true };
-//   }
-//   const competitions = response.data;
-
-//   return {
-//     props: {
-//       competitions,
-//     },
-//   };
-// }
 
 export async function getStaticProps() {
-  let competitions = await prisma.competition.findMany({
-    include: {
-      groups: true,
-    },
-  });
-  competitions = JSON.parse(JSON.stringify(competitions));
+  let response: AxiosResponse<any, any>;
+  try {
+    response = await clientApi.get("/competitions");
+  } catch (err) {
+    return { notFound: true };
+  }
+  const competitions = response.data;
 
   return {
     props: {

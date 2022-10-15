@@ -19,18 +19,33 @@ import GroupSummaryCard from "../../../components/Group/Summary";
 import NotFound from "../../../components/NotFound";
 import Head from "next/head";
 import clientApi from "../../../core/api/client";
+import { AxiosResponse } from "axios";
 import {
   CompetitionData,
   GroupSummaryData,
 } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
+import { userIsMember } from "../../../lib/hooks/useUserDetails";
+import { maxWidth } from "../../../core/utils/maxWidth";
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: "blocking", // can also be true or 'blocking'
+  };
+}
+
+export async function getStaticProps(context) {
   const competitionId = context.params.competitionId;
-  const response = await clientApi.get(`/competitions/${competitionId}`);
+  let response: AxiosResponse<any, any>;
+  try {
+    response = await clientApi.get(`/competitions/${competitionId}`);
+  } catch (err) {
+    return { notFound: true };
+  }
   const competition = response.data;
 
-  return { props: { competition } };
+  return { props: { competition }, revalidate: 60 };
 }
 
 const CompetitionDetails = ({
@@ -42,6 +57,22 @@ const CompetitionDetails = ({
     window.open(competition.link, "_blank");
   };
 
+  // front end validation
+  let isMemberOfCompetition = false;
+  const groupProps: { group: GroupSummaryData; isMember: boolean }[] = (
+    competition.groups as any[]
+  ).map((group) => {
+    return { group: group, isMember: false };
+  });
+
+  for (let i = 0; i < competition.groups.length; i++) {
+    if (userIsMember(competition.groups[i].members)) {
+      isMemberOfCompetition = true;
+      groupProps[i].isMember = true;
+      break;
+    }
+  }
+
   return competition === null ? (
     <NotFound />
   ) : (
@@ -51,12 +82,12 @@ const CompetitionDetails = ({
       </Head>
       <Center>
         <Stack
-          maxW="1260px"
+          maxW={maxWidth}
           py={5}
           px={{ base: 4, md: 10 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Stack direction="column" spacing={8} flex={3}>
+          <Stack direction="column" spacing={8} flex={3} px={4}>
             <Stack spacing={4}>
               <Box as={"header"} w="100%">
                 <Heading fontWeight="black">{competition.name}</Heading>
@@ -127,22 +158,35 @@ const CompetitionDetails = ({
               <Text>{competition.groups.length} groups found</Text>
             </Stack>
             {competition.groups.length === 0 ? (
-              <Stack spacing={4} mt={10}>
+              <>
                 <Text>No groups have been formed yet!</Text>
-                <Heading size="md">Looking for a team?</Heading>
-                <NextLink href={`/competitions/${competition.id}/groups`}>
-                  <Button rightIcon={<ChevronRightIcon />}>
-                    Lead a team now
-                  </Button>
-                </NextLink>
-              </Stack>
+                <Stack spacing={4}>
+                  <Heading size="md" fontWeight="black">
+                    Can't find a suitable team?
+                  </Heading>
+                  <NextLink href={`/competitions/${competition.id}/groups`}>
+                    <Button
+                      rightIcon={<ChevronRightIcon />}
+                      bgColor="primary.500"
+                      color="white"
+                      _hover={{ bgColor: "gray.200", color: "primary.500" }}
+                    >
+                      Lead a team now
+                    </Button>
+                  </NextLink>
+                </Stack>
+              </>
             ) : (
-              competition.groups.map((group) => (
-                <GroupSummaryCard group={group} />
+              groupProps.map((grpProps) => (
+                <GroupSummaryCard
+                  group={grpProps.group}
+                  isMemberOfCompetition={isMemberOfCompetition}
+                  isMember={grpProps.isMember}
+                />
               ))
             )}
           </Stack>
-          <Stack flex={1}>
+          <Stack flex={1} px={4}>
             <NextLink href={`/competitions/${competition.id}/groups`}>
               <Button
                 rightIcon={<ChevronRightIcon />}
@@ -150,6 +194,7 @@ const CompetitionDetails = ({
                 bg={"primary.500"}
                 _hover={{ color: "primaryLight", bg: "gray.200" }}
                 w="full"
+                disabled={isMemberOfCompetition}
               >
                 Lead a team
               </Button>

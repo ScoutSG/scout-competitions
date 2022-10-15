@@ -97,7 +97,9 @@ const ApplicationReview: React.FC<{
 
   return (
     <Stack spacing={4} w={"100%"}>
-      <Heading size="lg">Review Requests</Heading>
+      <Heading size="md" fontWeight="black">
+        Review Requests
+      </Heading>
       <Stack spacing={4}>
         <Text>
           {applicationsToDisplay.length === 0

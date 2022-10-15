@@ -11,16 +11,21 @@ import {
   Button,
   Avatar,
   AvatarGroup,
-  Divider,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
-import { userIsMember } from "../../../lib/hooks/useUserDetails";
 
-const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
+const GroupSummaryCard = ({
+  group,
+  isMemberOfCompetition,
+  isMember,
+}: {
+  group: GroupSummaryData;
+  isMemberOfCompetition: boolean;
+  isMember: boolean;
+}) => {
   const router = useRouter();
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
   let groupSize: number = group.currentSize;
@@ -35,7 +40,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
     }
   }
 
-  const isMember = userIsMember(group.members);
+  // const isMember = userIsMember(group.members);
 
   return (
     <Center py={2}>
@@ -106,6 +111,7 @@ const GroupSummaryCard: React.FC<{ group: GroupSummaryData }> = ({ group }) => {
               color="primary.500"
               bgColor="transparent"
               _hover={{}}
+              disabled={isMemberOfCompetition}
             >
               Request to join
             </Button>
