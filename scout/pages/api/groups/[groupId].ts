@@ -47,7 +47,6 @@ export default async function handle(req, res) {
         targetSize,
         description,
         targetSkills,
-
         members,
       } = req.body;
 

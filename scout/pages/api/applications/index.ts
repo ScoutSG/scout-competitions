@@ -64,9 +64,28 @@ async function handleAdd(req, res) {
       }
     }
   })
-  
+
   if (existingApplication) { 
     res.statusMessage = "Existing request to the team found."
+    res.status(400).end();
+    return;
+  }
+
+  let competitions = await prisma.competition.findMany({
+    include: {
+      groups: {
+        include: {
+          members: true
+        }
+      }
+    }
+  })
+
+  const competition = competitions.filter(comp => comp.groups.filter(grp => grp.id === groupId).length > 0)[0];
+  let isMember = competition.groups.filter(grp => grp.members.filter(mbr => mbr.id === userId).length > 0).length > 0;
+
+  if (isMember) {
+    res.statusMessage = "Already a member of a competing team."
     res.status(400).end();
     return;
   }
