@@ -7,6 +7,7 @@ export interface Member {
   specialisation: string;
   linkedinUrl: string;
   gitHubUrl: string;
+  telegramUrl: string;
 }
 
 export interface Application {

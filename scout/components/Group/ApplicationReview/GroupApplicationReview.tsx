@@ -19,7 +19,13 @@ import {
   IconButton,
   Stack,
 } from "@chakra-ui/react";
-import { TbBrandGithub, TbBrandLinkedin, TbCheck, TbX } from "react-icons/tb";
+import {
+  TbBrandGithub,
+  TbBrandLinkedin,
+  TbBrandTelegram,
+  TbCheck,
+  TbX,
+} from "react-icons/tb";
 
 import clientApi from "../../../core/api/client";
 import { Group } from "../../../core/types/Group";
@@ -95,6 +101,10 @@ const ApplicationReview: React.FC<{
       });
   };
 
+  const openTelegram = (telegramUsername) => {
+    window.open(`https://www.t.me/${telegramUsername}`, "_blank");
+  };
+
   return (
     <Stack spacing={4} w={"100%"}>
       <Heading size="md" fontWeight="black">
@@ -158,6 +168,21 @@ const ApplicationReview: React.FC<{
                 </h2>
                 <AccordionPanel pb={4}>
                   <List spacing={3}>
+                    {!applicant.telegramUrl ? null : (
+                      <ListItem>
+                        <Button
+                          as="a"
+                          onClick={() => openTelegram(applicant.telegramUrl)}
+                          target="_blank"
+                          variant="ghost"
+                          leftIcon={<TbBrandTelegram />}
+                          rounded="xl"
+                          colorScheme="blue"
+                        >
+                          Direct Message
+                        </Button>
+                      </ListItem>
+                    )}
                     {!applicant.linkedinUrl ? null : (
                       <ListItem>
                         <Button
