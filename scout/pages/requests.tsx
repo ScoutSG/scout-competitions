@@ -4,7 +4,6 @@ import {
   Stack,
   Text,
   Button,
-  Badge,
   Container,
   CircularProgress,
 } from "@chakra-ui/react";
@@ -14,6 +13,7 @@ import clientApi from "../core/api/client";
 import Link from "next/link";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Group } from "../core/types/Group";
+import Loading from "../components/Loading";
 
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
@@ -39,9 +39,11 @@ const ApplicationsPreview = () => {
     }
 
     getApplications();
-  }, []);
+  }, [status]);
 
-  return status !== "authenticated" ? (
+  return applications === null ? (
+    <Loading />
+  ) : status !== "authenticated" ? (
     <Container maxW="1260px">
       <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
         <Stack direction="row" alignItems="center">

@@ -3,7 +3,6 @@ import "@fontsource/open-sans/800.css";
 import {
   Flex,
   Container,
-  Image,
   Text,
   HStack,
   Spacer,
@@ -26,7 +25,6 @@ import {
   Center,
   MenuDivider,
   MenuItem,
-  useMediaQuery,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import {
@@ -38,13 +36,13 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 import { MouseEventHandler } from "react";
-import { useSession } from "next-auth/react";
+import { useUserDetails } from "../../lib/hooks/useUserDetails";
 import { signOut } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
 
 const NavigationBar: React.FC = () => {
-  const { data: session, status } = useSession();
   const { isOpen, onToggle } = useDisclosure();
+  const { userDetails } = useUserDetails();
 
   return (
     <>
@@ -71,12 +69,13 @@ const NavigationBar: React.FC = () => {
             <Spacer />
             <HStack spacing={"16px"} height={"80px"} alignItems={"center"}>
               {/* <ThemeButton /> */}
-              {status != "authenticated" && <SignIn />}
-              {status === "authenticated" && (
+              {!userDetails ? (
+                <SignIn />
+              ) : (
                 <AvatarMenu
-                  name={session.user.name}
-                  email={session.user.email}
-                  image={session.user.image}
+                  name={userDetails.name}
+                  email={userDetails.email}
+                  image={userDetails.image}
                 />
               )}
               <MobileButton onToggle={onToggle} isOpen={isOpen} />

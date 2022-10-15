@@ -19,18 +19,31 @@ import GroupSummaryCard from "../../../components/Group/Summary";
 import NotFound from "../../../components/NotFound";
 import Head from "next/head";
 import clientApi from "../../../core/api/client";
+import { AxiosResponse } from "axios";
 import {
   CompetitionData,
   GroupSummaryData,
 } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: "blocking", // can also be true or 'blocking'
+  };
+}
+
+export async function getStaticProps(context) {
   const competitionId = context.params.competitionId;
-  const response = await clientApi.get(`/competitions/${competitionId}`);
+  let response: AxiosResponse<any, any>;
+  try {
+    response = await clientApi.get(`/competitions/${competitionId}`);
+  } catch (err) {
+    return { notFound: true };
+  }
   const competition = response.data;
 
-  return { props: { competition } };
+  return { props: { competition }, revalidate: 60 };
 }
 
 const CompetitionDetails = ({
@@ -56,7 +69,7 @@ const CompetitionDetails = ({
           px={{ base: 4, md: 10 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Stack direction="column" spacing={8} flex={3}>
+          <Stack direction="column" spacing={8} flex={3} px={4}>
             <Stack spacing={4}>
               <Box as={"header"} w="100%">
                 <Heading fontWeight="black">{competition.name}</Heading>
@@ -142,7 +155,7 @@ const CompetitionDetails = ({
               ))
             )}
           </Stack>
-          <Stack flex={1}>
+          <Stack flex={1} px={4}>
             <NextLink href={`/competitions/${competition.id}/groups`}>
               <Button
                 rightIcon={<ChevronRightIcon />}
