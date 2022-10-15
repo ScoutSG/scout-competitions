@@ -3,9 +3,12 @@ import {
   Button,
   Stack,
   Text,
-  ButtonGroup,
   Avatar,
+  Wrap,
+  WrapItem,
   useClipboard,
+  useMediaQuery,
+  IconButton,
 } from "@chakra-ui/react";
 
 import {
@@ -13,9 +16,13 @@ import {
   TbBrandLinkedin,
   TbMail,
   TbBrandTelegram,
+  TbCopy,
 } from "react-icons/tb";
 
 const MemberCard = ({ member }) => {
+  // 48em is the default breakpoint for width size = md
+  const [isLargerThanMd] = useMediaQuery("(min-width: 48em)");
+
   const clipboard = (value) => {
     const { hasCopied, onCopy } = useClipboard(value, 500);
 
@@ -42,11 +49,12 @@ const MemberCard = ({ member }) => {
       align="center"
       spacing={10}
       rounded={"md"}
-      px={4}
+      px={{ base: 1, md: 4 }}
       py={2}
+      w="100%"
     >
       <Avatar src={member.image ? member.image : member.email.charAt(0)} />
-      <Stack spacing={1}>
+      <Stack spacing={1} w="full">
         <Text fontWeight="bold" fontSize="xl">
           {member.name}
         </Text>
@@ -57,27 +65,53 @@ const MemberCard = ({ member }) => {
           {member.specialization}
         </Badge>
 
-        <ButtonGroup
-          variant="outline"
-          flexDirection={{ base: "column", md: "row" }}
-        >
+        <Text>Contact Details</Text>
+        <Wrap spacing={2}>
           {Object.entries(member).map((attribute) => {
             if (attribute[0] in mapFieldToIcon && attribute[1]) {
               return (
-                <Button
-                  leftIcon={mapFieldToIcon[attribute[0]]}
-                  onClick={mapFieldToClipboard[attribute[0]].copyToClipboard}
-                >
-                  {mapFieldToClipboard[attribute[0]].hasCopied
-                    ? "Copied"
-                    : (attribute[1] as string)}
-                </Button>
+                <WrapItem w={{ base: "fit-content", md: "fit-content" }}>
+                  {!isLargerThanMd ? (
+                    <IconButton
+                      aria-label={"icon-" + attribute[0]}
+                      icon={
+                        mapFieldToClipboard[attribute[0]].hasCopied ? (
+                          <TbCopy />
+                        ) : (
+                          mapFieldToIcon[attribute[0]]
+                        )
+                      }
+                      bgColor={
+                        mapFieldToClipboard[attribute[0]].hasCopied
+                          ? "gray.200"
+                          : "transparent"
+                      }
+                      variant="outline"
+                      onClick={
+                        mapFieldToClipboard[attribute[0]].copyToClipboard
+                      }
+                    />
+                  ) : (
+                    <Button
+                      leftIcon={mapFieldToIcon[attribute[0]]}
+                      onClick={
+                        mapFieldToClipboard[attribute[0]].copyToClipboard
+                      }
+                      fontWeight="normal"
+                      variant="outline"
+                    >
+                      {mapFieldToClipboard[attribute[0]].hasCopied
+                        ? "Copied"
+                        : (attribute[1] as string)}
+                    </Button>
+                  )}
+                </WrapItem>
               );
             } else {
               return null;
             }
           })}
-        </ButtonGroup>
+        </Wrap>
       </Stack>
     </Stack>
   );
