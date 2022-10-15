@@ -31,18 +31,7 @@ import clientApi from "../../core/api/client";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import { useForm } from "react-hook-form";
 import Loading from "../Loading";
-
-interface Profile {
-  id: string | null;
-  name: string | null;
-  yearOfStudy: number | null;
-  email: string | null;
-  major: string | null;
-  specialisation: string | null;
-  linkedinUrl: string | null;
-  gitHubUrl: string | null;
-  telegramUrl: string | null;
-}
+import { Profile } from "../../core/types/Profile";
 
 const ProfileForm = () => {
   const {
