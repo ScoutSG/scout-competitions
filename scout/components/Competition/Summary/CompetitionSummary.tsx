@@ -32,7 +32,8 @@ const CompetitionSummaryCard: React.FC<{
       <NextLink href={`/competitions/${competition.id}`}>
         <a>
           <Box
-            w={"full"}
+            w={"100vw"}
+            maxW="1260px"
             rounded={"md"}
             py={2}
             px={4}
@@ -50,12 +51,18 @@ const CompetitionSummaryCard: React.FC<{
               >
                 <Icon as={MdTimer} />
                 <Text fontWeight={800} fontSize={"sm"}>
-                  {daysLeft(competition.deadline)} days left
+                  {daysLeft(competition.deadline) < 0
+                    ? "Expired"
+                    : daysLeft(competition.deadline) + " days left"}
                 </Text>
               </Stack>
 
               <Heading fontSize={"lg"}>{competition.name}</Heading>
-              <Stack direction="row" align="center" spacing={5}>
+              <Stack
+                direction={{ base: "column", md: "row" }}
+                align={{ base: "normal", md: "center" }}
+                spacing={{ base: 2, md: 5 }}
+              >
                 {competition.organiserName === "" ? null : (
                   <Badge
                     w="fit-content"
@@ -87,7 +94,9 @@ const CompetitionSummaryCard: React.FC<{
               </Stack>
 
               <Stack>
-                <Text>{competition.description}</Text>
+                <Text noOfLines={{ base: 5, md: 100 }}>
+                  {competition.description}
+                </Text>
               </Stack>
               {isHovering ? (
                 <Fade in={isHovering}>

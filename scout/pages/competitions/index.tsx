@@ -119,14 +119,12 @@ const CompetitionSummaryView: React.FC<{
         </Stack>
       ) : (
         <Stack align="center" spacing={1} justify="center">
-          <Box maxW="3xl" w="100%">
-            <Text fontWeight="black" mb={4}>
-              {competitions.length} Results Found
-            </Text>
-            {competitions.map((competition) => (
-              <CompetitionSummaryCard competition={competition} />
-            ))}
-          </Box>
+          <Text fontWeight="black" mb={4}>
+            {competitions.length} Results Found
+          </Text>
+          {competitions.map((competition) => (
+            <CompetitionSummaryCard competition={competition} />
+          ))}
         </Stack>
       )}
     </Box>
