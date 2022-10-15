@@ -127,11 +127,12 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
           status: "success",
           position: "top",
         });
-      } catch {
+      } catch (err) {
         presentToast({
-          title: "Failed to send your request",
+          title: "Failed to submit your request",
           position: "top",
           status: "error",
+          description: err.response.statusText,
         });
       }
     } else {

@@ -54,64 +54,72 @@ const MemberCard = ({ member }) => {
       w="100%"
     >
       <Avatar src={member.image ? member.image : member.email.charAt(0)} />
-      <Stack spacing={1} w="full">
+      <Stack spacing={2} w="full">
         <Text fontWeight="bold" fontSize="xl">
           {member.name}
         </Text>
-        <Badge w="fit-content" px={2}>
-          {member.major}
-        </Badge>
-        <Badge w="fit-content" px={2}>
-          {member.specialization}
-        </Badge>
+        <Stack direction={{ base: "column", md: "row" }} spacing={1}>
+          {member.major ? (
+            <Badge w="fit-content" px={2}>
+              {member.major}
+            </Badge>
+          ) : null}
+          {member.specialisation ? (
+            <Badge w="fit-content" px={2}>
+              {member.specialisation}
+            </Badge>
+          ) : null}
+        </Stack>
 
-        <Text>Contact Details</Text>
-        <Wrap spacing={2}>
-          {Object.entries(member).map((attribute) => {
-            if (attribute[0] in mapFieldToIcon && attribute[1]) {
-              return (
-                <WrapItem w={{ base: "fit-content", md: "fit-content" }}>
-                  {!isLargerThanMd ? (
-                    <IconButton
-                      aria-label={"icon-" + attribute[0]}
-                      icon={
-                        mapFieldToClipboard[attribute[0]].hasCopied ? (
-                          <TbCopy />
-                        ) : (
-                          mapFieldToIcon[attribute[0]]
-                        )
-                      }
-                      bgColor={
-                        mapFieldToClipboard[attribute[0]].hasCopied
-                          ? "gray.200"
-                          : "transparent"
-                      }
-                      variant="outline"
-                      onClick={
-                        mapFieldToClipboard[attribute[0]].copyToClipboard
-                      }
-                    />
-                  ) : (
-                    <Button
-                      leftIcon={mapFieldToIcon[attribute[0]]}
-                      onClick={
-                        mapFieldToClipboard[attribute[0]].copyToClipboard
-                      }
-                      fontWeight="normal"
-                      variant="outline"
-                    >
-                      {mapFieldToClipboard[attribute[0]].hasCopied
-                        ? "Copied"
-                        : (attribute[1] as string)}
-                    </Button>
-                  )}
-                </WrapItem>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </Wrap>
+        <Stack spacing={1}>
+          <Text fontWeight="semibold">Contact</Text>
+          <Wrap spacing={0.5}>
+            {Object.entries(member).map((attribute) => {
+              if (attribute[0] in mapFieldToIcon && attribute[1]) {
+                return (
+                  <WrapItem w={{ base: "fit-content", md: "fit-content" }}>
+                    {!isLargerThanMd ? (
+                      <IconButton
+                        aria-label={"icon-" + attribute[0]}
+                        icon={
+                          mapFieldToClipboard[attribute[0]].hasCopied ? (
+                            <TbCopy />
+                          ) : (
+                            mapFieldToIcon[attribute[0]]
+                          )
+                        }
+                        bgColor={
+                          mapFieldToClipboard[attribute[0]].hasCopied
+                            ? "gray.200"
+                            : "transparent"
+                        }
+                        variant="outline"
+                        onClick={
+                          mapFieldToClipboard[attribute[0]].copyToClipboard
+                        }
+                      />
+                    ) : (
+                      <Button
+                        leftIcon={mapFieldToIcon[attribute[0]]}
+                        onClick={
+                          mapFieldToClipboard[attribute[0]].copyToClipboard
+                        }
+                        fontWeight="normal"
+                        variant="outline"
+                      >
+                        {mapFieldToClipboard[attribute[0]].hasCopied
+                          ? "Copied"
+                          : (attribute[1] as string)}
+                      </Button>
+                    )}
+                  </WrapItem>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </Wrap>
+        </Stack>
       </Stack>
     </Stack>
   );

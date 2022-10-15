@@ -54,6 +54,23 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
 async function handleAdd(req, res) {
   const { formId, userId, answers, groupId } = req.body;
 
+  let existingApplication = await prisma.application.findFirst({
+    where: {
+      group: {
+        id: groupId
+      },
+      applicant: {
+        id: userId
+      }
+    }
+  })
+  
+  if (existingApplication) { 
+    res.statusMessage = "Existing request to the team found."
+    res.status(400).end();
+    return;
+  }
+
   const application = await prisma.application.create({
     data: {
       applicant: {
