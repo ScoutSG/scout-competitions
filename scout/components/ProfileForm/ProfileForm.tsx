@@ -216,7 +216,7 @@ const ProfileForm = ({ displayAll }: { displayAll?: boolean }) => {
                 </InputGroup>
               </FormControl>
               <FormControl id="Telegram">
-                <FormLabel>Telegram URL</FormLabel>
+                <FormLabel>Telegram Username</FormLabel>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"

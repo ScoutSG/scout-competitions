@@ -14,6 +14,7 @@ import Link from "next/link";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Group } from "../core/types/Group";
 import Loading from "../components/Loading";
+import { maxWidth } from "../core/utils/maxWidth";
 
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
@@ -44,7 +45,7 @@ const ApplicationsPreview = () => {
   return applications === null ? (
     <Loading />
   ) : status !== "authenticated" ? (
-    <Container maxW="1260px">
+    <Container maxW={maxWidth}>
       <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
         <Stack direction="row" alignItems="center">
           <Text fontWeight="semibold">Your Applications</Text>
@@ -62,7 +63,7 @@ const ApplicationsPreview = () => {
       </Stack>
     </Container>
   ) : (
-    <Container maxW="1260px">
+    <Container maxW={maxWidth}>
       <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
         <Stack direction="row" alignItems="center">
           <Text fontWeight="semibold">Your Applications</Text>

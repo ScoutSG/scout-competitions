@@ -25,6 +25,7 @@ import {
   GroupSummaryData,
 } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
+import { userIsMember } from "../../../lib/hooks/useUserDetails";
 
 export async function getStaticPaths() {
   return {
@@ -54,6 +55,22 @@ const CompetitionDetails = ({
   const onSeeMore = () => {
     window.open(competition.link, "_blank");
   };
+
+  // front end validation
+  let isMemberOfCompetition = false;
+  const groupProps: { group: GroupSummaryData; isMember: boolean }[] = (
+    competition.groups as any[]
+  ).map((group) => {
+    return { group: group, isMember: false };
+  });
+
+  for (let i = 0; i < competition.groups.length; i++) {
+    if (userIsMember(competition.groups[i].members)) {
+      isMemberOfCompetition = true;
+      groupProps[i].isMember = true;
+      break;
+    }
+  }
 
   return competition === null ? (
     <NotFound />
@@ -140,18 +157,31 @@ const CompetitionDetails = ({
               <Text>{competition.groups.length} groups found</Text>
             </Stack>
             {competition.groups.length === 0 ? (
-              <Stack spacing={4} mt={10}>
+              <>
                 <Text>No groups have been formed yet!</Text>
-                <Heading size="md">Looking for a team?</Heading>
-                <NextLink href={`/competitions/${competition.id}/groups`}>
-                  <Button rightIcon={<ChevronRightIcon />}>
-                    Lead a team now
-                  </Button>
-                </NextLink>
-              </Stack>
+                <Stack spacing={4}>
+                  <Heading size="md" fontWeight="black">
+                    Can't find a suitable team?
+                  </Heading>
+                  <NextLink href={`/competitions/${competition.id}/groups`}>
+                    <Button
+                      rightIcon={<ChevronRightIcon />}
+                      bgColor="primary.500"
+                      color="white"
+                      _hover={{ bgColor: "gray.200", color: "primary.500" }}
+                    >
+                      Lead a team now
+                    </Button>
+                  </NextLink>
+                </Stack>
+              </>
             ) : (
-              competition.groups.map((group) => (
-                <GroupSummaryCard group={group} />
+              groupProps.map((grpProps) => (
+                <GroupSummaryCard
+                  group={grpProps.group}
+                  isMemberOfCompetition={isMemberOfCompetition}
+                  isMember={grpProps.isMember}
+                />
               ))
             )}
           </Stack>
@@ -163,6 +193,7 @@ const CompetitionDetails = ({
                 bg={"primary.500"}
                 _hover={{ color: "primaryLight", bg: "gray.200" }}
                 w="full"
+                disabled={isMemberOfCompetition}
               >
                 Lead a team
               </Button>

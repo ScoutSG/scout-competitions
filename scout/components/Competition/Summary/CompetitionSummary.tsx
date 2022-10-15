@@ -20,6 +20,7 @@ import { MdCircle } from "react-icons/md";
 import { VscOctoface } from "react-icons/vsc";
 import { MdTimer } from "react-icons/md";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import { maxWidth } from "../../../core/utils/maxWidth";
 import NextLink from "next/link";
 
 const CompetitionSummaryCard: React.FC<{
@@ -33,7 +34,7 @@ const CompetitionSummaryCard: React.FC<{
         <a>
           <Box
             w={"100vw"}
-            maxW="1260px"
+            maxW={maxWidth}
             rounded={"md"}
             py={2}
             px={4}

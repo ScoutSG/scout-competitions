@@ -26,6 +26,7 @@ import Application from "../../../../../components/Group/Application";
 import clientApi from "../../../../../core/api/client";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
 import { userIsMember } from "../../../../../lib/hooks/useUserDetails";
+import { maxWidth } from "../../../../../core/utils/maxWidth";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -104,7 +105,7 @@ const GroupDetail: React.FC = ({
         direction={{ base: "column", md: "row" }}
         justify="center"
       >
-        <Stack flex={2} px={4} maxW="1260px">
+        <Stack flex={2} px={4} maxW={maxWidth}>
           <Flex justifyContent="space-between" alignItems="center">
             <Heading as="h1" size="xl">
               {group.name}
