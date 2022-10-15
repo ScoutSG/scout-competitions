@@ -26,6 +26,7 @@ import {
 } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
 import { userIsMember } from "../../../lib/hooks/useUserDetails";
+import { maxWidth } from "../../../core/utils/maxWidth";
 
 export async function getStaticPaths() {
   return {
@@ -81,7 +82,7 @@ const CompetitionDetails = ({
       </Head>
       <Center>
         <Stack
-          maxW="1260px"
+          maxW={maxWidth}
           py={5}
           px={{ base: 4, md: 10 }}
           direction={{ base: "column", md: "row" }}

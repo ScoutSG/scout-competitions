@@ -15,15 +15,18 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Center,
+  Divider,
 } from "@chakra-ui/react";
 
 import Link from "next/link";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { TbPencil, TbTrash } from "react-icons/tb";
 import ApplicationReview from "../../../../../components/Group/ApplicationReview";
 import Application from "../../../../../components/Group/Application";
+import MemberCard from "../../../../../components/MemberCard";
 import clientApi from "../../../../../core/api/client";
+import { useRouter } from "next/router";
+import { TbPencil, TbTrash } from "react-icons/tb";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
 import { userIsMember } from "../../../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../../../core/utils/maxWidth";
@@ -38,7 +41,7 @@ const ModifyGroupButtons = () => {
   };
 
   return (
-    <ButtonGroup>
+    <>
       <Link href={`/competitions/${competitionId}/groups/${groupId}/edit`}>
         <Button width="100%" leftIcon={<TbPencil />}>
           Edit Group
@@ -68,11 +71,18 @@ const ModifyGroupButtons = () => {
           </PopoverFooter>
         </PopoverContent>
       </Popover>
-    </ButtonGroup>
+    </>
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: "blocking", // can also be true or 'blocking'
+  };
+}
+
+export async function getStaticProps(context) {
   const groupId = context.params.groupId;
   const response = await clientApi.get(`/groups/${groupId}`);
   const group = response.data;
@@ -80,7 +90,7 @@ export async function getServerSideProps(context) {
   const res = await clientApi.get(`/forms/${groupId}`);
   const questionsData = res.data;
 
-  return { props: { group, questionsData } };
+  return { props: { group, questionsData }, revalidate: 60 };
 }
 
 const GroupDetail: React.FC = ({
@@ -98,57 +108,83 @@ const GroupDetail: React.FC = ({
       <Head>
         <title>{group.name} - Scout</title>
       </Head>
-      <Stack
-        spacing={10}
-        py={{ base: 5, md: 10 }}
-        px={4}
-        direction={{ base: "column", md: "row" }}
-        justify="center"
-      >
-        <Stack flex={2} px={4} maxW={maxWidth}>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Heading as="h1" size="xl">
-              {group.name}
+
+      <Center>
+        <Stack
+          spacing={10}
+          py={5}
+          px={{ base: 4, md: 10 }}
+          direction={{ base: "column", md: "row" }}
+          w="full"
+          maxW={maxWidth}
+        >
+          <Stack flex={5} direction="column" spacing={8} px={4}>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Heading fontWeight="black">{group.name}</Heading>
+              <Badge px={4}>{isMember ? "Member" : null}</Badge>
+            </Flex>
+
+            <Divider />
+            {isMember ? (
+              <ApplicationReview applications={group.applications} />
+            ) : (
+              <Application questionsData={questionsData} />
+            )}
+            {isMember ? (
+              <Stack spacing={4}>
+                <Heading size="md" fontWeight="black">
+                  Members
+                </Heading>
+                <Stack>
+                  {group.members.map((mbr) => (
+                    <MemberCard member={mbr} />
+                  ))}
+                </Stack>
+              </Stack>
+            ) : null}
+          </Stack>
+          <Stack flex={2} rounded="md" px={4} w={"full"}>
+            <Heading size="md" fontWeight="black">
+              Group Details
             </Heading>
-            <Badge px={4}>{isMember ? "Member" : null}</Badge>
-          </Flex>
-          <Text
-            color={"secondary"}
-            textTransform={"uppercase"}
-            fontWeight={800}
-            fontSize={"sm"}
-          >
-            {group.targetSize - group.currentSize} spots left!
-          </Text>
-          <Text>{group.description}</Text>
-          {group.targetSkills.length === 0 ? null : (
-            <>
-              <Text
-                textTransform={"uppercase"}
-                fontWeight={800}
-                fontSize={"sm"}
-              >
-                Looking for
-              </Text>
-              <Box>
-                {group.targetSkills.map((skill) => (
-                  <Badge px={2} py={1} bg={"gray.50"} fontWeight={"400"} m={1}>
-                    #{skill}
-                  </Badge>
-                ))}
-              </Box>
-            </>
-          )}
-          {isMember ? <ModifyGroupButtons /> : null}
+
+            <Text
+              color={"secondary"}
+              textTransform={"uppercase"}
+              fontWeight={800}
+              fontSize={"sm"}
+            >
+              {group.targetSize - group.currentSize} spots left!
+            </Text>
+            <Text>{group.description}</Text>
+            {group.targetSkills.length === 0 ? null : (
+              <>
+                <Text
+                  textTransform={"uppercase"}
+                  fontWeight={800}
+                  fontSize={"sm"}
+                >
+                  Looking for
+                </Text>
+                <Box>
+                  {group.targetSkills.map((skill) => (
+                    <Badge
+                      px={2}
+                      py={1}
+                      bg={"gray.50"}
+                      fontWeight={"400"}
+                      m={1}
+                    >
+                      #{skill}
+                    </Badge>
+                  ))}
+                </Box>
+              </>
+            )}
+            {isMember ? <ModifyGroupButtons /> : null}
+          </Stack>
         </Stack>
-        <Flex flex={3} bgColor="gray.50" rounded="md" p={4} w={"full"}>
-          {isMember ? (
-            <ApplicationReview applications={group.applications} />
-          ) : (
-            <Application questionsData={questionsData} />
-          )}
-        </Flex>
-      </Stack>
+      </Center>
     </>
   );
 };

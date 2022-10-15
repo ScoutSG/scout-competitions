@@ -11,14 +11,11 @@ import {
   Button,
   Avatar,
   AvatarGroup,
-  Divider,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
-import { userIsMember } from "../../../lib/hooks/useUserDetails";
 
 const GroupSummaryCard = ({
   group,
