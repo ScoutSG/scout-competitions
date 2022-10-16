@@ -23,8 +23,6 @@ const generateRandomId = () => {
 export const createGroup = async (title: string, userId: string) => {
   await client.connect();
   try {
-    console.log("daheckie");
-    console.log(["me", userId]);
     const result = (await client.invoke(
       new Api.messages.CreateChat({
         users: ["me", userId],
@@ -42,7 +40,7 @@ export const createGroup = async (title: string, userId: string) => {
     return chatId;
   } catch (err) {
     if (err.errorMessage === "USERS_TOO_FEW") {
-      return client.invoke(
+      client.invoke(
         new Api.messages.SendMessage({
           peer: userId,
           message:
@@ -50,10 +48,10 @@ export const createGroup = async (title: string, userId: string) => {
           randomId: toBigInt(generateRandomId()),
         })
       );
+      throw new Error(
+        "Please add @scoutsg as a contact on Telegram so that we can set up a Telegram group for you!"
+      );
     }
-    throw new Error(
-      "Please add @scoutsg as a contact on Telegram so that we can set up a Telegram group for you!"
-    );
   }
 };
 
@@ -65,7 +63,6 @@ export const addToGroup = async (groupId: string, userId: string) => {
       userId,
     })
   );
-  console.log(result);
 };
 
 export const notifyGroup = async (groupId: string, message: string) => {
@@ -77,5 +74,4 @@ export const notifyGroup = async (groupId: string, message: string) => {
       randomId: toBigInt(generateRandomId()),
     })
   );
-  console.log(result);
 };
