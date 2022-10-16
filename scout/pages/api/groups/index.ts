@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
-import { createGroup } from "../../../core/utils/telegram";
+import {
+  createGroup,
+  notifyGroup,
+  sendWelcomeMessage,
+} from "../../../core/utils/telegram";
 
 // GET POST /api/groups
 export default async function handle(
@@ -48,16 +52,6 @@ async function handleAdd(req, res) {
     withTelegramGroup,
   } = req.body;
 
-  let groupId: number;
-  if (withTelegramGroup) {
-    const leader = await prisma.user.findUnique({
-      where: {
-        id: members[0],
-      },
-    });
-    groupId = await createGroup(name, leader.telegramUrl);
-  }
-
   const group = await prisma.group.create({
     data: {
       name,
@@ -73,9 +67,27 @@ async function handleAdd(req, res) {
           id: competitionId,
         },
       },
-      telegramLink: groupId ? String(groupId) : null,
     },
   });
+
+  let telegramGroupId: number;
+  if (withTelegramGroup) {
+    const leader = await prisma.user.findUnique({
+      where: {
+        id: members[0],
+      },
+    });
+    telegramGroupId = await createGroup(name, leader.telegramUrl);
+    await sendWelcomeMessage(telegramGroupId, name, competitionId, group.id);
+    await prisma.group.update({
+      where: {
+        id: group.id,
+      },
+      data: {
+        telegramLink: telegramGroupId ? String(telegramGroupId) : null,
+      },
+    });
+  }
 
   if (form) {
     const newForm = await prisma.form.create({

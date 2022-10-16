@@ -63,7 +63,7 @@ export default function TelegramSubForm({
   }
 
   // if there is already a group associated, cannot uncheck
-  if (group?.telegramLink !== undefined) {
+  if (group?.telegramLink !== null && group?.telegramLink !== undefined) {
     return (
       <FormControl>
         {formLabel}

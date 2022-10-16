@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
+import {
+  createGroup,
+  notifyGroup,
+  sendWelcomeMessage,
+} from "../../../core/utils/telegram";
 
 // GET, PATCH, DELETE /api/groups/id/
 export default async function handle(req, res) {
@@ -21,10 +26,10 @@ export default async function handle(req, res) {
               applicant: true,
               answers: {
                 include: {
-                  question: true
-                }
-              }
-            }
+                  question: true,
+                },
+              },
+            },
           },
         },
       });
@@ -48,7 +53,32 @@ export default async function handle(req, res) {
         description,
         targetSkills,
         members,
+        withTelegramGroup,
       } = req.body;
+
+      let telegramGroupId: number;
+      if (withTelegramGroup) {
+        const group = await prisma.group.findUnique({
+          where: {
+            id: groupId,
+          },
+        });
+
+        if (group.telegramLink === null) {
+          const leader = await prisma.user.findUnique({
+            where: {
+              id: members[0],
+            },
+          });
+          telegramGroupId = await createGroup(name, leader.telegramUrl);
+          await sendWelcomeMessage(
+            telegramGroupId,
+            name,
+            group.competitionId,
+            groupId
+          );
+        }
+      }
 
       const group = await prisma.group.update({
         where: {
@@ -63,6 +93,7 @@ export default async function handle(req, res) {
           members: {
             connect: members.map((x) => ({ id: x })),
           },
+          telegramLink: telegramGroupId ? String(telegramGroupId) : null,
         },
       });
       res.status(200).json(group);

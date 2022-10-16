@@ -55,6 +55,21 @@ export const createGroup = async (title: string, userId: string) => {
   }
 };
 
+export const sendWelcomeMessage = async (
+  telegramGroupId: string | number,
+  name: string,
+  competitionId: number,
+  groupId: number
+) => {
+  const message = [
+    `Welcome to the group chat for your team ${name}!`,
+    `You may review requests to join your team at ${process.env.NEXTAUTH_URL}/competitions/${competitionId}/groups/${groupId}.`,
+    `When you approve new members to join the team, they will automatically be added to this group chat if they have indicated their Telegram username and if their privacy settings allow.`,
+  ].join("\n\n");
+
+  await notifyGroup(telegramGroupId, message);
+};
+
 export const addToGroup = async (groupId: string, userId: string) => {
   await client.connect();
   const result = await client.invoke(
@@ -65,7 +80,10 @@ export const addToGroup = async (groupId: string, userId: string) => {
   );
 };
 
-export const notifyGroup = async (groupId: string, message: string) => {
+export const notifyGroup = async (
+  groupId: string | number,
+  message: string
+) => {
   await client.connect();
   const result = await client.invoke(
     new Api.messages.SendMessage({
