@@ -25,7 +25,7 @@ import {
   GroupSummaryData,
 } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
-import { userIsMember } from "../../../lib/hooks/useUserDetails";
+import { useIsMember } from "../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../core/utils/maxWidth";
 
 export async function getStaticPaths() {
@@ -58,20 +58,9 @@ const CompetitionDetails = ({
   };
 
   // front end validation
-  let isMemberOfCompetition = false;
-  const groupProps: { group: GroupSummaryData; isMember: boolean }[] = (
-    competition.groups as any[]
-  ).map((group) => {
-    return { group: group, isMember: false };
-  });
-
-  for (let i = 0; i < competition.groups.length; i++) {
-    if (userIsMember(competition.groups[i].members)) {
-      isMemberOfCompetition = true;
-      groupProps[i].isMember = true;
-      break;
-    }
-  }
+  const isMemberOfCompetition = useIsMember(
+    (competition.groups as any[]).flatMap((group) => group.members)
+  );
 
   return competition === null ? (
     <NotFound />
@@ -177,11 +166,10 @@ const CompetitionDetails = ({
                 </Stack>
               </>
             ) : (
-              groupProps.map((grpProps) => (
+              (competition.groups as any[]).map((group) => (
                 <GroupSummaryCard
-                  group={grpProps.group}
+                  group={group}
                   isMemberOfCompetition={isMemberOfCompetition}
-                  isMember={grpProps.isMember}
                 />
               ))
             )}

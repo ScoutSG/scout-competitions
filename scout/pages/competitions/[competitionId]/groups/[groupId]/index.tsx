@@ -28,7 +28,7 @@ import clientApi from "../../../../../core/api/client";
 import { useRouter } from "next/router";
 import { TbPencil, TbTrash } from "react-icons/tb";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
-import { userIsMember } from "../../../../../lib/hooks/useUserDetails";
+import { useIsMember } from "../../../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../../../core/utils/maxWidth";
 
 const ModifyGroupButtons = () => {
@@ -101,7 +101,7 @@ const GroupDetail: React.FC = ({
   questionsData: QuestionsData;
   app: any;
 }) => {
-  const isMember = userIsMember(group.members);
+  const isMember = useIsMember(group.members);
 
   return (
     <>

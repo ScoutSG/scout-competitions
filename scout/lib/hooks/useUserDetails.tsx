@@ -15,7 +15,7 @@ export const useUserDetails = () => {
   };
 };
 
-export const userIsMember = (
+export const useIsMember = (
   members: {
     id: number;
     name: string;

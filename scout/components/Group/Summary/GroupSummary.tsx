@@ -16,17 +16,17 @@ import { TbSend } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
+import { useIsMember } from "../../../lib/hooks/useUserDetails";
 
 const GroupSummaryCard = ({
   group,
   isMemberOfCompetition,
-  isMember,
 }: {
   group: GroupSummaryData;
   isMemberOfCompetition: boolean;
-  isMember: boolean;
 }) => {
   const router = useRouter();
+  const isMember = useIsMember(group.members);
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
   let groupSize: number = group.currentSize;
   let targetSize: number = group.targetSize;
@@ -39,8 +39,6 @@ const GroupSummaryCard = ({
       avatarIcons.push(<Avatar />);
     }
   }
-
-  // const isMember = userIsMember(group.members);
 
   return (
     <Center py={2}>
