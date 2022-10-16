@@ -52,6 +52,16 @@ async function handleAdd(req, res) {
     withTelegramGroup,
   } = req.body;
 
+  let telegramGroupId: number;
+  if (withTelegramGroup) {
+    const leader = await prisma.user.findUnique({
+      where: {
+        id: members[0],
+      },
+    });
+    telegramGroupId = await createGroup(name, leader.telegramUrl);
+  }
+
   const group = await prisma.group.create({
     data: {
       name,
@@ -67,26 +77,12 @@ async function handleAdd(req, res) {
           id: competitionId,
         },
       },
+      telegramLink: telegramGroupId ? String(telegramGroupId) : null,
     },
   });
 
-  let telegramGroupId: number;
-  if (withTelegramGroup) {
-    const leader = await prisma.user.findUnique({
-      where: {
-        id: members[0],
-      },
-    });
-    telegramGroupId = await createGroup(name, leader.telegramUrl);
+  if (telegramGroupId) {
     await sendWelcomeMessage(telegramGroupId, name, competitionId, group.id);
-    await prisma.group.update({
-      where: {
-        id: group.id,
-      },
-      data: {
-        telegramLink: telegramGroupId ? String(telegramGroupId) : null,
-      },
-    });
   }
 
   if (form) {

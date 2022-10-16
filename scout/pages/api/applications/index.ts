@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
+import { notifyGroup } from "../../../core/utils/telegram";
 
 // GET POST /api/applications
 export default async function handle(
@@ -90,7 +91,7 @@ async function handleAdd(req, res) {
     ).length > 0;
 
   if (isMember) {
-    res.statusMessage = "Already a member of a competing team.";
+    res.statusMessage = `You're already a member of a team for ${competition.name}! For each competition, you can only be in one group at a time.`;
     res.status(400).end();
     return;
   }
@@ -122,6 +123,23 @@ async function handleAdd(req, res) {
   }));
 
   await prisma.answer.createMany({ data: answersData });
+
+  const group = await prisma.group.findUnique({
+    where: {
+      id: groupId,
+    },
+  });
+  if (group.telegramLink !== "" && group.telegramLink !== null) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    await notifyGroup(
+      group.telegramLink,
+      `${user.name} has just requested to join this team!\n\nReview their request at ${process.env.NEXTAUTH_URL}/competitions/${competition.id}/groups/${groupId}.`
+    );
+  }
 
   res.status(200).json(application);
 }
