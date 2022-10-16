@@ -51,6 +51,10 @@ export const createGroup = async (title: string, userId: string) => {
       throw new Error(
         "Please add @scoutsg as a contact on Telegram so that we can set up a Telegram group for you!"
       );
+    } else if (err.message === `No user has "${userId}" as username`) {
+      throw new Error(
+        `I couldn't find anyone with the Telegram username you've indicated, @${userId}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
+      );
     }
   }
 };
