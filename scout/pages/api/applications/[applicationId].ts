@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
+import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
 
 // GET, PATCH, DELETE /api/applications/id/
 export default async function handle(req, res) {
@@ -34,7 +35,7 @@ export default async function handle(req, res) {
       const application = await prisma.application.delete({
         where: {
           id: applicationId,
-        }
+        },
       });
 
       res.status(200).json(application);
@@ -47,21 +48,6 @@ export default async function handle(req, res) {
         },
         data: {
           isApproved,
-          // applicant: {
-          //   connect: {
-          //     id: userId,
-          //   },
-          // },
-          // form: {
-          //   connect: {
-          //     id: formId,
-          //   },
-          // },
-          // group: {
-          //   connect: {
-          //     id: groupId,
-          //   },
-          // },
         },
       });
 
@@ -75,39 +61,75 @@ export default async function handle(req, res) {
         await prisma.answer.createMany({ data: answersData });
       }
 
+      let warningMessage = "";
+
       if (isApproved) {
         const approvedMember = await prisma.user.findUnique({
           where: {
-            id: application.userId
-          }
-        })
+            id: application.userId,
+          },
+        });
         const currentGroup = await prisma.group.findUnique({
           where: {
-            id: application.groupId
+            id: application.groupId,
           },
           include: {
-            members: true
-          }
+            members: true,
+          },
         });
-  
+
+        if (
+          approvedMember.telegramUrl === "" ||
+          approvedMember.telegramUrl === null
+        ) {
+          warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
+        } else {
+          try {
+            await addToGroup(
+              currentGroup.telegramLink,
+              approvedMember.telegramUrl
+            );
+            notifyGroup(
+              currentGroup.telegramLink,
+              `Welcome to the group, ${approvedMember.name}!`
+            );
+          } catch (err) {
+            if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
+              warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${approvedMember.telegramUrl} to this group yourself.`;
+            } else if (
+              err.message ===
+              `No user has "${approvedMember.telegramUrl}" as username`
+            ) {
+              warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
+            }
+          }
+        }
+
+        if (warningMessage !== "") {
+          notifyGroup(
+            currentGroup.telegramLink,
+            `You've approved a new member ${approvedMember.name} to join your team. ${warningMessage}`
+          );
+        }
+
         const currentMembers = currentGroup.members;
-        const updatedMembers = [...currentMembers, approvedMember]
-        const updatedMemberIds = updatedMembers.map(mem => ({id: mem.id}));
+        const updatedMembers = [...currentMembers, approvedMember];
+        const updatedMemberIds = updatedMembers.map((mem) => ({ id: mem.id }));
 
         await prisma.group.update({
           where: {
-            id: application.groupId
+            id: application.groupId,
           },
           data: {
             members: {
-              set: updatedMemberIds.map(mem => ({...mem}))
+              set: updatedMemberIds.map((mem) => ({ ...mem })),
             },
             currentSize: updatedMembers.length,
-          }
-        })
+          },
+        });
       }
 
-      res.status(200).json(application);
+      res.status(200).json({ application, warningMessage });
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);

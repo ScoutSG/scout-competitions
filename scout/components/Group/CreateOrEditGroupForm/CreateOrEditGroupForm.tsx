@@ -22,11 +22,13 @@ import { TbSend } from "react-icons/tb";
 import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
+import { Profile } from "../../../core/types/Profile";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 import { useDraftGroup } from "../../../lib/hooks/useDraftGroup";
 
 import QuestionsSubForm from "./QuestionsSubForm";
 import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
+import TelegramSubForm from "./TelegramSubForm";
 import { CreateOrEditGroupFormValue } from "./types";
 
 type CreateOrEditGroupFormProps = {
@@ -53,6 +55,8 @@ const CreateOrEditGroupForm = ({
       targetSize: group?.targetSize ?? competition.maxSize,
       targetSkills: group?.targetSkills.map(toOptionType) ?? [],
       questions: form?.questions ?? [],
+      withTelegramGroup:
+        group === undefined ?? group?.telegramLink !== undefined,
     },
   });
   const session = useSession();
@@ -73,6 +77,7 @@ const CreateOrEditGroupForm = ({
           (str) => str.questionString.length > 0
         ),
       },
+      withTelegramGroup: values.withTelegramGroup,
     };
     if (session.status === "authenticated") {
       const body = {
@@ -81,14 +86,22 @@ const CreateOrEditGroupForm = ({
       };
 
       let group_id: number;
-      if (group === undefined) {
-        const response = await clientApi.post("/groups", body);
-        group_id = response.data.id;
-      } else {
-        const response = await clientApi.patch(`/groups/${group.id}`, body);
-        group_id = response.data.id;
+      try {
+        if (group === undefined) {
+          const response = await clientApi.post("/groups", body);
+          group_id = response.data.id;
+        } else {
+          const response = await clientApi.patch(`/groups/${group.id}`, body);
+          group_id = response.data.id;
+        }
+        router.push(`/competitions/${competition.id}/groups/${group_id}`);
+      } catch (err) {
+        presentToast({
+          title: err.response.data,
+          position: "bottom",
+          status: "error",
+        });
       }
-      router.push(`/competitions/${competition.id}/groups/${group_id}`);
     } else {
       setDraftGroup(groupInfo);
       router.push("/auth/signin");
@@ -144,6 +157,7 @@ const CreateOrEditGroupForm = ({
       </FormControl>
       <SkillsSubForm control={control} />
       <QuestionsSubForm control={control} register={register} />
+      <TelegramSubForm register={register} group={group} />
       <Spacer />
       <Button
         color="white"

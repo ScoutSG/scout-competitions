@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
+import { notifyGroup } from "../../../core/utils/telegram";
 
 // GET POST /api/applications
 export default async function handle(
@@ -30,7 +31,7 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
   } else {
     const applications = await prisma.application.findMany({
       where: {
-        userId: session.user.id
+        userId: session.user.id,
       },
       include: {
         form: true,
@@ -57,16 +58,16 @@ async function handleAdd(req, res) {
   let existingApplication = await prisma.application.findFirst({
     where: {
       group: {
-        id: groupId
+        id: groupId,
       },
       applicant: {
-        id: userId
-      }
-    }
-  })
+        id: userId,
+      },
+    },
+  });
 
-  if (existingApplication) { 
-    res.statusMessage = "Existing request to the team found."
+  if (existingApplication) {
+    res.statusMessage = "You've already requested to join this team!";
     res.status(400).end();
     return;
   }
@@ -75,17 +76,22 @@ async function handleAdd(req, res) {
     include: {
       groups: {
         include: {
-          members: true
-        }
-      }
-    }
-  })
+          members: true,
+        },
+      },
+    },
+  });
 
-  const competition = competitions.filter(comp => comp.groups.filter(grp => grp.id === groupId).length > 0)[0];
-  let isMember = competition.groups.filter(grp => grp.members.filter(mbr => mbr.id === userId).length > 0).length > 0;
+  const competition = competitions.filter(
+    (comp) => comp.groups.filter((grp) => grp.id === groupId).length > 0
+  )[0];
+  let isMember =
+    competition.groups.filter(
+      (grp) => grp.members.filter((mbr) => mbr.id === userId).length > 0
+    ).length > 0;
 
   if (isMember) {
-    res.statusMessage = "Already a member of a competing team."
+    res.statusMessage = `You're already a member of a team for ${competition.name}! For each competition, you can only be in one group at a time.`;
     res.status(400).end();
     return;
   }
@@ -117,6 +123,23 @@ async function handleAdd(req, res) {
   }));
 
   await prisma.answer.createMany({ data: answersData });
+
+  const group = await prisma.group.findUnique({
+    where: {
+      id: groupId,
+    },
+  });
+  if (group.telegramLink !== "" && group.telegramLink !== null) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    await notifyGroup(
+      group.telegramLink,
+      `${user.name} has just requested to join this team!\n\nReview their request at ${process.env.NEXTAUTH_URL}/competitions/${competition.id}/groups/${groupId}.`
+    );
+  }
 
   res.status(200).json(application);
 }

@@ -30,6 +30,7 @@ export interface Group {
   members: Member[];
   hasApplied?: boolean;
   isLeader?: boolean;
+  telegramLink?: string;
   applications?: Application[];
 }
 
@@ -41,7 +42,7 @@ export interface Question {
 export interface QuestionsData {
   groupId: number;
   id: number; // formId
-  questions: Question[]
+  questions: Question[];
 }
 
 export interface Form {
