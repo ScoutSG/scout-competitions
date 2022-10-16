@@ -30,7 +30,7 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
   } else {
     const applications = await prisma.application.findMany({
       where: {
-        userId: session.user.id
+        userId: session.user.id,
       },
       include: {
         form: true,
@@ -57,16 +57,16 @@ async function handleAdd(req, res) {
   let existingApplication = await prisma.application.findFirst({
     where: {
       group: {
-        id: groupId
+        id: groupId,
       },
       applicant: {
-        id: userId
-      }
-    }
-  })
+        id: userId,
+      },
+    },
+  });
 
-  if (existingApplication) { 
-    res.statusMessage = "Existing request to the team found."
+  if (existingApplication) {
+    res.statusMessage = "You've already requested to join this team!";
     res.status(400).end();
     return;
   }
@@ -75,17 +75,22 @@ async function handleAdd(req, res) {
     include: {
       groups: {
         include: {
-          members: true
-        }
-      }
-    }
-  })
+          members: true,
+        },
+      },
+    },
+  });
 
-  const competition = competitions.filter(comp => comp.groups.filter(grp => grp.id === groupId).length > 0)[0];
-  let isMember = competition.groups.filter(grp => grp.members.filter(mbr => mbr.id === userId).length > 0).length > 0;
+  const competition = competitions.filter(
+    (comp) => comp.groups.filter((grp) => grp.id === groupId).length > 0
+  )[0];
+  let isMember =
+    competition.groups.filter(
+      (grp) => grp.members.filter((mbr) => mbr.id === userId).length > 0
+    ).length > 0;
 
   if (isMember) {
-    res.statusMessage = "Already a member of a competing team."
+    res.statusMessage = "Already a member of a competing team.";
     res.status(400).end();
     return;
   }
