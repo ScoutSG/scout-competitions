@@ -48,7 +48,7 @@ const ApplicationReview: React.FC<{
 
     await clientApi
       .patch(`/applications/${applicationId}`, body)
-      .then((res) => {
+      .then(async (res) => {
         setApplicationsToDisplay(
           applicationsToDisplay.filter(
             (application) => application.id != applicationId
@@ -59,6 +59,13 @@ const ApplicationReview: React.FC<{
           status: "success",
           position: "top",
         });
+        if (res.data.warningMessage) {
+          presentToast({
+            title: res.data.warningMessage,
+            status: "warning",
+            position: "top",
+          });
+        }
         return res;
       })
       .catch((err) =>
