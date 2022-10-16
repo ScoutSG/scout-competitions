@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -11,8 +11,17 @@ import {
   Button,
   Avatar,
   AvatarGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  ButtonGroup,
 } from "@chakra-ui/react";
-import { TbSend } from "react-icons/tb";
+import { TbSend, TbMessageShare, TbShare } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
@@ -27,6 +36,8 @@ const GroupSummaryCard = ({
 }) => {
   const router = useRouter();
   const isMember = useIsMember(group.members);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
   let groupSize: number = group.currentSize;
   let targetSize: number = group.targetSize;
@@ -94,17 +105,29 @@ const GroupSummaryCard = ({
         </Stack>
 
         {isMember ? (
-          <Link href={groupLink}>
-            <Button color="primary.500" bgColor="transparent" _hover={{}}>
-              View group
+          <Stack direction="row">
+            <Button
+              leftIcon={<TbShare />}
+              variant="solid"
+              color="white"
+              bgColor="primary.500"
+              _hover={{ color: "primary.500", bgColor: "transparent" }}
+              onClick={onOpen}
+            >
+              Share
             </Button>
-          </Link>
+            <Link href={groupLink}>
+              <Button color="primary.500" bgColor="transparent" _hover={{}}>
+                View group
+              </Button>
+            </Link>
+          </Stack>
         ) : groupSize === targetSize ? (
           <Button disabled>Team is full</Button>
         ) : (
           <Link href={groupLink}>
             <Button
-              rightIcon={<TbSend />}
+              leftIcon={<TbSend />}
               w="fit-content"
               color="primary.500"
               bgColor="transparent"
@@ -116,6 +139,28 @@ const GroupSummaryCard = ({
           </Link>
         )}
       </Stack>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Share {group.name}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              Share this link so that your peers can submit a request to your
+              team!
+            </ModalBody>
+            <ModalFooter>
+              <ButtonGroup>
+                <Button variant="ghost" colorScheme="blue">
+                  Telegram
+                </Button>
+                <Button variant="outline" colorScheme="purple" rounded="3xl">
+                  Copy Link
+                </Button>
+              </ButtonGroup>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
     </Center>
   );
 };
