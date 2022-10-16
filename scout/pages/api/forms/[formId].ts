@@ -18,7 +18,6 @@ export default async function handle(req, res) {
           applications: true,
         },
       });
-
       res.status(200).json(form);
     } else if (httpMethod === "DELETE") {
       const form = await prisma.form.delete({

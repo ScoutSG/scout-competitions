@@ -21,11 +21,12 @@ import {
   useDisclosure,
   ButtonGroup,
 } from "@chakra-ui/react";
-import { TbSend, TbMessageShare, TbShare } from "react-icons/tb";
+import { TbSend, TbShare, TbBrandTelegram, TbCopy } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
 import { useIsMember } from "../../../lib/hooks/useUserDetails";
+import { useUrlClipboard } from "../../../lib/hooks/useCustomClipboard";
 
 const GroupSummaryCard = ({
   group,
@@ -37,19 +38,58 @@ const GroupSummaryCard = ({
   const router = useRouter();
   const isMember = useIsMember(group.members);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
-  let groupSize: number = group.currentSize;
-  let targetSize: number = group.targetSize;
+  const clipboard = useUrlClipboard(groupLink);
 
-  let avatarIcons: React.ReactElement[] = [];
-  for (let i = 0; i < targetSize; i++) {
-    if (i < groupSize) {
-      avatarIcons.push(<Avatar bgColor="primaryLight" />);
-    } else {
-      avatarIcons.push(<Avatar />);
-    }
+  function linkify(inputText) {
+    //URLs starting with http://, https://, or ftp://
+    var replacePattern1 =
+      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    var replacedText = inputText.replace(
+      replacePattern1,
+      '<a href="$1" target="_blank">$1</a>'
+    );
+
+    //URLs starting with www. (without // before it, or it'd re-link the ones done above)
+    var replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    var replacedText = replacedText.replace(
+      replacePattern2,
+      '$1<a href="http://$2" target="_blank">$2</a>'
+    );
+
+    //Change email addresses to mailto:: links
+    var replacePattern3 =
+      /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
+    var replacedText = replacedText.replace(
+      replacePattern3,
+      '<a href="mailto:$1">$1</a>'
+    );
+
+    return replacedText;
   }
+
+  const shareViaTelegram = () => {
+    const message = `My team, ${group.name}, is participating in a competition! \n Join us!`;
+    const link = encodeURIComponent(window.location.origin + groupLink);
+
+    window.open(
+      "https://t.me/share/?url=" + link + "&text=" + `\n ${message}`,
+      "_blank"
+    );
+  };
+
+  const getAvatarIcons = () => {
+    let avatarIcons: React.ReactElement[] = [];
+    for (let i = 0; i < group.targetSize; i++) {
+      if (i < group.currentSize) {
+        avatarIcons.push(<Avatar bgColor="primaryLight" />);
+      } else {
+        avatarIcons.push(<Avatar />);
+      }
+    }
+
+    return avatarIcons;
+  };
 
   return (
     <Center py={2}>
@@ -74,7 +114,7 @@ const GroupSummaryCard = ({
             </Heading>
 
             <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
-              {avatarIcons.map((avatar) => avatar)}
+              {getAvatarIcons().map((avatar) => avatar)}
             </AvatarGroup>
           </Stack>
 
@@ -122,7 +162,7 @@ const GroupSummaryCard = ({
               </Button>
             </Link>
           </Stack>
-        ) : groupSize === targetSize ? (
+        ) : group.currentSize === group.targetSize ? (
           <Button disabled>Team is full</Button>
         ) : (
           <Link href={groupLink}>
@@ -150,11 +190,22 @@ const GroupSummaryCard = ({
             </ModalBody>
             <ModalFooter>
               <ButtonGroup>
-                <Button variant="ghost" colorScheme="blue">
+                <Button
+                  variant="ghost"
+                  colorScheme="blue"
+                  leftIcon={<TbBrandTelegram />}
+                  onClick={shareViaTelegram}
+                >
                   Telegram
                 </Button>
-                <Button variant="outline" colorScheme="purple" rounded="3xl">
-                  Copy Link
+                <Button
+                  leftIcon={<TbCopy />}
+                  variant="outline"
+                  colorScheme="black"
+                  rounded="3xl"
+                  onClick={clipboard.onCopy}
+                >
+                  {clipboard.hasCopied ? "Copied" : "Copy Link"}
                 </Button>
               </ButtonGroup>
             </ModalFooter>
