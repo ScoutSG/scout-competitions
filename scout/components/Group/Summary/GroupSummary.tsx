@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
 import { useIsMember } from "../../../lib/hooks/useUserDetails";
+import ShareButton from "../../ShareButton";
 
 const GroupSummaryCard = ({
   group,
@@ -28,17 +29,19 @@ const GroupSummaryCard = ({
   const router = useRouter();
   const isMember = useIsMember(group.members);
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
-  let groupSize: number = group.currentSize;
-  let targetSize: number = group.targetSize;
 
-  let avatarIcons: React.ReactElement[] = [];
-  for (let i = 0; i < targetSize; i++) {
-    if (i < groupSize) {
-      avatarIcons.push(<Avatar bgColor="primaryLight" />);
-    } else {
-      avatarIcons.push(<Avatar />);
+  const getAvatarIcons = () => {
+    let avatarIcons: React.ReactElement[] = [];
+    for (let i = 0; i < group.targetSize; i++) {
+      if (i < group.currentSize) {
+        avatarIcons.push(<Avatar bgColor="primaryLight" />);
+      } else {
+        avatarIcons.push(<Avatar />);
+      }
     }
-  }
+
+    return avatarIcons;
+  };
 
   return (
     <Center py={2}>
@@ -63,7 +66,7 @@ const GroupSummaryCard = ({
             </Heading>
 
             <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
-              {avatarIcons.map((avatar) => avatar)}
+              {getAvatarIcons().map((avatar) => avatar)}
             </AvatarGroup>
           </Stack>
 
@@ -94,17 +97,20 @@ const GroupSummaryCard = ({
         </Stack>
 
         {isMember ? (
-          <Link href={groupLink}>
-            <Button color="primary.500" bgColor="transparent" _hover={{}}>
-              View group
-            </Button>
-          </Link>
-        ) : groupSize === targetSize ? (
+          <Stack direction="row">
+            <ShareButton group={group} />
+            <Link href={groupLink}>
+              <Button color="primary.500" bgColor="transparent" _hover={{}}>
+                View group
+              </Button>
+            </Link>
+          </Stack>
+        ) : group.currentSize === group.targetSize ? (
           <Button disabled>Team is full</Button>
         ) : (
           <Link href={groupLink}>
             <Button
-              rightIcon={<TbSend />}
+              leftIcon={<TbSend />}
               w="fit-content"
               color="primary.500"
               bgColor="transparent"

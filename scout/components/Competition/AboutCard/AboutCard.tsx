@@ -8,12 +8,14 @@ import {
   SimpleGrid,
   Button,
   ButtonGroup,
+  Icon,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
+import { TbClock } from "react-icons/tb";
 
 type AboutCardProps = {
   data: CompetitionDataSummary;
@@ -31,16 +33,11 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
   return (
     <Box>
       <Stack spacing={4}>
-        <Box>
-          <Heading size="sm">About</Heading>
-          <Text>{description}</Text>
-        </Box>
-
-        <SimpleGrid columns={3} minChildWidth="90px">
-          <Box>
-            <Heading size="xs">Deadline</Heading>
-            <Badge borderRadius={"7px"}>{formatDate(deadline)}</Badge>
-          </Box>
+        <Stack spacing={2}>
+          <Stack direction="row" align="center" color="red.400">
+            <Icon as={TbClock} />
+            <Text fontWeight="semibold">Sign Up by {formatDate(deadline)}</Text>
+          </Stack>
 
           <Box>
             <Heading size="xs">Group Size</Heading>
@@ -59,7 +56,13 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
             <Heading size="xs">Organiser</Heading>
             <Badge borderRadius={"7px"}>{organiserName}</Badge>
           </Box>
-        </SimpleGrid>
+        </Stack>
+
+        <Box>
+          <Heading size="sm">About</Heading>
+          <Text>{description}</Text>
+        </Box>
+
         <ButtonGroup>
           <Button
             rightIcon={<ChevronRightIcon />}

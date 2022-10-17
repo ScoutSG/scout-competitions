@@ -46,7 +46,7 @@ export default function TelegramSubForm({
     return (
       <FormControl>
         {formLabel}
-        <Alert status="info">
+        <Alert status="info" rounded="xl">
           <AlertIcon />
           <Text>
             You haven't indicated your Telegram username! You won't be able to

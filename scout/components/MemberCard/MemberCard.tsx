@@ -6,10 +6,11 @@ import {
   Avatar,
   Wrap,
   WrapItem,
-  useClipboard,
   useMediaQuery,
   IconButton,
 } from "@chakra-ui/react";
+
+import { useCustomClipboard } from "../../lib/hooks/useCustomClipboard";
 
 import {
   TbBrandGithub,
@@ -23,12 +24,6 @@ const MemberCard = ({ member }) => {
   // 48em is the default breakpoint for width size = md
   const [isLargerThanMd] = useMediaQuery("(min-width: 48em)");
 
-  const clipboard = (value) => {
-    const { hasCopied, onCopy } = useClipboard(value, 500);
-
-    return { copyToClipboard: onCopy, hasCopied: hasCopied };
-  };
-
   const mapFieldToIcon = {
     email: <TbMail />,
     telegramUrl: <TbBrandTelegram />,
@@ -37,10 +32,10 @@ const MemberCard = ({ member }) => {
   };
 
   const mapFieldToClipboard = {
-    email: clipboard(member.email),
-    telegramUrl: clipboard(member.telegramUrl),
-    linkedinUrl: clipboard(member.linkedinUrl),
-    gitHubUrl: clipboard(member.gitHubUrl),
+    email: useCustomClipboard(member.email),
+    telegramUrl: useCustomClipboard(member.telegramUrl),
+    linkedinUrl: useCustomClipboard(member.linkedinUrl),
+    gitHubUrl: useCustomClipboard(member.gitHubUrl),
   };
 
   return (
@@ -94,16 +89,12 @@ const MemberCard = ({ member }) => {
                             : "transparent"
                         }
                         variant="outline"
-                        onClick={
-                          mapFieldToClipboard[attribute[0]].copyToClipboard
-                        }
+                        onClick={mapFieldToClipboard[attribute[0]].onCopy}
                       />
                     ) : (
                       <Button
                         leftIcon={mapFieldToIcon[attribute[0]]}
-                        onClick={
-                          mapFieldToClipboard[attribute[0]].copyToClipboard
-                        }
+                        onClick={mapFieldToClipboard[attribute[0]].onCopy}
                         fontWeight="normal"
                         variant="outline"
                       >

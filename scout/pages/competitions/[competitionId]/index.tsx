@@ -62,9 +62,7 @@ const CompetitionDetails = ({
     (competition.groups as any[]).flatMap((group) => group.members)
   );
 
-  return competition === null ? (
-    <NotFound />
-  ) : (
+  return (
     <Box bgColor="gray.50">
       <Head>
         <title>{competition.name} - Scout</title>
