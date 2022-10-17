@@ -87,7 +87,7 @@ export async function getStaticProps(context) {
   const response = await clientApi.get(`/groups/${groupId}`);
   const group = response.data;
 
-  const res = await clientApi.get(`/forms/${groupId}`);
+  const res = await clientApi.get(`/forms/${group.form.id}`);
   const questionsData = res.data;
 
   return { props: { group, questionsData }, revalidate: 60 };

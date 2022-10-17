@@ -33,7 +33,8 @@
     "react-markdown": "8.0.3",
     "recoil": "^0.7.5",
     "recoil-persist": "^4.2.0",
-    "sass": "^1.55.0"
+    "sass": "^1.55.0",
+    "telegram": "^2.12.8"
   },
   "devDependencies": {
     "@types/next-auth": "3.13.0",

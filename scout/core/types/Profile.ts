@@ -1,8 +1,11 @@
-export interface ProfileDetails {
-  email: string;
+export interface Profile {
+  id: string | null;
   name: string | null;
-  year: number | null;
+  yearOfStudy: number | null;
+  email: string | null;
   major: string | null;
-  specialization: string | null;
-  profileUrl: string[] | null;
+  specialisation: string | null;
+  linkedinUrl: string | null;
+  gitHubUrl: string | null;
+  telegramUrl: string | null;
 }
