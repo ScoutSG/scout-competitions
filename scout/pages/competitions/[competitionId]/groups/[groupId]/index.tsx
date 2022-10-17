@@ -24,6 +24,7 @@ import Head from "next/head";
 import ApplicationReview from "../../../../../components/Group/ApplicationReview";
 import Application from "../../../../../components/Group/Application";
 import MemberCard from "../../../../../components/MemberCard";
+import ShareButton from "../../../../../components/ShareButton";
 import clientApi from "../../../../../core/api/client";
 import { useRouter } from "next/router";
 import { TbPencil, TbTrash } from "react-icons/tb";
@@ -118,11 +119,14 @@ const GroupDetail: React.FC = ({
           w="full"
           maxW={maxWidth}
         >
-          <Stack flex={5} direction="column" spacing={8} px={4}>
-            <Flex justifyContent="space-between" alignItems="center">
-              <Heading fontWeight="black">{group.name}</Heading>
-              <Badge px={4}>{isMember ? "Member" : null}</Badge>
-            </Flex>
+          <Stack flex={5} direction="column" spacing={6} px={4}>
+            <Stack spacing={3}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Heading fontWeight="black">{group.name}</Heading>
+                <Badge px={4}>{isMember ? "Member" : null}</Badge>
+              </Flex>
+              {isMember ? <ShareButton group={group} /> : null}
+            </Stack>
 
             <Divider />
             {isMember ? (
