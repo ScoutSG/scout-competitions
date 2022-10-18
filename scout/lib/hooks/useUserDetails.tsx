@@ -2,18 +2,9 @@ import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { checkUserIsMember } from "../../core/utils/isMember";
 
 const userIdInputState = atom({
-  key: "USER_ID",
+  key: "userId",
   default: null,
 });
-
-export const useUserDetails = () => {
-  const [userDetails, setUserDetails] = useRecoilState(userIdInputState);
-
-  return {
-    userDetails,
-    setUserDetails,
-  };
-};
 
 export const useIsMember = (
   members: {

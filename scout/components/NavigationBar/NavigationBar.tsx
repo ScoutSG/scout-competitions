@@ -36,13 +36,13 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 import { MouseEventHandler } from "react";
-import { useUserDetails } from "../../lib/hooks/useUserDetails";
+import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
 
 const NavigationBar: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure();
-  const { userDetails } = useUserDetails();
+  const { data: session, status } = useSession();
 
   return (
     <>
@@ -69,13 +69,13 @@ const NavigationBar: React.FC = () => {
             <Spacer />
             <HStack spacing={"16px"} height={"80px"} alignItems={"center"}>
               {/* <ThemeButton /> */}
-              {!userDetails ? (
+              {status === "unauthenticated" ? (
                 <SignIn />
               ) : (
                 <AvatarMenu
-                  name={userDetails.name}
-                  email={userDetails.email}
-                  image={userDetails.image}
+                  name={session.user.name}
+                  email={session.user.email}
+                  image={session.user.image}
                 />
               )}
               <MobileButton onToggle={onToggle} isOpen={isOpen} />
@@ -178,11 +178,7 @@ const MobileButton = (props: {
 };
 
 const AvatarMenu = (props) => {
-  const initial = props.email.charAt(0);
-  const avatarImage =
-    props.image !== ""
-      ? props.image
-      : `https://ui-avatars.com/api/?name=${initial}`;
+  const avatarImage = props.image;
   return (
     <Menu>
       <MenuButton
@@ -196,7 +192,7 @@ const AvatarMenu = (props) => {
       <MenuList width={"320px"} boxShadow={"2xl"}>
         <Stack spacing={4} py={4}>
           <Center>
-            <Avatar size={"xl"} src={avatarImage} />
+            <Avatar size={"xl"} name={props.email} src={avatarImage} />
           </Center>
           <Stack>
             {props.name !== "" && (

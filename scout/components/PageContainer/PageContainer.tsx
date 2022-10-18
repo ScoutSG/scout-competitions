@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 import clientApi from "../../core/api/client";
-import { useUserDetails } from "../../lib/hooks/useUserDetails";
 import { useDraftRequest } from "../../lib/hooks/useDraftRequest";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
@@ -17,19 +16,11 @@ interface PageContainerProps {
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
-  const { setUserDetails } = useUserDetails();
   const session = useSession();
   const router = useRouter();
   const { draftRequest, setDraftRequest } = useDraftRequest();
   const { draftGroup, setDraftGroup } = useDraftGroup();
   const { presentToast } = useCustomToast();
-
-  useEffect(() => {
-    if (!session.data) {
-      return;
-    }
-    setUserDetails(session.data.user);
-  }, [session]);
 
   useEffect(() => {
     if (draftRequest !== null && session.status === "authenticated") {

@@ -1,23 +1,41 @@
 import { Session } from "next-auth";
+import { useSession } from "next-auth/react"
 import { SessionProvider } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]"
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 import PageContainer from "../components/PageContainer";
+import Loading from "../components/Loading";
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
     <SessionProvider session={pageProps.session}>
-      <RecoilRoot>
-        <ChakraProvider theme={theme}>
-          <PageContainer>
-            <Component {...pageProps} />
-          </PageContainer>
-        </ChakraProvider>
-      </RecoilRoot>
+      <Auth>
+        <RecoilRoot>
+          <ChakraProvider theme={theme}>
+            <PageContainer>
+              <Component {...pageProps} />
+            </PageContainer>
+          </ChakraProvider>
+        </RecoilRoot>
+      </Auth>
     </SessionProvider>
   );
 };
+
+function Auth( { children }) {
+  const { status } = useSession();
+
+  if (status === "loading") {
+    return (
+      <Loading />
+    );
+  }
+
+  return children;
+}
 
 const config: ThemeConfig = {
   initialColorMode: "light",
@@ -44,5 +62,17 @@ const theme = extendTheme({
     secondaryLight: "#FFCC99",
   },
 });
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      session: await unstable_getServerSession(
+        context.req,
+        context.res,
+        authOptions
+      )
+    },
+  };
+}
 
 export default App;
