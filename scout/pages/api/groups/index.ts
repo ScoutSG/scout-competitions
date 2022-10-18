@@ -46,6 +46,7 @@ async function handleAdd(req, res) {
     targetSize,
     description,
     targetSkills,
+    tags,
     form,
     members,
     competitionId,
@@ -69,6 +70,7 @@ async function handleAdd(req, res) {
       targetSize,
       description,
       targetSkills,
+      tags,
       members: {
         connect: members.map((x) => ({ id: x })),
       },

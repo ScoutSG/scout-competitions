@@ -27,6 +27,7 @@ export interface Group {
   targetSize: number;
   description: string;
   targetSkills: string[];
+  tags: string[];
   members: Member[];
   hasApplied?: boolean;
   isLeader?: boolean;

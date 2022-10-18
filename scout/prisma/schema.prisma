@@ -116,6 +116,7 @@ model Group {
   description   String?
   telegramLink  String?
   targetSkills  String[]
+  tags          String[]
   competitionId Int
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   applications  Application[]

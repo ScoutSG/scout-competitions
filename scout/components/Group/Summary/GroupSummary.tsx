@@ -70,26 +70,29 @@ const GroupSummaryCard = ({
             </AvatarGroup>
           </Stack>
 
-          <Stack spacing={2}>
-            <Text fontWeight="bold">Description</Text>
-            <Text>{group.description}</Text>
-          </Stack>
+          {group.description?.length > 0 ? (
+            <Stack spacing={2}>
+              <Text fontWeight="bold">Description</Text>
+              <Text>{group.description}</Text>
+            </Stack>
+          ) : null}
 
           {group.targetSkills.length === 0 ? null : (
             <Stack spacing={2}>
-              <Text fontWeight="semibold">Skills</Text>
+              <Text fontWeight="semibold">We're looking for</Text>
               <Box>
                 {group.targetSkills.map((skill) => (
-                  <Badge
-                    px={2}
-                    py={1}
-                    bg={useColorModeValue("gray.50", "gray.800")}
-                    fontWeight={"400"}
-                    m={1}
-                    textTransform="capitalize"
-                  >
-                    #{skill}
-                  </Badge>
+                  <Badge textTransform="capitalize">{skill}</Badge>
+                ))}
+              </Box>
+            </Stack>
+          )}
+          {group.tags.length === 0 ? null : (
+            <Stack spacing={2}>
+              <Text fontWeight="semibold">Tags</Text>
+              <Box>
+                {group.tags.map((tag) => (
+                  <Badge textTransform="capitalize">{tag}</Badge>
                 ))}
               </Box>
             </Stack>

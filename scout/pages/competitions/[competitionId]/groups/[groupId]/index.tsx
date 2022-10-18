@@ -163,24 +163,20 @@ const GroupDetail: React.FC = ({
             <Text>{group.description}</Text>
             {group.targetSkills.length === 0 ? null : (
               <>
-                <Text
-                  textTransform={"uppercase"}
-                  fontWeight={800}
-                  fontSize={"sm"}
-                >
-                  Looking for
-                </Text>
+                <Text fontWeight={800}>Looking for</Text>
                 <Box>
                   {group.targetSkills.map((skill) => (
-                    <Badge
-                      px={2}
-                      py={1}
-                      bg={"gray.50"}
-                      fontWeight={"400"}
-                      m={1}
-                    >
-                      #{skill}
-                    </Badge>
+                    <Badge textTransform="capitalize">{skill}</Badge>
+                  ))}
+                </Box>
+              </>
+            )}
+            {group.tags.length === 0 ? null : (
+              <>
+                <Text fontWeight={800}>Tags</Text>
+                <Box>
+                  {group.tags.map((tag) => (
+                    <Badge textTransform="capitalize">{tag}</Badge>
                   ))}
                 </Box>
               </>

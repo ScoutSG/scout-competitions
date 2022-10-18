@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { getSession } from "next-auth/react";
 import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
 
 // GET, PATCH, DELETE /api/applications/id/
@@ -40,6 +39,7 @@ export default async function handle(req, res) {
 
       res.status(200).json(application);
     } else if (httpMethod === "PATCH") {
+      // approving / rejecting applications
       const { isApproved, answers } = req.body;
 
       const application = await prisma.application.update({

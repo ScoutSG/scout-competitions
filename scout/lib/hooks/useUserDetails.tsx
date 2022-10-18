@@ -1,10 +1,5 @@
-import { atom, useRecoilState, useRecoilValue } from "recoil";
+import { useSession } from "next-auth/react";
 import { checkUserIsMember } from "../../core/utils/isMember";
-
-const userIdInputState = atom({
-  key: "userId",
-  default: null,
-});
 
 export const useIsMember = (
   members: {
@@ -13,9 +8,9 @@ export const useIsMember = (
     email: string;
   }[]
 ) => {
-  const user = useRecoilValue(userIdInputState);
-  if (!user) {
+  const session = useSession();
+  if (!session.data.user) {
     return false;
   }
-  return checkUserIsMember(user.id, members);
+  return checkUserIsMember(session.data.user.id, members);
 };

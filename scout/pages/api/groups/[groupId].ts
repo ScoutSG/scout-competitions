@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { getSession } from "next-auth/react";
-import {
-  createGroup,
-  notifyGroup,
-  sendWelcomeMessage,
-} from "../../../core/utils/telegram";
+import { createGroup, sendWelcomeMessage } from "../../../core/utils/telegram";
 
 // GET, PATCH, DELETE /api/groups/id/
 export default async function handle(req, res) {
@@ -52,6 +47,7 @@ export default async function handle(req, res) {
         targetSize,
         description,
         targetSkills,
+        tags,
         members,
         withTelegramGroup,
       } = req.body;
@@ -90,6 +86,7 @@ export default async function handle(req, res) {
           targetSize,
           description,
           targetSkills,
+          tags,
           members: {
             connect: members.map((x) => ({ id: x })),
           },

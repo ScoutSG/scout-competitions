@@ -9,24 +9,32 @@ import {
   Icon,
   Divider,
   Badge,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
-import { MdTimer, MdCircle } from "react-icons/md";
 import { VscOctoface } from "react-icons/vsc";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
-import SearchBar from "../../../components/SearchBar";
-import GroupSummaryCard from "../../../components/Group/Summary";
-import NotFound from "../../../components/NotFound";
 import Head from "next/head";
+import GroupSummaryCard from "../../../components/Group/Summary";
 import clientApi from "../../../core/api/client";
 import { AxiosResponse } from "axios";
-import {
-  CompetitionData,
-  GroupSummaryData,
-} from "../../../core/types/CompetitionDetail";
+import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
 import { useIsMember } from "../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../core/utils/maxWidth";
+import { TbChevronRight, TbClock } from "react-icons/tb";
+
+const describeGroupSizeRestriction = (min: number, max: number) => {
+  if (min === null && max === null) {
+    return "There are no restrictions on the group size.";
+  } else if (min === null) {
+    return `Groups can only be formed with a maximum size of ${max} members`;
+  } else if (max === null) {
+    return `Groups must have a minimum size of ${min} members`;
+  } else {
+    return `Groups are restricted to ${min} - ${max} members`;
+  }
+};
 
 export async function getStaticPaths() {
   return {
@@ -95,7 +103,7 @@ const CompetitionDetails = ({
                   </Badge>
                 )}
                 <Stack direction="row" align="center" color="red.400">
-                  <Icon as={MdTimer} />
+                  <Icon as={TbClock} />
                   <Text fontWeight="semibold">
                     Sign Up by {formatDate(competition.deadline)}
                   </Text>
@@ -115,25 +123,14 @@ const CompetitionDetails = ({
               </Heading>
 
               <Stack direction="row" align="center" spacing={1}>
-                <Icon as={MdCircle} h="1" />
-
-                <Text>
-                  {competition.minSize === null && competition.maxSize === null
-                    ? "There are no restrictions on the group size."
-                    : competition.minSize === null
-                    ? "Groups can only be formed with a maximum size of " +
-                      competition.maxSize +
-                      " members"
-                    : competition.maxSize === null
-                    ? "Groups must have a minimum size of " +
-                      competition.minSize +
-                      " members"
-                    : "Groups are restricted to " +
-                      competition.minSize +
-                      " - " +
-                      competition.maxSize +
-                      " members"}
-                </Text>
+                <UnorderedList>
+                  <ListItem>
+                    {describeGroupSizeRestriction(
+                      competition.minSize,
+                      competition.maxSize
+                    )}
+                  </ListItem>
+                </UnorderedList>
               </Stack>
             </Stack>
             <Divider borderColor="gray.500" />
@@ -142,7 +139,10 @@ const CompetitionDetails = ({
               <Heading size="md" fontWeight="black">
                 Participating groups
               </Heading>
-              <Text>{competition.groups.length} groups found</Text>
+              <Text>
+                {competition.groups.length} group
+                {competition.groups.length === 1 ? "" : "s"} found
+              </Text>
             </Stack>
             {competition.groups.length === 0 ? (
               <>
@@ -153,7 +153,7 @@ const CompetitionDetails = ({
                   </Heading>
                   <NextLink href={`/competitions/${competition.id}/groups`}>
                     <Button
-                      rightIcon={<ChevronRightIcon />}
+                      rightIcon={<TbChevronRight />}
                       bgColor="primary.500"
                       color="white"
                       _hover={{ bgColor: "gray.200", color: "primary.500" }}
@@ -175,7 +175,7 @@ const CompetitionDetails = ({
           <Stack flex={1} px={4}>
             <NextLink href={`/competitions/${competition.id}/groups`}>
               <Button
-                rightIcon={<ChevronRightIcon />}
+                rightIcon={<TbChevronRight />}
                 color="white"
                 bg={"primary.500"}
                 _hover={{ color: "primaryLight", bg: "gray.200" }}
@@ -185,11 +185,7 @@ const CompetitionDetails = ({
                 Lead a team
               </Button>
             </NextLink>
-            <Button
-              rightIcon={<ChevronRightIcon />}
-              onClick={onSeeMore}
-              w="full"
-            >
+            <Button rightIcon={<TbChevronRight />} onClick={onSeeMore} w="full">
               Visit organiser website
             </Button>
           </Stack>
@@ -197,11 +193,6 @@ const CompetitionDetails = ({
       </Center>
     </Box>
   );
-};
-
-type GroupSummaryViewProps = {
-  groups: GroupSummaryData[];
-  id: number;
 };
 
 export default CompetitionDetails;

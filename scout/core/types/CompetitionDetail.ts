@@ -17,6 +17,7 @@ export interface GroupSummaryData {
   targetSize: number;
   description: string;
   targetSkills: string[];
+  tags: string[];
   members: Member[];
 }
 

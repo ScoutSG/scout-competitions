@@ -22,12 +22,12 @@ import { TbSend } from "react-icons/tb";
 import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
-import { Profile } from "../../../core/types/Profile";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 import { useDraftGroup } from "../../../lib/hooks/useDraftGroup";
 
 import QuestionsSubForm from "./QuestionsSubForm";
 import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
+import TagsSubForm from "./TagsSubForm";
 import TelegramSubForm from "./TelegramSubForm";
 import { CreateOrEditGroupFormValue } from "./types";
 
@@ -54,6 +54,7 @@ const CreateOrEditGroupForm = ({
       description: group?.description ?? "",
       targetSize: group?.targetSize ?? competition.maxSize,
       targetSkills: group?.targetSkills.map(toOptionType) ?? [],
+      tags: group?.tags.map(toOptionType) ?? [],
       questions: form?.questions ?? [],
       withTelegramGroup:
         group === undefined ?? group?.telegramLink !== undefined,
@@ -72,6 +73,7 @@ const CreateOrEditGroupForm = ({
       currentSize: 1,
       targetSize: values.targetSize,
       targetSkills: values.targetSkills.map(({ value }) => value),
+      tags: values.tags.map(({ value }) => value),
       form: {
         questions: values.questions.filter(
           (str) => str.questionString.length > 0
@@ -156,6 +158,7 @@ const CreateOrEditGroupForm = ({
         </NumberInput>
       </FormControl>
       <SkillsSubForm control={control} />
+      <TagsSubForm control={control} />
       <QuestionsSubForm control={control} register={register} />
       <TelegramSubForm register={register} group={group} />
       <Spacer />

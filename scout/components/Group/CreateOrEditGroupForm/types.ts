@@ -3,6 +3,7 @@ export type CreateOrEditGroupFormValue = {
   description: string;
   targetSize: number;
   targetSkills: { value: string; label: string }[];
+  tags: { value: string; label: string }[];
   questions: { questionString: string }[];
   withTelegramGroup: boolean;
 };
