@@ -54,7 +54,7 @@ export default async function handle(req, res) {
       if (answers) {
         const answersData = answers.map((answer) => ({
           applicationId: application.id,
-          answerResponse: answer.answerString,
+          answerResponse: String(answer.answerString),
           questionId: answer.questionId,
         }));
 

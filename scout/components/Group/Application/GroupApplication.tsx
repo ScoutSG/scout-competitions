@@ -107,6 +107,7 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   };
 
   const submitApplication = async () => {
+    console.log(application)
     const applicationInfo = {
       formId: questionsData.id,
       groupId: questionsData.groupId,

@@ -118,7 +118,7 @@ async function handleAdd(req, res) {
 
   const answersData = answers.map((answer) => ({
     applicationId: application.id,
-    answerResponse: answer.answerString,
+    answerResponse: String(answer.answerString),
     questionId: answer.questionId,
   }));
 
