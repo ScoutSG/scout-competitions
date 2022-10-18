@@ -73,6 +73,7 @@ model VerificationToken {
 model Question {
   id             Int      @id @default(autoincrement())
   questionString String
+  questionType   String   @default("Range")
   formId         Int?
   form           Form?    @relation(fields: [formId], references: [id], onDelete: Cascade)
   answers        Answer[]
@@ -80,7 +81,7 @@ model Question {
 
 model Answer {
   id             Int         @id @default(autoincrement())
-  answerResponse Int
+  answerResponse String
   applicationId  Int
   questionId     Int
   application    Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
