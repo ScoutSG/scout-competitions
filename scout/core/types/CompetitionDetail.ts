@@ -1,3 +1,19 @@
+export interface CompetitionData {
+  id: number;
+  name: string;
+  deadline: string;
+  organiserName: string;
+  description: string;
+  link: string;
+  maxSize: number | null;
+  minSize: number | null;
+  firstPrize: string | null;
+  secondPrize: string | null;
+  thirdPrize: string | null;
+  otherPrizes: string | null
+  groups: GroupSummaryData[];
+}
+
 export interface GroupSummaryData {
   id: number;
   name: string;
