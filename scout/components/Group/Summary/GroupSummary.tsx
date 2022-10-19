@@ -105,7 +105,15 @@ const GroupSummaryCard = ({
               <Text fontWeight="semibold">Tags</Text>
               <Box>
                 {group.tags.map((tag) => (
-                  <Badge textTransform="capitalize">{tag}</Badge>
+                  <Badge
+                    textTransform="capitalize"
+                    rounded="md"
+                    px={4}
+                    py={1}
+                    colorScheme="teal"
+                  >
+                    {tag}
+                  </Badge>
                 ))}
               </Box>
             </Stack>

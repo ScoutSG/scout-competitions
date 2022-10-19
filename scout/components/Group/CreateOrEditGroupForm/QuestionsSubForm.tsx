@@ -9,11 +9,20 @@ import {
   Text,
   ButtonGroup,
   InputLeftAddon,
+  Alert,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { TbAdjustmentsHorizontal, TbCursorText, TbMinus } from "react-icons/tb";
+import {
+  TbAdjustmentsHorizontal,
+  TbCursorText,
+  TbMinus,
+  TbPlus,
+} from "react-icons/tb";
 import { QuestionType } from "../../../core/types/Group";
 import { CreateOrEditGroupFormValue } from "./types";
+import { TEMPLATES } from "../../../core/utils/quetions";
 
 const getQuestionTypeIcon = (questionType: QuestionType) => {
   switch (questionType) {
@@ -38,6 +47,15 @@ export default function QuestionsSubForm({
     name: "questions",
   });
 
+  const handleAddTemplateQuestions = (template) => {
+    template.questions.map((question) => {
+      append({
+        questionString: question.question,
+        questionType: question.type,
+      });
+    });
+  };
+
   return (
     <Stack>
       <Heading as="h3" size="md">
@@ -47,6 +65,28 @@ export default function QuestionsSubForm({
         You can ask your prospective group members some questions to get to know
         their skillsets and personalities better.
       </Text>
+      <Alert status="info" px={4} py={2} rounded="md" overflowX="scroll">
+        <Stack>
+          <AlertTitle>Tips from Google</AlertTitle>
+          <AlertDescription>
+            Google researchers discovered the secret of effective teams at
+            Google. Here are some questions to get a more effective team!
+          </AlertDescription>
+          <Stack direction={"row"}>
+            {TEMPLATES.map((template) => (
+              <Button
+                onClick={() => handleAddTemplateQuestions(template)}
+                bgColor="primary.500"
+                color="white"
+                _hover={{ bgColor: "transparent", color: "primary.500" }}
+              >
+                {template.name}
+              </Button>
+            ))}
+          </Stack>
+        </Stack>
+      </Alert>
+
       {fields.map((item, index) => (
         <InputGroup key={item.id}>
           {"questionType" in item ? (
@@ -69,6 +109,12 @@ export default function QuestionsSubForm({
         </InputGroup>
       ))}
       <ButtonGroup isAttached variant="outline" width="100%">
+        <IconButton
+          aria-label="Add question"
+          icon={<TbPlus />}
+          variant="ghost"
+          onClick={() => append({ questionString: "", questionType: "Range" })}
+        />
         <Button
           width="100%"
           leftIcon={<TbAdjustmentsHorizontal />}

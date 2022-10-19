@@ -27,6 +27,7 @@ const ApplicationsPreview = () => {
           question: {
             id: number;
             questionString: string;
+            questionType: string;
           };
         }[];
       }[]
