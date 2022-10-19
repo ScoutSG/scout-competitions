@@ -7,7 +7,7 @@ const LandingPage: React.FC = () => {
   return (
     <Stack pb={16}>
       <Flex flexWrap="wrap" justifyContent="right">
-        <Stack pt={24} pl={{ base: 0, md: 16 }}>
+        <Stack pt={32} pl={{ base: 0, md: 16 }}>
           <Heading size={{ base: "3xl", md: "4xl" }}>
             Success starts
           </Heading>
