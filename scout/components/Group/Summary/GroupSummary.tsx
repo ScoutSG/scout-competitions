@@ -52,7 +52,7 @@ const GroupSummaryCard = ({
         py={2}
         overflow={"hidden"}
         spacing={2}
-        borderWidth={1}
+        // borderWidth={1}
         _hover={{ bgColor: "gray.100" }}
         borderColor="gray.400"
       >
@@ -82,7 +82,15 @@ const GroupSummaryCard = ({
               <Text fontWeight="semibold">We're looking for</Text>
               <Box>
                 {group.targetSkills.map((skill) => (
-                  <Badge textTransform="capitalize">{skill}</Badge>
+                  <Badge
+                    textTransform="capitalize"
+                    colorScheme="green"
+                    rounded="md"
+                    px={4}
+                    py={1}
+                  >
+                    {skill}
+                  </Badge>
                 ))}
               </Box>
             </Stack>
