@@ -95,6 +95,19 @@ const CreateOrEditGroupForm = ({
         } else {
           const response = await clientApi.patch(`/groups/${group.id}`, body);
           group_id = response.data.id;
+          if (form) {
+            const formId = response.data.form.id;
+            const body = {
+              questions: values.questions.filter(
+                (str) => str.questionString.length > 0
+              ),
+            };
+
+            const formResponse = await clientApi.patch(
+              `/forms/${formId}`,
+              body
+            );
+          }
         }
         router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {

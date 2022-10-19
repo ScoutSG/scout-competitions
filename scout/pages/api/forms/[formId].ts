@@ -28,20 +28,23 @@ export default async function handle(req, res) {
 
       res.status(200).json(form);
     } else if (httpMethod === "PATCH") {
-      const { groupId, questions } = req.body;
-
+      const { questions } = req.body;
+      
       const form = await prisma.form.update({
         where: {
           id: formId,
         },
         data: {
-          groupId,
+          questions: {
+            set: [],
+          },
         },
       });
 
-      const questionsData = questions.map((questionString) => ({
+      const questionsData = questions.map((question) => ({
         formId: form.id,
-        questionString: questionString,
+        questionString: question.questionString,
+        questionType: question.questionType,
       }));
 
       await prisma.question.createMany({ data: questionsData });

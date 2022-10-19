@@ -73,8 +73,8 @@ model VerificationToken {
 model Question {
   id             Int      @id @default(autoincrement())
   questionString String
-  questionType   String   @default("Range")
   formId         Int?
+  questionType   String   @default("Range")
   form           Form?    @relation(fields: [formId], references: [id], onDelete: Cascade)
   answers        Answer[]
 }
@@ -116,8 +116,8 @@ model Group {
   description   String?
   telegramLink  String?
   targetSkills  String[]
-  tags          String[]
   competitionId Int
+  tags          String[]
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   applications  Application[]
   form          Form?
