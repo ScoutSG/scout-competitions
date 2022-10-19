@@ -133,5 +133,9 @@ model Competition {
   link          String
   maxSize       Int
   minSize       Int
+  firstPrize    String?
+  secondPrize   String?
+  thirdPrize    String?
+  otherPrizes   String?
   groups        Group[]
 }

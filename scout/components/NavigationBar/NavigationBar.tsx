@@ -1,13 +1,9 @@
-import "@fontsource/open-sans/800.css";
-
 import {
   Flex,
   Container,
   Text,
   HStack,
   Spacer,
-  Button,
-  useColorMode,
   useColorModeValue,
   Stack,
   Box,
@@ -15,51 +11,46 @@ import {
   PopoverTrigger,
   PopoverContent,
   Icon,
-  IconButton,
   useDisclosure,
   Collapse,
-  Menu,
-  MenuButton,
-  Avatar,
-  MenuList,
-  Center,
-  MenuDivider,
-  MenuItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-  CloseIcon,
-  HamburgerIcon,
-  MoonIcon,
-  SunIcon,
-} from "@chakra-ui/icons";
-import { MouseEventHandler } from "react";
+import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import SignInButton from "./SignInButton";
 import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
+import ThemeButton from "./ThemeButton";
+import MobileSignInButton from "./MobileSignInButton";
+import MobileButton from "./MobileButton";
+import AvatarMenu from "./AvatarMenu";
 
 const NavigationBar: React.FC = () => {
+  const scrollPosition = useScrollPosition();
   const { isOpen, onToggle } = useDisclosure();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderBottomWidth = useColorModeValue("none", "1px");
+  const borderBottomColor = useColorModeValue("none", "gray.700");
 
   return (
     <>
       <Flex
-        width={"full"}
-        position={"fixed"}
-        as={"header"}
-        zIndex={"1100"}
-        bgColor="white"
-        shadow="md"
+        height="80px"
+        width="full"
+        position="fixed"
+        zIndex="1100"
+        bgColor={bgColor}
+        boxShadow={scrollPosition > 0 ? "sm" : "none"}
+        borderBottomWidth={borderBottomWidth}
+        borderBottomColor={borderBottomColor}
       >
-        <Container maxW={{ xl: "8xl" }} px={"0px"}>
-          <Flex height={"80px"} px={"4vw"} align="center">
+        <Container maxW={{ xl: "8xl" }} px="0px">
+          <Flex px="4vw" align="center">
             <Link href="/">
               <a>
-                <Stack direction={"row"} spacing={4} align={"center"} pt={2}>
-                  <ScoutIcon />
+                <Stack direction={"row"} spacing={4} align={"center"}>
+                  <ScoutIcon width={96} height={80} />
                 </Stack>
               </a>
             </Link>
@@ -68,16 +59,8 @@ const NavigationBar: React.FC = () => {
             </Flex>
             <Spacer />
             <HStack spacing={"16px"} height={"80px"} alignItems={"center"}>
-              {/* <ThemeButton /> */}
-              {status === "unauthenticated" ? (
-                <SignIn />
-              ) : (
-                <AvatarMenu
-                  name={session.user.name}
-                  email={session.user.email}
-                  image={session.user.image}
-                />
-              )}
+              <ThemeButton />
+              {status === "unauthenticated" ? <SignInButton /> : <AvatarMenu />}
               <MobileButton onToggle={onToggle} isOpen={isOpen} />
             </HStack>
           </Flex>
@@ -92,134 +75,29 @@ const NavigationBar: React.FC = () => {
       >
         <Box as={Collapse} in={isOpen} width={"100%"}>
           <MobileNav />
-          <MobileSignIn />
+          <MobileSignInButton />
         </Box>
       </Flex>
     </>
   );
 };
 
-const ThemeButton = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+export const useScrollPosition = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-  return (
-    <Button onClick={toggleColorMode} variant={"ghost"}>
-      {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-    </Button>
-  );
-};
+  useEffect(() => {
+    const updatePosition = () => {
+      setScrollPosition(window.pageYOffset);
+    };
 
-const SignIn = () => {
-  const color = useColorModeValue("primary.500", "primaryLight");
-  return (
-    <Link href="/auth/signin">
-      <Button
-        display={{ base: "none", lg: "flex" }}
-        color={color}
-        borderColor={color}
-        variant="outline"
-        size="md"
-      >
-        Find your team
-      </Button>
-    </Link>
-  );
-};
+    window.addEventListener("scroll", updatePosition);
 
-const MobileSignIn = () => {
-  const color = useColorModeValue("primary.500", "primaryLight");
-  return (
-    <Link href="/auth/signin">
-      <Flex
-        width={"100%"}
-        px={"4vw"}
-        mt={"16px"}
-        display={{ lg: "none" }}
-        pb="40px"
-      >
-        <Button
-          width={"100%"}
-          color={color}
-          borderColor={color}
-          variant="outline"
-          size="md"
-        >
-          Find your team
-        </Button>
-      </Flex>
-    </Link>
-  );
-};
+    updatePosition();
 
-const MobileButton = (props: {
-  onToggle: MouseEventHandler<HTMLButtonElement>;
-  isOpen: any;
-}) => {
-  return (
-    <Flex
-      flex={{ base: 1, md: "auto" }}
-      ml={{ base: -2 }}
-      display={{ base: "flex", lg: "none" }}
-    >
-      <IconButton
-        onClick={props.onToggle}
-        icon={
-          props.isOpen ? (
-            <CloseIcon w={3} h={3} />
-          ) : (
-            <HamburgerIcon w={5} h={5} />
-          )
-        }
-        variant={"ghost"}
-        aria-label={"Toggle Navigation"}
-      />
-    </Flex>
-  );
-};
+    return () => window.removeEventListener("scroll", updatePosition);
+  }, []);
 
-const AvatarMenu = (props) => {
-  const avatarImage = props.image;
-  return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        rounded={"full"}
-        variant={"link"}
-        cursor={"pointer"}
-      >
-        <Avatar size={"sm"} src={avatarImage} />
-      </MenuButton>
-      <MenuList width={"320px"} boxShadow={"2xl"}>
-        <Stack spacing={4} py={4}>
-          <Center>
-            <Avatar size={"xl"} name={props.email} src={avatarImage} />
-          </Center>
-          <Stack>
-            {props.name !== "" && (
-              <Center>
-                <Text fontSize={"xl"} fontWeight={500}>
-                  {props.name}
-                </Text>
-              </Center>
-            )}
-            <Center>
-              <Text fontSize={"md"} fontWeight={400}>
-                {props.email}
-              </Text>
-            </Center>
-          </Stack>
-        </Stack>
-        <MenuDivider />
-        <Link href="/profile">
-          <MenuItem>Profile</MenuItem>
-        </Link>
-        <Link href="/requests">
-          <MenuItem>Requests</MenuItem>
-        </Link>
-        <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
-      </MenuList>
-    </Menu>
-  );
+  return scrollPosition;
 };
 
 const DesktopNav = () => {
@@ -228,7 +106,7 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
-    <Stack direction={"row"} spacing={4} align={"center"}>
+    <Stack direction={"row"} spacing={0} ml={4} align={"center"}>
       {NAV_ITEMS.map((navItem) => {
         return (
           <Box key={navItem.label}>
@@ -238,14 +116,14 @@ const DesktopNav = () => {
                   <Flex
                     cursor={"pointer"}
                     p={4}
-                    fontSize={"lg"}
-                    fontWeight={600}
                     color={linkColor}
                     _hover={{
                       color: linkHoverColor,
                     }}
                   >
-                    {navItem.label}
+                    <Text fontSize="lg" fontWeight="semibold">
+                      {navItem.label}
+                    </Text>
                     {navItem.children && (
                       <Flex px={1} alignItems={"center"}>
                         <Icon
@@ -293,20 +171,17 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
         role={"group"}
         p={2}
         rounded={"md"}
-        _hover={{ bg: useColorModeValue("primary.500", "primaryLight") }}
+        _hover={{ bg: useColorModeValue("cyan.50", "cyan.800") }}
       >
         <Stack direction={"row"} align={"center"}>
           <Box>
             <Text
-              transition={"all .3s ease"}
-              _groupHover={{ color: "white" }}
-              fontWeight={500}
+              _groupHover={{ color: useColorModeValue("cyan.600", "white") }}
+              fontWeight="medium"
             >
               {label}
             </Text>
-            <Text fontSize={"sm"} _groupHover={{ color: "white" }}>
-              {subLabel}
-            </Text>
+            <Text fontSize={"sm"}>{subLabel}</Text>
           </Box>
           <Flex
             transition={"all .3s ease"}
@@ -320,7 +195,12 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
             align={"center"}
             flex={1}
           >
-            <Icon color={"white"} w={5} h={5} as={ChevronRightIcon} />
+            <Icon
+              color={useColorModeValue("cyan.600", "white")}
+              w={5}
+              h={5}
+              as={ChevronRightIcon}
+            />
           </Flex>
         </Stack>
       </Box>
@@ -333,7 +213,7 @@ const MobileNav = () => {
     <Stack
       bg={useColorModeValue("white", "gray.800")}
       py={2}
-      mx={"4vw"}
+      px={"4vw"}
       display={{ lg: "none" }}
     >
       {NAV_ITEMS.map((navItem) => (
@@ -362,7 +242,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         }}
       >
         <Text
-          fontWeight={500}
+          fontWeight="semibold"
           fontSize={"lg"}
           color={useColorModeValue("gray.600", "gray.200")}
         >
@@ -379,7 +259,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         )}
       </Flex>
 
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: "8px" }}>
+      <Collapse in={isOpen} style={{ marginTop: "8px" }}>
         <Stack
           pl={4}
           borderLeft={1}
@@ -400,7 +280,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
                   <Text
                     transition={"all .3s ease"}
                     _groupHover={{ color: "red.400" }}
-                    fontWeight={400}
+                    fontWeight="normal"
                   >
                     {child.label}
                   </Text>
@@ -420,7 +300,7 @@ interface NavItem {
   href?: string;
 }
 
-const NAV_ITEMS: Array<NavItem> = [
+export const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Discover",
     children: [
@@ -430,6 +310,9 @@ const NAV_ITEMS: Array<NavItem> = [
         href: "/competitions",
       },
     ],
+  },
+  {
+    label: "Contact Us",
   },
 ];
 

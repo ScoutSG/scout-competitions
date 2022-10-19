@@ -15,6 +15,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Group } from "../core/types/Group";
 import Loading from "../components/Loading";
 import { maxWidth } from "../core/utils/maxWidth";
+import PageContainer from "../components/PageContainer";
 
 const ApplicationsPreview = () => {
   const { data: session, status } = useSession();
@@ -45,44 +46,48 @@ const ApplicationsPreview = () => {
   return applications === null ? (
     <Loading />
   ) : status !== "authenticated" ? (
-    <Container maxW={maxWidth}>
-      <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
-        <Stack direction="row" alignItems="center">
-          <Text fontWeight="semibold">Your Applications</Text>
-          <TbLock />
-        </Stack>
+    <PageContainer>
+      <Container maxW={maxWidth}>
+        <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
+          <Stack direction="row" alignItems="center">
+            <Text fontWeight="semibold">Your Applications</Text>
+            <TbLock />
+          </Stack>
 
-        <Text fontSize={{ base: "sm" }} textAlign={"left"}>
-          We cannot show you your applications until you've signed in!
-        </Text>
-        <Link href="/auth/signin">
-          <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
-            Sign in to view your applications
-          </Button>
-        </Link>
-      </Stack>
-    </Container>
-  ) : (
-    <Container maxW={maxWidth}>
-      <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
-        <Stack direction="row" alignItems="center">
-          <Text fontWeight="semibold">Your Applications</Text>
-        </Stack>
-        {applications === null ? (
-          <CircularProgress isIndeterminate color="primary.500" />
-        ) : (
           <Text fontSize={{ base: "sm" }} textAlign={"left"}>
-            {applications.length === 0
-              ? "You currently have no applications."
-              : "Check the status of your applications below."}
+            We cannot show you your applications until you've signed in!
           </Text>
-        )}
+          <Link href="/auth/signin">
+            <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
+              Sign in to view your applications
+            </Button>
+          </Link>
+        </Stack>
+      </Container>
+    </PageContainer>
+  ) : (
+    <PageContainer>
+      <Container maxW={maxWidth}>
+        <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
+          <Stack direction="row" alignItems="center">
+            <Text fontWeight="semibold">Your Applications</Text>
+          </Stack>
+          {applications === null ? (
+            <CircularProgress isIndeterminate color="primary.500" />
+          ) : (
+            <Text fontSize={{ base: "sm" }} textAlign={"left"}>
+              {applications.length === 0
+                ? "You currently have no applications."
+                : "Check the status of your applications below."}
+            </Text>
+          )}
 
-        {applications === null || applications.length === 0 ? null : (
-          <ApplicationPreviewUnit applications={applications} />
-        )}
-      </Stack>
-    </Container>
+          {applications === null || applications.length === 0 ? null : (
+            <ApplicationPreviewUnit applications={applications} />
+          )}
+        </Stack>
+      </Container>
+    </PageContainer>
   );
 };
 

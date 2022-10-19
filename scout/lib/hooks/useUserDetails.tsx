@@ -9,7 +9,7 @@ export const useIsMember = (
   }[]
 ) => {
   const session = useSession();
-  if (!session.data.user) {
+  if (!session.data) {
     return false;
   }
   return checkUserIsMember(session.data.user.id, members);

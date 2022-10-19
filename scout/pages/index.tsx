@@ -1,51 +1,55 @@
 import React from "react";
-import NextLink from "next/link";
-import {
-  Stack,
-  Flex,
-  Box,
-  Heading,
-  Text,
-  Button,
-  useColorModeValue,
-  Stat,
-  StatLabel,
-  StatNumber,
-  SimpleGrid,
-  Center,
-} from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
-import Blob from "../components/Blob";
-import CTAVector from "../core/Icons/CTAVector";
-import { maxWidth } from "../core/utils/maxWidth";
+// import NextLink from "next/link";
+// import {
+//   Stack,
+//   Flex,
+//   Box,
+//   Heading,
+//   Text,
+//   Button,
+//   useColorModeValue,
+//   Stat,
+//   StatLabel,
+//   StatNumber,
+//   SimpleGrid,
+//   Center,
+// } from "@chakra-ui/react";
+// import { ChevronRightIcon } from "@chakra-ui/icons";
+// import Blob from "../components/Blob";
+// import CTAVector from "../core/Icons/CTAVector";
+// import { maxWidth } from "../core/utils/maxWidth";
+import PageContainer from "../components/PageContainer";
+import LandingPage from "../components/LandingPage";
 
-interface CardProps {
-  title: string;
-  stat: string;
-}
-const Card = (props: CardProps) => {
-  const { title, stat } = props;
-  return (
-    <Stat
-      px={{ base: 4, md: 8 }}
-      py={"5"}
-      shadow={"xl"}
-      rounded={"lg"}
-      bg="gray.50"
-    >
-      <StatLabel fontWeight={"medium"} fontSize="lg">
-        {title}
-      </StatLabel>
-      <StatNumber fontSize={"2xl"} fontWeight={"medium"}>
-        {stat}
-      </StatNumber>
-    </Stat>
-  );
-};
+// interface CardProps {
+//   title: string;
+//   stat: string;
+// }
+// const Card = (props: CardProps) => {
+//   const { title, stat } = props;
+//   return (
+//     <Stat
+//       px={{ base: 4, md: 8 }}
+//       py={"5"}
+//       shadow={"xl"}
+//       rounded={"lg"}
+//       bg="gray.50"
+//     >
+//       <StatLabel fontWeight={"medium"} fontSize="lg">
+//         {title}
+//       </StatLabel>
+//       <StatNumber fontSize={"2xl"} fontWeight={"medium"}>
+//         {stat}
+//       </StatNumber>
+//     </Stat>
+//   );
+// };
 
 const Index = () => {
   return (
-    <>
+    <PageContainer>
+      <LandingPage />
+      {/*
       <Center>
         <Stack
           p={10}
@@ -149,7 +153,8 @@ const Index = () => {
           </Stack>
         </Center>
       </Box>
-    </>
+  */}
+    </PageContainer>
   );
 };
 

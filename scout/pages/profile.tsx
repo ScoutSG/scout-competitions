@@ -1,12 +1,15 @@
 import React from "react";
 import { Container } from "@chakra-ui/react";
 import ProfileForm from "../components/ProfileForm";
+import PageContainer from "../components/PageContainer";
 
 const Profile = () => {
   return (
-    <Container pt={10}>
-      <ProfileForm />
-    </Container>
+    <PageContainer>
+      <Container pt={10}>
+        <ProfileForm />
+      </Container>
+    </PageContainer>
   );
 };
 
