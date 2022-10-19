@@ -65,16 +65,16 @@ const Footer: React.FC = () => {
               label={"Instagram"}
               href={"https://www.instagram.com/scoutteamsg/"}
             >
-              <FaInstagram />
+              <TbBrandInstagram />
             </SocialButton>
             <SocialButton
               label={"LinkedIn"}
               href={"https://www.linkedin.com/company/scoutsg/"}
             >
-              <FaLinkedin />
+              <TbBrandLinkedin />
             </SocialButton>
             <SocialButton label={"GitHub"} href={"#"}>
-              <FaGithub />
+              <TbBrandGithub />
             </SocialButton>
           </Stack>
         </Stack>
