@@ -20,7 +20,7 @@ import {
   TbCopy,
 } from "react-icons/tb";
 
-const MemberCard = ({ member }) => {
+const MemberCard = ({ member, isSmall = false }) => {
   // 48em is the default breakpoint for width size = md
   const [isLargerThanMd] = useMediaQuery("(min-width: 48em)");
 
@@ -48,7 +48,9 @@ const MemberCard = ({ member }) => {
       py={2}
       w="100%"
     >
-      <Avatar src={member.image ? member.image : member.email.charAt(0)} />
+      {isSmall ? null : (
+        <Avatar src={member.image ? member.image : member.email.charAt(0)} />
+      )}
       <Stack spacing={2} w="full">
         <Text fontWeight="bold" fontSize="xl">
           {member.name}
