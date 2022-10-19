@@ -55,13 +55,13 @@ const SkeletonGroup: React.FC = () => {
               </Tag>
               <Tag size="md" borderRadius="full">
                 <IoIosSchool />
-                <TagLabel ml={1}>Y3 Data Science</TagLabel>
+                <TagLabel ml={1}>Y3 DSA</TagLabel>
               </Tag>
             </HStack>
           </Wrap>
           <Wrap spacing={{ base: 2, md: 4 }}>
-            <Avatar name="Evelyn Tan" size="sm" />
-            <Text>Evelyn Tan</Text>
+            <Avatar name="Evelyn Goh" size="sm" />
+            <Text>Evelyn Goh</Text>
             <HStack>
               <Tag size="md" borderRadius="full">
                 <FaSchool />

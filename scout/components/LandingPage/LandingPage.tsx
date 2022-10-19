@@ -59,7 +59,7 @@ const LandingPage: React.FC = () => {
             bgGradient="linear(to-l, #0052D4, #43C6AC)"
             bgClip="text"
           >
-            best competitions
+            best events
           </Heading>
           <Heading
             textAlign="right"
@@ -69,13 +69,13 @@ const LandingPage: React.FC = () => {
           </Heading>
           <Stack pt={4}>
             <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
-              We update you on the latest
+              We keep you up-to-date on the
             </Text>
             <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
-              competitions so you will never
+              latest competitions so you will
             </Text>
             <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
-              miss an opportunity
+              never miss an opportunity
             </Text>
           </Stack>
         </Stack>
