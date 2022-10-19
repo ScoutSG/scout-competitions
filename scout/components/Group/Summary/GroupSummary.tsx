@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Box,
@@ -11,6 +11,9 @@ import {
   Button,
   Avatar,
   AvatarGroup,
+  Menu,
+  MenuButton,
+  MenuList,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import Link from "next/link";
@@ -18,6 +21,7 @@ import { useRouter } from "next/router";
 import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
 import { useIsMember } from "../../../lib/hooks/useUserDetails";
 import ShareButton from "../../ShareButton";
+import MemberCard from "../../MemberCard";
 
 const GroupSummaryCard = ({
   group,
@@ -32,12 +36,13 @@ const GroupSummaryCard = ({
 
   const getAvatarIcons = () => {
     let avatarIcons: React.ReactElement[] = [];
-    for (let i = 0; i < group.targetSize; i++) {
-      if (i < group.currentSize) {
-        avatarIcons.push(<Avatar bgColor="primaryLight" />);
-      } else {
-        avatarIcons.push(<Avatar />);
-      }
+    group.members.forEach((member) =>
+      avatarIcons.push(
+        <AvatarMemberDetails member={member} color="primaryLight" />
+      )
+    );
+    for (let i = 0; i < group.targetSize - group.currentSize; i++) {
+      avatarIcons.push(<Avatar />);
     }
 
     return avatarIcons;
@@ -52,7 +57,7 @@ const GroupSummaryCard = ({
         py={2}
         overflow={"hidden"}
         spacing={2}
-        borderWidth={1}
+        // borderWidth={1}
         _hover={{ bgColor: "gray.100" }}
         borderColor="gray.400"
       >
@@ -82,7 +87,15 @@ const GroupSummaryCard = ({
               <Text fontWeight="semibold">We're looking for</Text>
               <Box>
                 {group.targetSkills.map((skill) => (
-                  <Badge textTransform="capitalize">{skill}</Badge>
+                  <Badge
+                    textTransform="capitalize"
+                    colorScheme="green"
+                    rounded="md"
+                    px={4}
+                    py={1}
+                  >
+                    {skill}
+                  </Badge>
                 ))}
               </Box>
             </Stack>
@@ -92,7 +105,15 @@ const GroupSummaryCard = ({
               <Text fontWeight="semibold">Tags</Text>
               <Box>
                 {group.tags.map((tag) => (
-                  <Badge textTransform="capitalize">{tag}</Badge>
+                  <Badge
+                    textTransform="capitalize"
+                    rounded="md"
+                    px={4}
+                    py={1}
+                    colorScheme="teal"
+                  >
+                    {tag}
+                  </Badge>
                 ))}
               </Box>
             </Stack>
@@ -126,6 +147,26 @@ const GroupSummaryCard = ({
         )}
       </Stack>
     </Center>
+  );
+};
+
+const AvatarMemberDetails = ({ member, color }) => {
+  const avatarImage = member.image;
+
+  return (
+    <Menu>
+      <MenuButton
+        as={Button}
+        rounded={"full"}
+        variant={"link"}
+        cursor={"pointer"}
+      >
+        <Avatar size={"xs"} src={avatarImage} bgColor={color} />
+      </MenuButton>
+      <MenuList width={"320px"} boxShadow={"2xl"}>
+        <MemberCard member={member} isSmall={true} />
+      </MenuList>
+    </Menu>
   );
 };
 

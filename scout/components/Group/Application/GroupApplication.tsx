@@ -1,41 +1,18 @@
-import {
-  Stack,
-  Heading,
-  FormControl,
-  FormLabel,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  SliderMark,
-  List,
-  Button,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Stack, Heading, List, Button } from "@chakra-ui/react";
+import { useState } from "react";
 import { TbSend } from "react-icons/tb";
 import { useSession } from "next-auth/react";
 
-import { Question, QuestionsData } from "../../../core/types/Group";
+import { QuestionsData, QuestionType } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 import { useRouter } from "next/router";
 import { useDraftRequest } from "../../../lib/hooks/useDraftRequest";
-
-const labelStyles = {
-  mt: "2",
-  width: "10px",
-  ml: "-5px",
-  fontSize: "sm",
-  fontWeight: "500",
-};
-
-type QuestionProps = {
-  question: Question;
-  setAnswer: (newAnswer: number) => void;
-};
+import RangeQuestion from "./RangeQuestion";
+import OpenEndedQuestion from "./OpenEndedQuestion";
 
 type Answer = {
-  answerString: string | number;
+  answerString: string;
   questionId: number;
 };
 
@@ -46,60 +23,26 @@ interface RequestBody {
   answers: Answer[];
 }
 
-const Question: React.FC<QuestionProps> = ({ question, setAnswer }) => {
-  return (
-    <FormControl padding={4}>
-      <FormLabel>{question.questionString}</FormLabel>
-      <Slider
-        aria-label="slider-ex-1"
-        min={1}
-        max={5}
-        defaultValue={3}
-        step={1}
-        onChangeEnd={(value) => setAnswer(value)}
-        colorScheme="primary"
-      >
-        <SliderMark value={1} {...labelStyles}>
-          1
-        </SliderMark>
-        <SliderMark value={2} {...labelStyles}>
-          2
-        </SliderMark>
-        <SliderMark value={3} {...labelStyles}>
-          3
-        </SliderMark>
-        <SliderMark value={4} {...labelStyles}>
-          4
-        </SliderMark>
-        <SliderMark value={5} {...labelStyles}>
-          5
-        </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
-    </FormControl>
-  );
-};
-
 const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   const router = useRouter();
   const session = useSession();
   const { presentToast } = useCustomToast();
-  const [application, setApplication] = useState([]);
   const { setDraftRequest } = useDraftRequest();
-  const questions = questionsData.questions;
 
-  // initialise application state
-  useEffect(() => {
-    setApplication(questions.map((question) => ({ ...question, answer: 3 })));
-  }, []);
+  const [application, setApplication] = useState(
+    questionsData.questions.map((question) => {
+      if (question.questionType === QuestionType.Range) {
+        return { ...question, answer: "3" };
+      } else {
+        return { ...question, answer: "" };
+      }
+    })
+  );
 
-  const setAnswer = (questionId: number) => (newAnswer: number) => {
+  const setAnswer = (questionId: number) => (newAnswer: string) => {
     setApplication((currentApplication) =>
       currentApplication.map((question) =>
-        question.questionId === questionId
+        question.id === questionId
           ? { ...question, answer: newAnswer }
           : question
       )
@@ -107,7 +50,6 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   };
 
   const submitApplication = async () => {
-    console.log(application)
     const applicationInfo = {
       formId: questionsData.id,
       groupId: questionsData.groupId,
@@ -154,13 +96,25 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
         Tell the team a bit about yourself!
       </Heading>
       <List spacing={5}>
-        {application.map((question) => (
-          <Question
-            question={question}
-            setAnswer={setAnswer(question.questionId)}
-            key={question.questionId}
-          />
-        ))}
+        {application.map((question) => {
+          if (question.questionType === QuestionType.Range) {
+            return (
+              <RangeQuestion
+                key={question.id}
+                question={question}
+                setAnswer={setAnswer(question.id)}
+              />
+            );
+          } else {
+            return (
+              <OpenEndedQuestion
+                key={question.id}
+                question={question}
+                setAnswer={setAnswer(question.id)}
+              />
+            );
+          }
+        })}
       </List>
       <Button
         color="white"

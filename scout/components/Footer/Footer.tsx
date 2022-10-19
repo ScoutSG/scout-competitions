@@ -7,7 +7,11 @@ import {
   Box,
   Container,
 } from "@chakra-ui/react";
-import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import {
+  TbBrandGithub,
+  TbBrandInstagram,
+  TbBrandLinkedin,
+} from "react-icons/tb";
 import { ReactNode } from "react";
 
 const SocialButton = ({

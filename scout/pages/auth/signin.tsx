@@ -12,7 +12,7 @@ import {
   HStack,
   Center,
 } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
+import { TbBrandGoogle } from "react-icons/tb";
 import { getCsrfToken } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
@@ -84,7 +84,7 @@ export default function SignInPage({ csrfToken, providers }) {
               onClick={() => signIn(providers.google.id, { callbackUrl: "/" })}
               w={"full"}
               variant={"outline"}
-              leftIcon={<FcGoogle />}
+              leftIcon={<TbBrandGoogle />}
             >
               <Center>
                 <Text>Sign In with Google</Text>

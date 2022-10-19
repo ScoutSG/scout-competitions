@@ -5,23 +5,19 @@ import {
   Heading,
   Text,
   Stack,
-  List,
-  ListItem,
-  ListIcon,
   Icon,
   Badge,
   Button,
-  ButtonGroup,
   Fade,
 } from "@chakra-ui/react";
-import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
-import { daysLeft } from "../../../core/utils/date";
+import NextLink from "next/link";
+import { TbClock } from "react-icons/tb";
 import { MdCircle } from "react-icons/md";
 import { VscOctoface } from "react-icons/vsc";
-import { MdTimer } from "react-icons/md";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
+import { daysLeft } from "../../../core/utils/date";
 import { maxWidth } from "../../../core/utils/maxWidth";
-import NextLink from "next/link";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;
@@ -50,7 +46,7 @@ const CompetitionSummaryCard: React.FC<{
                 color="red.400"
                 bgColor="transparent"
               >
-                <Icon as={MdTimer} />
+                <Icon as={TbClock} />
                 <Text fontWeight={800} fontSize={"sm"}>
                   {daysLeft(competition.deadline) < 0
                     ? "Expired"
