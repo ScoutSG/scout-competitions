@@ -73,7 +73,7 @@ const CompetitionDetails = ({
 
   return (
     <PageContainer>
-      <Box bgColor="gray.50">
+      <Box>
         <Head>
           <title>{competition.name} - Scout</title>
         </Head>

@@ -8,6 +8,8 @@ import {
   Text,
   Image,
   useColorModeValue,
+  Center,
+  Divider,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
@@ -22,7 +24,7 @@ const CompetitionDiscovery: React.FC = ({
 }) => {
   return (
     <>
-      <Container position="relative" minH="100vh" minW="100vw" padding="0px">
+      <Stack position="relative" minH="100vh" padding="0px" margin="0px">
         <NavigationBar />
         <Head>
           <title>Competitions - Scout</title>
@@ -68,7 +70,7 @@ const CompetitionDiscovery: React.FC = ({
           <CompetitionSummaryView competitions={competitions} />
         </Container>
         <Footer />
-      </Container>
+      </Stack>
     </>
   );
 };
