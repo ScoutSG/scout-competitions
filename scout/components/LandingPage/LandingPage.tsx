@@ -7,7 +7,7 @@ const LandingPage: React.FC = () => {
   return (
     <Stack pb={16}>
       <Flex flexWrap="wrap" justifyContent="right">
-        <Stack pt={32} pl={{ base: 0, md: 16 }}>
+        <Stack pt={{base: 16, md: 32}} pl={{ base: 0, md: 16 }}>
           <Heading size={{ base: "3xl", md: "4xl" }}>
             Success starts
           </Heading>
@@ -65,7 +65,7 @@ const LandingPage: React.FC = () => {
             textAlign="right"
             size={{ base: "3xl", md: "4xl" }}
           >
-            to participate in
+            to try
           </Heading>
           <Stack pt={4}>
             <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
