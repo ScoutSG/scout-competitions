@@ -1,5 +1,5 @@
-
 import CompetitionDiscovery from "../../components/CompetitionDiscovery";
+import prisma from "../../lib/prisma";
 
 export async function getStaticProps() {
   let competitions = await prisma.competition.findMany({
