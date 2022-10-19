@@ -76,9 +76,9 @@ const CreateOrEditGroupForm = ({
       tags: values.tags.map(({ value }) => value),
       form: {
         questions: values.questions.filter(
-        (str) => str.questionString.length > 0
+          (str) => str.questionString.length > 0
         ),
-      }
+      },
       withTelegramGroup: values.withTelegramGroup,
     };
     if (session.status === "authenticated") {
