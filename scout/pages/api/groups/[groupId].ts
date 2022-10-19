@@ -48,6 +48,7 @@ export default async function handle(req, res) {
         description,
         targetSkills,
         tags,
+        form,
         members,
         withTelegramGroup,
       } = req.body;
@@ -93,7 +94,19 @@ export default async function handle(req, res) {
           telegramLink: telegramGroupId ? String(telegramGroupId) : null,
         },
       });
-      res.status(200).json(group);
+
+      const updatedGroup = await prisma.group.findUnique({
+        where: {
+          id: groupId,
+        },
+        include: {
+          members: true,
+          form: true,
+          applications: true,
+        },
+      });
+
+      res.status(200).json(updatedGroup);
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);
