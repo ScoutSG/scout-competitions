@@ -74,7 +74,11 @@ const CreateOrEditGroupForm = ({
       targetSize: values.targetSize,
       targetSkills: values.targetSkills.map(({ value }) => value),
       tags: values.tags.map(({ value }) => value),
-
+      form: {
+        questions: values.questions.filter(
+        (str) => str.questionString.length > 0
+        ),
+      }
       withTelegramGroup: values.withTelegramGroup,
     };
     if (session.status === "authenticated") {
