@@ -4,6 +4,6 @@ export type CreateOrEditGroupFormValue = {
   targetSize: number;
   targetSkills: { value: string; label: string }[];
   tags: { value: string; label: string }[];
-  questions: { questionString: string }[];
+  questions: { questionType: string; questionString: string }[];
   withTelegramGroup: boolean;
 };

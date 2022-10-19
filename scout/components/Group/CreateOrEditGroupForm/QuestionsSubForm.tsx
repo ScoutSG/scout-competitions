@@ -7,10 +7,22 @@ import {
   IconButton,
   Button,
   Text,
+  ButtonGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { TbMinus, TbPlus } from "react-icons/tb";
+import { TbAdjustmentsHorizontal, TbCursorText, TbMinus } from "react-icons/tb";
+import { QuestionType } from "../../../core/types/Group";
 import { CreateOrEditGroupFormValue } from "./types";
+
+const getQuestionTypeIcon = (questionType: QuestionType) => {
+  switch (questionType) {
+    case QuestionType.Range:
+      return <TbAdjustmentsHorizontal />;
+    case QuestionType.OpenEnded:
+      return <TbCursorText />;
+  }
+};
 
 type QuestionsSubFormProps = Pick<
   UseFormReturn<CreateOrEditGroupFormValue>,
@@ -33,11 +45,15 @@ export default function QuestionsSubForm({
       </Heading>
       <Text>
         You can ask your prospective group members some questions to get to know
-        their skillsets and personalities better. To keep things quick and easy,
-        the questions will be close-ended, on a scale of 1 to 5.
+        their skillsets and personalities better.
       </Text>
       {fields.map((item, index) => (
         <InputGroup key={item.id}>
+          {"questionType" in item ? (
+            <InputLeftAddon
+              children={getQuestionTypeIcon(item.questionType as QuestionType)}
+            />
+          ) : null}
           <Input
             placeholder={`Question ${index + 1}`}
             {...register(`questions.${index}.questionString`)}
@@ -52,13 +68,24 @@ export default function QuestionsSubForm({
           </InputRightElement>
         </InputGroup>
       ))}
-      <Button
-        leftIcon={<TbPlus />}
-        onClick={() => append({ questionString: "" })}
-        variant="outline"
-      >
-        Add Question
-      </Button>
+      <ButtonGroup isAttached variant="outline" width="100%">
+        <Button
+          width="100%"
+          leftIcon={<TbAdjustmentsHorizontal />}
+          onClick={() => append({ questionString: "", questionType: "Range" })}
+        >
+          Range Slider
+        </Button>
+        <Button
+          width="100%"
+          leftIcon={<TbCursorText />}
+          onClick={() =>
+            append({ questionString: "", questionType: "OpenEnded" })
+          }
+        >
+          Open-Ended
+        </Button>
+      </ButtonGroup>
     </Stack>
   );
 }

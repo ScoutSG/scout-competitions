@@ -15,13 +15,14 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-import { Group } from "../../core/types/Group";
+import { Group, QuestionType } from "../../core/types/Group";
 
 interface Answer {
   answerResponse: number;
   question: {
     id: number;
     questionString: string;
+    questionType: string;
   };
 }
 
@@ -44,63 +45,63 @@ const ApplicationRow = ({
       <Accordion allowMultiple>
         {relevantApplications.map(({ group, answers, isApproved }, index) => (
           <AccordionItem key={index}>
-            {({ isExpanded }) => (
-              <>
-                <h2>
-                  <AccordionButton>
-                    <Flex flex="1" gap="1">
-                      <Stack
-                        direction={{ base: "column", sm: "row" }}
-                        spacing={2}
-                        align={{ base: "left", sm: "center" }}
-                        textAlign="left"
-                      >
-                        <Text>{group.name}</Text>
-                        <Badge
-                          fontWeight="550"
-                          colorScheme={
-                            isApproved === null
-                              ? "orange"
-                              : isApproved
-                              ? "green"
-                              : "red"
-                          }
-                        >
-                          {isApproved === null
-                            ? "Pending"
-                            : isApproved
-                            ? "Approved"
-                            : "Rejected"}
-                        </Badge>
-                      </Stack>
-                    </Flex>
-                    <Flex gap={2} alignItems="center">
-                      <Spacer />
-                      <AccordionIcon />
-                    </Flex>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <List spacing={3}>
-                    {answers.map(({ question, answerResponse }) => (
-                      <ListItem display="flex" flexDirection="column">
-                        <Text>{question.questionString}</Text>
-                        <Flex alignItems="center" gap={5}>
-                          <Progress
-                            value={(answerResponse / 5) * 100}
-                            flex="1"
-                            bgColor="gray.200"
-                            borderRadius="10px"
-                            colorScheme="primary"
-                          />
-                          <Text>{answerResponse}/5</Text>
-                        </Flex>
-                      </ListItem>
-                    ))}
-                  </List>
-                </AccordionPanel>
-              </>
-            )}
+            <h2>
+              <AccordionButton>
+                <Flex flex="1" gap="1">
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    spacing={2}
+                    align={{ base: "left", sm: "center" }}
+                    textAlign="left"
+                  >
+                    <Text>{group.name}</Text>
+                    <Badge
+                      fontWeight="550"
+                      colorScheme={
+                        isApproved === null
+                          ? "orange"
+                          : isApproved
+                          ? "green"
+                          : "red"
+                      }
+                    >
+                      {isApproved === null
+                        ? "Pending"
+                        : isApproved
+                        ? "Approved"
+                        : "Rejected"}
+                    </Badge>
+                  </Stack>
+                </Flex>
+                <Flex gap={2} alignItems="center">
+                  <Spacer />
+                  <AccordionIcon />
+                </Flex>
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <List spacing={3}>
+                {answers.map(({ question, answerResponse }) => (
+                  <ListItem display="flex" flexDirection="column">
+                    <Text fontWeight="bold">{question.questionString}</Text>
+                    {question.questionType === QuestionType.Range ? (
+                      <Flex alignItems="center" gap={5}>
+                        <Progress
+                          value={(answerResponse / 5) * 100}
+                          flex="1"
+                          bgColor="gray.200"
+                          borderRadius="10px"
+                          colorScheme="primary"
+                        />
+                        <Text>{answerResponse}/5</Text>
+                      </Flex>
+                    ) : (
+                      <Text>{answerResponse}</Text>
+                    )}
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionPanel>
           </AccordionItem>
         ))}
       </Accordion>

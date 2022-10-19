@@ -97,6 +97,7 @@ async function handleAdd(req, res) {
     const questionsData = form.questions.map((question) => ({
       formId: newForm.id,
       questionString: question.questionString,
+      questionType: question.questionType,
     }));
 
     await prisma.question.createMany({ data: questionsData });
