@@ -35,9 +35,15 @@ export interface Group {
   applications?: Application[];
 }
 
+export enum QuestionType {
+  Range = "Range",
+  OpenEnded = "OpenEnded",
+}
+
 export interface Question {
-  questionId: number;
+  id: number;
   questionString: string;
+  questionType: QuestionType;
 }
 
 export interface QuestionsData {

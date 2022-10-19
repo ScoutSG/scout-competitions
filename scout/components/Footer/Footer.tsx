@@ -6,7 +6,11 @@ import {
   VisuallyHidden,
   Box,
 } from "@chakra-ui/react";
-import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import {
+  TbBrandGithub,
+  TbBrandInstagram,
+  TbBrandLinkedin,
+} from "react-icons/tb";
 import { ReactNode } from "react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
 
@@ -63,16 +67,16 @@ const Footer: React.FC = () => {
             label={"Instagram"}
             href={"https://www.instagram.com/scoutteamsg/"}
           >
-            <FaInstagram />
+            <TbBrandInstagram />
           </SocialButton>
           <SocialButton
             label={"LinkedIn"}
             href={"https://www.linkedin.com/company/scoutsg/"}
           >
-            <FaLinkedin />
+            <TbBrandLinkedin />
           </SocialButton>
           <SocialButton label={"GitHub"} href={"#"}>
-            <FaGithub />
+            <TbBrandGithub />
           </SocialButton>
         </Stack>
       </Stack>

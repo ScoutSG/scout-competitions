@@ -28,7 +28,7 @@ import {
 } from "react-icons/tb";
 
 import clientApi from "../../../core/api/client";
-import { Group } from "../../../core/types/Group";
+import { Group, QuestionType } from "../../../core/types/Group";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 
 const ApplicationReview: React.FC<{
@@ -219,17 +219,21 @@ const ApplicationReview: React.FC<{
 
                     {answers.map(({ question, answerResponse }) => (
                       <ListItem display="flex" flexDirection="column">
-                        <Text>{question.questionString}</Text>
-                        <Flex alignItems="center" gap={5}>
-                          <Progress
-                            value={(answerResponse / 5) * 100}
-                            flex="1"
-                            bgColor="gray.200"
-                            borderRadius="10px"
-                            colorScheme="primary"
-                          />
-                          <Text>{answerResponse}/5</Text>
-                        </Flex>
+                        <Text fontWeight="bold">{question.questionString}</Text>
+                        {question.questionType === QuestionType.Range ? (
+                          <Flex alignItems="center" gap={5}>
+                            <Progress
+                              value={(answerResponse / 5) * 100}
+                              flex="1"
+                              bgColor="gray.200"
+                              borderRadius="10px"
+                              colorScheme="primary"
+                            />
+                            <Text>{answerResponse}/5</Text>
+                          </Flex>
+                        ) : (
+                          <Text>{answerResponse}</Text>
+                        )}
                       </ListItem>
                     ))}
                     <ButtonGroup
