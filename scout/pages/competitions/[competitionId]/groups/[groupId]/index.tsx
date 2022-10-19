@@ -31,6 +31,7 @@ import { TbPencil, TbTrash } from "react-icons/tb";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
 import { useIsMember } from "../../../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../../../core/utils/maxWidth";
+import PageContainer from "../../../../../components/PageContainer";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -105,7 +106,7 @@ const GroupDetail: React.FC = ({
   const isMember = useIsMember(group.members);
 
   return (
-    <>
+    <PageContainer>
       <Head>
         <title>{group.name} - Scout</title>
       </Head>
@@ -185,7 +186,7 @@ const GroupDetail: React.FC = ({
           </Stack>
         </Stack>
       </Center>
-    </>
+    </PageContainer>
   );
 };
 

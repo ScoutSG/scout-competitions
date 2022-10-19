@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { Stack, ScaleFade } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Head from "next/head";
 
 import clientApi from "../../core/api/client";
 import { useDraftRequest } from "../../lib/hooks/useDraftRequest";
@@ -61,25 +60,15 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   }, [draftGroup, session]);
 
   return (
-    <Stack minH="100vh" align="center">
-      <Head>
-        <title>Scout</title>
-      </Head>
-      <NavigationBar />
-      <Stack
-        pt={"70px"}
-        spacing={0}
-        pb={{ base: "200px", md: "100px" }}
-        w="100%"
-      >
-        <Stack spacing={0}>
-          <ScaleFade in={true} initialScale={0.9}>
-            {children}
-          </ScaleFade>
-        </Stack>
-      </Stack>
-      <Footer />
-    </Stack>
+    <>
+      <Container position="relative" minH="100vh" minW="100vw" padding="0px">
+        <NavigationBar />
+        <Container maxW={{ xl: "8xl" }} px="4vw" pt="80px" pb={{base: "104px", md: "64px"}}>
+          {children}
+        </Container>
+        <Footer />
+      </Container>
+    </>
   );
 };
 

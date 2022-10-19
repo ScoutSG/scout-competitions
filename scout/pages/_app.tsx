@@ -6,8 +6,14 @@ import { authOptions } from "./api/auth/[...nextauth]"
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
-import PageContainer from "../components/PageContainer";
 import Loading from "../components/Loading";
+import Head from "next/head";
+import '@fontsource/open-sans/300.css'
+import '@fontsource/open-sans/400.css'
+import '@fontsource/open-sans/500.css'
+import '@fontsource/open-sans/600.css'
+import '@fontsource/open-sans/700.css'
+import '@fontsource/open-sans/800.css'
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
@@ -15,9 +21,8 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
       <Auth>
         <RecoilRoot>
           <ChakraProvider theme={theme}>
-            <PageContainer>
-              <Component {...pageProps} />
-            </PageContainer>
+            <Head><title>Scout</title></Head>
+            <Component {...pageProps} />
           </ChakraProvider>
         </RecoilRoot>
       </Auth>
@@ -46,21 +51,25 @@ const theme = extendTheme({
   config,
   colors: {
     primary: {
-      50: "#177DF1",
-      100: "#177DF1",
-      200: "#177DF1",
-      300: "#177DF1",
-      400: "#177DF1",
-      500: "#177DF1",
-      600: "#177DF1",
-      700: "#177DF1",
-      800: "#177DF1",
-      900: "#177DF1",
+      50: "#D1E5FC",
+      100: "#B9D8FB",
+      200: "#8BBEF8",
+      300: "#74B1F7",
+      400: "#4597F4",
+      500: "#1571D9",
+      600: "#1264C1",
+      700: "#1058A9",
+      800: "#0E4B91",
+      900: "#0C3f79",
     },
-    secondary: "#FF9966",
-    primaryLight: "#4FA2FF",
+    primaryLight: "#177DF1",
     secondaryLight: "#FFCC99",
+    secondary: "#FF9966",
   },
+  fonts: {
+    heading: `'Open Sans', sans-serif`,
+    body: `'Open Sans', sans-serif`
+  }
 });
 
 export async function getServerSideProps(context) {

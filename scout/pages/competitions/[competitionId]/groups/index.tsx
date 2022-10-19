@@ -5,6 +5,7 @@ import { CompetitionData } from "../../../../core/types/CompetitionDetail";
 import AboutCard from "../../../../components/Competition/AboutCard";
 import clientApi from "../../../../core/api/client";
 import CreateOrEditGroupForm from "../../../../components/Group/CreateOrEditGroupForm";
+import PageContainer from "../../../../components/PageContainer";
 
 export async function getServerSideProps(context) {
   const competitionId = context.params.competitionId;
@@ -19,7 +20,7 @@ type CreateGroupProps = {
 
 const CreateGroup = ({ competition }: CreateGroupProps) => {
   return (
-    <>
+    <PageContainer>
       <Head>
         <title>{competition.name} - Scout</title>
       </Head>
@@ -48,7 +49,7 @@ const CreateGroup = ({ competition }: CreateGroupProps) => {
           <CreateOrEditGroupForm competition={competition} />
         </Flex>
       </Stack>
-    </>
+    </PageContainer>
   );
 };
 

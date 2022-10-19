@@ -7,7 +7,11 @@ export interface CompetitionData {
   link: string;
   maxSize: number | null;
   minSize: number | null;
-  groups: GroupSummaryData[] | [];
+  firstPrize: string | null;
+  secondPrize: string | null;
+  thirdPrize: string | null;
+  otherPrizes: string | null
+  groups: GroupSummaryData[];
 }
 
 export interface GroupSummaryData {
@@ -40,5 +44,9 @@ export interface CompetitionDataSummary {
   link: string;
   maxSize: number | null;
   minSize: number | null;
+  firstPrize: string | null;
+  secondPrize: string | null;
+  thirdPrize: string | null;
+  otherPrizes: string | null
   groups: GroupSummaryData[];
 }

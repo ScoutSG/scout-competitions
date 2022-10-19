@@ -12,7 +12,7 @@ import {
   HStack,
   Center,
 } from "@chakra-ui/react";
-import { TbBrandGoogle } from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
 import { getCsrfToken } from "next-auth/react";
 import { getProviders, signIn } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
@@ -20,14 +20,15 @@ import ScoutIcon from "../../core/Icons/ScoutIcon";
 export default function SignInPage({ csrfToken, providers }) {
   return (
     <Flex
-      minH={"100vh"}
+      height="100vh"
+      width="100vw"
       align={"center"}
       justify={"center"}
       direction={"column"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack spacing={4} align={"center"} width="75%">
-        <ScoutIcon width={100} />
+        <ScoutIcon width={240} height={128} />
         <Heading fontSize={"5xl"} textAlign={"center"}>
           Enter your email
         </Heading>
@@ -62,10 +63,10 @@ export default function SignInPage({ csrfToken, providers }) {
                 </FormControl>
                 <Button
                   type="submit"
-                  bg={"orange.400"}
+                  bg={"cyan.500"}
                   color={"white"}
                   _hover={{
-                    bg: "orange.500",
+                    bg: "cyan.600",
                   }}
                 >
                   Continue
@@ -83,7 +84,7 @@ export default function SignInPage({ csrfToken, providers }) {
               onClick={() => signIn(providers.google.id, { callbackUrl: "/" })}
               w={"full"}
               variant={"outline"}
-              leftIcon={<TbBrandGoogle />}
+              leftIcon={<FcGoogle />}
             >
               <Center>
                 <Text>Sign In with Google</Text>

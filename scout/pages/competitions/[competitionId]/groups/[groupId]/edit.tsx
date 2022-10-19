@@ -6,6 +6,7 @@ import AboutCard from "../../../../../components/Competition/AboutCard";
 import clientApi from "../../../../../core/api/client";
 import CreateOrEditGroupForm from "../../../../../components/Group/CreateOrEditGroupForm";
 import { Form, Group } from "../../../../../core/types/Group";
+import PageContainer from "../../../../../components/PageContainer";
 
 export async function getServerSideProps(context) {
   const { competitionId, groupId } = context.params;
@@ -31,7 +32,7 @@ type EditGroupProps = {
 
 const EditGroup = ({ competition, group, form }: EditGroupProps) => {
   return (
-    <>
+    <PageContainer>
       <Head>
         <title>{competition.name} - Scout</title>
       </Head>
@@ -64,7 +65,7 @@ const EditGroup = ({ competition, group, form }: EditGroupProps) => {
           />
         </Flex>
       </Stack>
-    </>
+    </PageContainer>
   );
 };
 

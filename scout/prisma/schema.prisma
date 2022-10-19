@@ -134,8 +134,8 @@ model Competition {
   maxSize       Int
   minSize       Int
   firstPrize    String?
-  otherPrizes   String?
   secondPrize   String?
   thirdPrize    String?
+  otherPrizes   String?
   groups        Group[]
 }

@@ -1,20 +1,17 @@
-import { chakra } from "@chakra-ui/react";
-import logo from "../../assets/logo.svg";
+import { useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
 
-const ScoutIcon = ({ width }: { width?: number }) => {
-  const ProductImage = chakra(Image, {
-    shouldForwardProp: (prop) =>
-      ["width", "height", "src", "alt"].includes(prop),
-  });
+const ScoutIcon = ({ width, height }) => {
+  const { colorMode } = useColorMode();
+
   return (
     <>
-      <ProductImage
-        src={logo}
+      <Image
+        src={colorMode === "light" ? "/wordLogo.svg" : "/wordLogoDark.svg"}
         alt="icon"
         layout="fixed"
-        width={width ? null : 100}
-        height={width ?? 70}
+        width={width}
+        height={height}
       />
     </>
   );
