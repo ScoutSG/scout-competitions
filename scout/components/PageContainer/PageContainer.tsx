@@ -29,9 +29,11 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         userId: session.data.user.id,
       };
       const code = joinRequest.id;
-      clientApi.patch(`/invitations/${code}`, body);
-      setJoinRequest(null);
-      router.push(`/join/${code}`);
+      clientApi.patch(`/invitations/${code}`, body).then((res) => {
+        setJoinRequest(null);
+        let { competitionId, groupId } = res.data;
+        router.push(`/competitions/${competitionId}/groups/${groupId}`);
+      });
     }
   }, [joinRequest, session]);
 

@@ -1,3 +1,4 @@
+import { truncate } from "fs/promises";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 
@@ -17,7 +18,12 @@ export default async function handle(
       await validateUserIsNotInGroup(userId, invitation.groupId);
       await updateInvitation(userId, id, invitation);
       await addUserToGroup(userId, invitation.groupId);
-      res.status(200);
+      const competition = await getCompetition(invitation.groupId);
+      const response = {
+        competitionId: competition.id,
+        groupId: invitation.groupId,
+      };
+      res.status(200).json(response);
     } else {
       res.setHeader("Allow", ["PATCH"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);
@@ -85,6 +91,19 @@ const addUserToGroup = async (userId, groupId) => {
       },
     },
   });
+};
+
+const getCompetition = async (groupId) => {
+  const competitions = await prisma.competition.findMany({
+    include: {
+      groups: true,
+    },
+  });
+  const competition = competitions.filter(
+    (comp) => comp.groups.filter((group) => group.id === groupId).length === 1
+  )[0];
+
+  return competition;
 };
 
 // validation services

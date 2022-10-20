@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import clientApi from "../../core/api/client";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import { useJoinRequest } from "../../lib/hooks/useJoinRequest";
+import Loading from "../../components/Loading";
+import { Container } from "@chakra-ui/react";
 
 interface Invite {
   code: string;
@@ -33,11 +35,19 @@ const JoinPage = () => {
         userId: session.data.user.id,
       };
 
-      clientApi.patch(`/invitations/${code}`, body);
+      clientApi.patch(`/invitations/${code}`, body).then((res) => {
+        let { competitionId, groupId } = res.data;
+
+        router.push(`/competitions/${competitionId}/groups/${groupId}`);
+      });
     }
   }, []);
 
-  return <div>Test</div>;
+  return (
+    <Container>
+      <Loading />
+    </Container>
+  );
 };
 
 export default JoinPage;
