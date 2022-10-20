@@ -16,7 +16,6 @@ export default async function handle(
       const { userId } = req.body;
       const invitation = await getInvitation(id);
       await validateUserIsNotInGroup(userId, invitation.groupId);
-      await updateInvitation(userId, id, invitation);
       await addUserToGroup(userId, invitation.groupId);
       const competition = await getCompetition(invitation.groupId);
       const response = {
@@ -43,17 +42,6 @@ const getInvitation = async (id) => {
   return invitation;
 };
 
-const updateInvitation = async (userId, id, invitation) => {
-  const updatedInvitation = { ...invitation, userId: userId };
-
-  await prisma.invitation.update({
-    where: {
-      id: id,
-    },
-    data: updatedInvitation,
-  });
-};
-
 const addUserToGroup = async (userId, groupId) => {
   const {
     name,
@@ -72,6 +60,10 @@ const addUserToGroup = async (userId, groupId) => {
     },
   });
 
+  if (currentSize >= targetSize) {
+    throw "Max group size reached.";
+  }
+
   const updatedMembers = members.map((x) => x.id);
   updatedMembers.push(userId);
 
@@ -81,7 +73,7 @@ const addUserToGroup = async (userId, groupId) => {
     },
     data: {
       name,
-      currentSize,
+      currentSize: updatedMembers.length,
       targetSize,
       description,
       targetSkills,

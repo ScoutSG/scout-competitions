@@ -29,11 +29,22 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         userId: session.data.user.id,
       };
       const code = joinRequest.id;
-      clientApi.patch(`/invitations/${code}`, body).then((res) => {
-        setJoinRequest(null);
-        let { competitionId, groupId } = res.data;
-        router.push(`/competitions/${competitionId}/groups/${groupId}`);
-      });
+      clientApi
+        .patch(`/invitations/${code}`, body)
+        .then((res) => {
+          setJoinRequest(null);
+          let { competitionId, groupId } = res.data;
+          router.push(`/competitions/${competitionId}/groups/${groupId}`);
+        })
+        .catch((err) => {
+          presentToast({
+            title: "Error!",
+            position: "top",
+            status: "info",
+            description: "Unable to join group",
+          });
+          router.push("/");
+        });
     }
   }, [joinRequest, session]);
 
