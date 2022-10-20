@@ -22,6 +22,7 @@ import { GroupSummaryData } from "../../../core/types/CompetitionDetail";
 import { useIsMember } from "../../../lib/hooks/useUserDetails";
 import ShareButton from "../../ShareButton";
 import MemberCard from "../../MemberCard";
+import InviteButton from "../../InviteButton";
 
 const GroupSummaryCard = ({
   group,
@@ -123,6 +124,7 @@ const GroupSummaryCard = ({
         {isMember ? (
           <Stack direction="row">
             <ShareButton group={group} />
+            <InviteButton group={group} />
             <Link href={groupLink}>
               <Button color="primary.500" bgColor="transparent" _hover={{}}>
                 View group

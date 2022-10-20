@@ -57,6 +57,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   groups         Group[]
+  invitations    Invitation[]
 
   @@map("users")
 }
@@ -122,6 +123,7 @@ model Group {
   applications  Application[]
   form          Form?
   members       User[]
+  Invitation    Invitation[]
 }
 
 model Competition {
@@ -138,4 +140,12 @@ model Competition {
   thirdPrize    String?
   otherPrizes   String?
   groups        Group[]
+}
+
+model Invitation {
+  id      String @id @default(uuid())
+  userId  Int?
+  user    User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  groupId Int
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
 }
