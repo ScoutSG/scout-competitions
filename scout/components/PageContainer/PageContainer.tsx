@@ -9,6 +9,7 @@ import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import { useDraftGroup } from "../../lib/hooks/useDraftGroup";
+import { useJoinRequest } from "../../lib/hooks/useJoinRequest";
 
 interface PageContainerProps {
   children: React.ReactNode;
@@ -19,7 +20,33 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   const router = useRouter();
   const { draftRequest, setDraftRequest } = useDraftRequest();
   const { draftGroup, setDraftGroup } = useDraftGroup();
+  const { joinRequest, setJoinRequest } = useJoinRequest();
   const { presentToast } = useCustomToast();
+
+  useEffect(() => {
+    if (joinRequest !== null && session.status === "authenticated") {
+      const body = {
+        userId: session.data.user.id,
+      };
+      const code = joinRequest.id;
+      clientApi
+        .patch(`/invitations/${code}`, body)
+        .then((res) => {
+          setJoinRequest(null);
+          let { competitionId, groupId } = res.data;
+          router.push(`/competitions/${competitionId}/groups/${groupId}`);
+        })
+        .catch((err) => {
+          presentToast({
+            title: "Error!",
+            position: "top",
+            status: "info",
+            description: "Unable to join group",
+          });
+          router.push("/");
+        });
+    }
+  }, [joinRequest, session]);
 
   useEffect(() => {
     if (draftRequest !== null && session.status === "authenticated") {
@@ -63,7 +90,12 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
     <>
       <Container position="relative" minH="100vh" minW="100vw" padding="0px">
         <NavigationBar />
-        <Container maxW={{ xl: "8xl" }} px="4vw" pt="80px" pb={{base: "104px", md: "64px"}}>
+        <Container
+          maxW={{ xl: "8xl" }}
+          px="4vw"
+          pt="80px"
+          pb={{ base: "104px", md: "64px" }}
+        >
           {children}
         </Container>
         <Footer />
