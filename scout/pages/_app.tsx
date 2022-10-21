@@ -1,19 +1,24 @@
 import { Session } from "next-auth";
-import { useSession } from "next-auth/react"
+import { useSession } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]"
+import { authOptions } from "./api/auth/[...nextauth]";
 import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
 import { AppProps } from "next/app";
 import Loading from "../components/Loading";
 import Head from "next/head";
-import '@fontsource/open-sans/300.css'
-import '@fontsource/open-sans/400.css'
-import '@fontsource/open-sans/500.css'
-import '@fontsource/open-sans/600.css'
-import '@fontsource/open-sans/700.css'
-import '@fontsource/open-sans/800.css'
+import ReactGA from "react-ga4";
+import "@fontsource/open-sans/300.css";
+import "@fontsource/open-sans/400.css";
+import "@fontsource/open-sans/500.css";
+import "@fontsource/open-sans/600.css";
+import "@fontsource/open-sans/700.css";
+import "@fontsource/open-sans/800.css";
+
+if (process.env.REACT_APP_TRACKING_ID) {
+  ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
+}
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   return (
@@ -21,7 +26,9 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
       <Auth>
         <RecoilRoot>
           <ChakraProvider theme={theme}>
-            <Head><title>Scout</title></Head>
+            <Head>
+              <title>Scout</title>
+            </Head>
             <Component {...pageProps} />
           </ChakraProvider>
         </RecoilRoot>
@@ -30,13 +37,11 @@ const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   );
 };
 
-function Auth( { children }) {
+function Auth({ children }) {
   const { status } = useSession();
 
   if (status === "loading") {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 
   return children;
@@ -68,8 +73,8 @@ const theme = extendTheme({
   },
   fonts: {
     heading: `'Open Sans', sans-serif`,
-    body: `'Open Sans', sans-serif`
-  }
+    body: `'Open Sans', sans-serif`,
+  },
 });
 
 export async function getServerSideProps(context) {
@@ -79,7 +84,7 @@ export async function getServerSideProps(context) {
         context.req,
         context.res,
         authOptions
-      )
+      ),
     },
   };
 }
