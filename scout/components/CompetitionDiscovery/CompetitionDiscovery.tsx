@@ -16,12 +16,14 @@ import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import Footer from "../Footer";
 import NavigationBar from "../NavigationBar";
 import CompetitionSummaryView from "./CompetitionSummaryView";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const CompetitionDiscovery: React.FC = ({
   competitions,
 }: {
   competitions: CompetitionDataSummary[];
 }) => {
+  const eventAnalyticsTracker = useAnalyticsTracker("Competition Discovery");
   return (
     <>
       <Stack position="relative" minH="100vh" padding="0px" margin="0px">

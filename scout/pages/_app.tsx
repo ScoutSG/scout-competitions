@@ -16,8 +16,8 @@ import "@fontsource/open-sans/600.css";
 import "@fontsource/open-sans/700.css";
 import "@fontsource/open-sans/800.css";
 
-if (process.env.REACT_APP_TRACKING_ID) {
-  ReactGA.initialize(process.env.REACT_APP_TRACKING_ID);
+if (process.env.NEXT_APP_TRACKING_ID) {
+  ReactGA.initialize(process.env.NEXT_APP_TRACKING_ID);
 }
 
 const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
