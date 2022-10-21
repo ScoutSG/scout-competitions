@@ -14,6 +14,8 @@ import {
   Menu,
   MenuButton,
   MenuList,
+  Divider,
+  HStack,
 } from "@chakra-ui/react";
 import { TbSend } from "react-icons/tb";
 import Link from "next/link";
@@ -51,103 +53,106 @@ const GroupSummaryCard = ({
 
   return (
     <Center py={2}>
-      <Stack
-        w={"full"}
-        rounded="xl"
-        px={2}
-        py={2}
-        overflow={"hidden"}
-        spacing={2}
-        // borderWidth={1}
-        _hover={{ bgColor: "gray.100" }}
-        borderColor="gray.400"
+      <HStack
+        width="100%"
+        rounded="md"
+        borderWidth="1px"
+        cursor="pointer"
+        role="group"
+        overflow="hidden"
+        spacing={0}
+        _hover={{ boxShadow: "md" }}
       >
-        <Stack spacing={2}>
-          <Stack
-            direction={{ base: "column", sm: "row" }}
-            justify="space-between"
-          >
-            <Heading fontSize={"lg"} fontWeight="black">
-              {group.name}
-            </Heading>
+        <Stack w={"full"} p={8}>
+          <Stack spacing={2}>
+            <Stack
+              direction={{ base: "column", sm: "row" }}
+              justify="space-between"
+            >
+              <Heading fontSize={"lg"} fontWeight="black">
+                {group.name}
+              </Heading>
 
-            <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
-              {getAvatarIcons().map((avatar) => avatar)}
-            </AvatarGroup>
+              <AvatarGroup size="xs" max={4} spacing={0.25} fontSize="10px">
+                {getAvatarIcons().map((avatar) => avatar)}
+              </AvatarGroup>
+            </Stack>
+            <Divider />
+
+            {group.description?.length > 0 ? (
+              <Stack spacing={2}>
+                <Text fontWeight="bold">Description</Text>
+                <Text>{group.description}</Text>
+              </Stack>
+            ) : null}
+
+            {group.targetSkills.length === 0 ? null : (
+              <Stack spacing={2}>
+                <Text fontWeight="semibold">We're looking for</Text>
+                <Box>
+                  {group.targetSkills.map((skill) => (
+                    <Badge
+                      textTransform="capitalize"
+                      colorScheme="green"
+                      rounded="md"
+                      px={4}
+                      py={1}
+                    >
+                      {skill}
+                    </Badge>
+                  ))}
+                </Box>
+              </Stack>
+            )}
+            {group.tags.length === 0 ? null : (
+              <Stack spacing={2}>
+                <Text fontWeight="semibold">Tags</Text>
+                <Box>
+                  {group.tags.map((tag) => (
+                    <Badge
+                      textTransform="capitalize"
+                      rounded="md"
+                      px={4}
+                      py={1}
+                      colorScheme="teal"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </Box>
+              </Stack>
+            )}
           </Stack>
 
-          {group.description?.length > 0 ? (
-            <Stack spacing={2}>
-              <Text fontWeight="bold">Description</Text>
-              <Text>{group.description}</Text>
+          <Divider />
+          {isMember ? (
+            <Stack direction="row">
+              <ShareButton group={group} />
+              <InviteButton group={group} />
+              <Link href={groupLink}>
+                <Button color="primary.500" bgColor="transparent" _hover={{}}>
+                  View group
+                </Button>
+              </Link>
             </Stack>
-          ) : null}
-
-          {group.targetSkills.length === 0 ? null : (
-            <Stack spacing={2}>
-              <Text fontWeight="semibold">We're looking for</Text>
-              <Box>
-                {group.targetSkills.map((skill) => (
-                  <Badge
-                    textTransform="capitalize"
-                    colorScheme="green"
-                    rounded="md"
-                    px={4}
-                    py={1}
-                  >
-                    {skill}
-                  </Badge>
-                ))}
-              </Box>
-            </Stack>
-          )}
-          {group.tags.length === 0 ? null : (
-            <Stack spacing={2}>
-              <Text fontWeight="semibold">Tags</Text>
-              <Box>
-                {group.tags.map((tag) => (
-                  <Badge
-                    textTransform="capitalize"
-                    rounded="md"
-                    px={4}
-                    py={1}
-                    colorScheme="teal"
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </Box>
-            </Stack>
-          )}
-        </Stack>
-
-        {isMember ? (
-          <Stack direction="row">
-            <ShareButton group={group} />
-            <InviteButton group={group} />
+          ) : group.currentSize === group.targetSize ? (
+            <Button disabled>Team is full</Button>
+          ) : (
             <Link href={groupLink}>
-              <Button color="primary.500" bgColor="transparent" _hover={{}}>
-                View group
+              <Button
+                leftIcon={<TbSend />}
+                w="fit-content"
+                color="primary.500"
+                bgColor="transparent"
+                _hover={{}}
+                disabled={isMemberOfCompetition}
+              >
+                Request to join
               </Button>
             </Link>
-          </Stack>
-        ) : group.currentSize === group.targetSize ? (
-          <Button disabled>Team is full</Button>
-        ) : (
-          <Link href={groupLink}>
-            <Button
-              leftIcon={<TbSend />}
-              w="fit-content"
-              color="primary.500"
-              bgColor="transparent"
-              _hover={{}}
-              disabled={isMemberOfCompetition}
-            >
-              Request to join
-            </Button>
-          </Link>
-        )}
-      </Stack>
+          )}
+        </Stack>
+      </HStack>
     </Center>
   );
 };
