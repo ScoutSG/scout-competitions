@@ -12,6 +12,7 @@ import {
   CompetitionData,
   GroupSummaryData,
 } from "../../core/types/CompetitionDetail";
+import CompetitionInformation from "./CompetitionInformation";
 import GroupSummaryCard from "./GroupSummaryCard";
 import useIsMember from "./useIsMember";
 
@@ -25,31 +26,34 @@ const GroupSummaryTab = ({
   const { isMember } = useIsMember(competition.id);
 
   return (
-    <Stack spacing={8} alignItems="center">
-      <Flex width="100%" maxWidth="4xl" alignItems="flex-end">
-        <Text
-          fontSize="lg"
-          textAlign="center"
-          textColor={useColorModeValue("gray.500", "gray.300")}
-        >
-          Showing {groups.length} groups
-        </Text>
-        <Spacer />
-        <Link href={`/competitions/${competition.id}/groups`}>
-          <Button
-            leftIcon={<PlusSquareIcon />}
-            colorScheme="cyan"
-            variant="ghost"
-            visibility={isMember ? "hidden" : "visible"}
+    <Flex gap={{base: 0, xl: 8}}>
+      <Stack width={{base: "100%", xl: "60%"}} spacing={8} alignItems={{base: "center", xl: "left"}}>
+        <Flex width="100%" maxWidth="4xl" alignItems="flex-end">
+          <Text
+            fontSize="lg"
+            textAlign="center"
+            textColor={useColorModeValue("gray.500", "gray.300")}
           >
-            Lead a team
-          </Button>
-        </Link>
-      </Flex>
-      {groups.map((group) => {
-        return <GroupSummaryCard key={group.id} group={group} />;
-      })}
-    </Stack>
+            Showing {groups.length} groups
+          </Text>
+          <Spacer />
+          <Link href={`/competitions/${competition.id}/groups`}>
+            <Button
+              leftIcon={<PlusSquareIcon />}
+              colorScheme="cyan"
+              variant="ghost"
+              visibility={isMember ? "hidden" : "visible"}
+            >
+              Lead a team
+            </Button>
+          </Link>
+        </Flex>
+        {groups.map((group) => {
+          return <GroupSummaryCard key={group.id} group={group} />;
+        })}
+      </Stack>
+      <CompetitionInformation competition={competition} xlDisplay="none" />
+    </Flex>
   );
 };
 

@@ -13,7 +13,6 @@ import { Group } from "../../core/types/Group";
 import GroupMember from "./GroupMember";
 import GroupGoal from "./GroupGoal";
 import useIsMember from "./useIsMember";
-import Loading from "../Loading";
 import Link from "next/link";
 
 const GroupSummaryCard = ({ group }: { group: Group }) => {
@@ -29,10 +28,11 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
       width="100%"
       maxWidth="4xl"
       p={8}
-      rounded="xl"
+      rounded="md"
       borderWidth="1px"
       _hover={{
         bgColor: useColorModeValue("white", "gray.700"),
+        borderColor: useColorModeValue("gray.400", "gray.500"),
         boxShadow: "md",
       }}
       role="group"
