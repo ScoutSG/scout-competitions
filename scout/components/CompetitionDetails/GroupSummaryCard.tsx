@@ -47,9 +47,8 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
             variant="outline"
             colorScheme="cyan"
             visibility="hidden"
-            _groupHover={{ visibility: "visible" }}
+            _groupHover={{ visibility: isMember ? "hidden" : "visible" }}
             size="md"
-            disabled={isMember}
           >
             Request to Join
           </Button>

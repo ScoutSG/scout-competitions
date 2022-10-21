@@ -40,7 +40,7 @@ const GroupSummaryTab = ({
             leftIcon={<PlusSquareIcon />}
             colorScheme="cyan"
             variant="ghost"
-            disabled={isMember}
+            visibility={isMember ? "hidden" : "visible"}
           >
             Lead a team
           </Button>
