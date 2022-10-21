@@ -140,7 +140,7 @@ const ApplicationReview: React.FC<{
                       >
                         <Text>{applicant.name}</Text>
                         <Badge>
-                          {!applicant.year ? "" : "Year " + applicant.year}
+                          {!applicant.yearOfStudy ? "" : "Year " + applicant.yearOfStudy}
                         </Badge>
                         <Badge>{!applicant.major ? "" : applicant.major}</Badge>
                         <Badge>
