@@ -41,8 +41,7 @@ const SkeletonGroup: React.FC = () => {
           <Spacer />
           <Button>Request to Join</Button>
         </Wrap>
-        <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Description</Text>
           <Box
             width="100%"
@@ -59,7 +58,7 @@ const SkeletonGroup: React.FC = () => {
           <Text>We want 🫵</Text>
         </Stack>
         <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Members (2/3)</Text>
           <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Xavier Lee" size="sm" />
@@ -91,7 +90,7 @@ const SkeletonGroup: React.FC = () => {
           </Wrap>
         </Stack>
         <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're strong in</Text>
           <Wrap spacing={2}>
             <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
@@ -105,8 +104,7 @@ const SkeletonGroup: React.FC = () => {
             </Tag>
           </Wrap>
         </Stack>
-        <Divider />
-        <Stack mt={4} spacing={2}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're looking for</Text>
           <Box>
             <Tag
