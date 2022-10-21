@@ -2,24 +2,20 @@ import CompetitionDetails from "../../../components/CompetitionDetails";
 import prisma from "../../../lib/prisma";
 
 export async function getStaticPaths() {
-  // const competitions = await prisma.competition.findMany({
-  //   select: {
-  //     id: true,
-  //   },
-  // });
+  const competitions = await prisma.competition.findMany({
+    select: {
+      id: true,
+    },
+  });
 
-  // const paths = competitions.map((competition) => ({
-  //   params: { competitionId: String(competition.id) },
-  // }));
+  const paths = competitions.map((competition) => ({
+    params: { competitionId: String(competition.id) },
+  }));
 
-  // return {
-  //   paths: paths,
-  //   fallback: "blocking",
-  // };
   return {
-    paths: [],
-    fallback: 'blocking',
-  }
+    paths: paths,
+    fallback: "blocking",
+  };
 }
 
 export async function getStaticProps(context) {
