@@ -37,7 +37,7 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
       role="group"
     >
       <Wrap align="flex-end">
-        <Text fontSize="xl" fontWeight="semibold" color={useColorModeValue("cyan.900", "white")}>
+        <Text fontSize={{base: "xl", md: "2xl"}} fontWeight="semibold" color={useColorModeValue("cyan.900", "white")}>
           {group.name}
         </Text>
         <Spacer />
@@ -53,7 +53,6 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
           </Button>
         </Link>
       </Wrap>
-      <Divider />
       <Stack pt={2}>
         <Stack spacing={2} pb={4}>
           <Text fontWeight="medium">Description</Text>
@@ -104,7 +103,6 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
         )}
         {group.targetSkills.length > 0 && (
           <>
-            <Divider />
             <Stack pt={2}>
               <Text fontWeight="medium">We're looking for</Text>
               <Wrap spacing={2}>

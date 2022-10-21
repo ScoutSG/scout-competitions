@@ -98,7 +98,7 @@ const groupData: Prisma.GroupCreateInput[] = [
         id: 1
       }
     },
-    goal: "Gain new skills",
+    goal: "Apply existing skills",
     leader: {
       connect: {
         id: 3

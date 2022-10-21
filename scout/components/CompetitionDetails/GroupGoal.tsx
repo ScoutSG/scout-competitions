@@ -11,7 +11,7 @@ const GroupMember = ({ goal }: { goal: String }) => {
       colorScheme = "orange";
       icon = AiFillTrophy;
       break;
-    case "Gain new skills":
+    case "Apply existing skills":
       colorScheme = "purple";
       icon = IoMdBuild;
       break;
