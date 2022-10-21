@@ -39,24 +39,26 @@ model Session {
 }
 
 model User {
-  id             Int           @id @default(autoincrement())
-  name           String?
-  email          String?       @unique
-  emailVerified  DateTime?     @map("email_verified")
-  image          String?
-  createdAt      DateTime      @default(now()) @map("created_at")
-  updatedAt      DateTime      @updatedAt @map("updated_at")
-  groupId        Int?
-  yearOfStudy    Int?
-  major          String?
-  specialisation String?
-  linkedinUrl    String?
-  gitHubUrl      String?
-  telegramUrl    String?
-  applications   Application[]
-  accounts       Account[]
-  sessions       Session[]
-  groups         Group[]
+  id                 Int           @id @default(autoincrement())
+  name               String?
+  email              String?       @unique
+  emailVerified      DateTime?     @map("email_verified")
+  image              String?
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+  yearOfStudy        Int?
+  major              String?
+  specialisation     String?
+  linkedinUrl        String?
+  gitHubUrl          String?
+  telegramUrl        String?
+  school             String?
+  skills             String[]
+  applications       Application[]
+  Group_GroupTousers Group[]       @relation("GroupTousers")
+  accounts           Account[]
+  sessions           Session[]
+  groups             Group[]
 
   @@map("users")
 }
@@ -109,20 +111,22 @@ model Application {
 }
 
 model Group {
-  id            Int           @id @default(autoincrement())
-  name          String
-  currentSize   Int           @default(1)
-  targetSize    Int
-  description   String?
-  telegramLink  String?
-  targetSkills  String[]
-  competitionId Int
-  tags          String[]
-  competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
-  applications  Application[]
-  form          Form?
-  members       User[]
-  Invitation    Invitation[]
+  id                 Int           @id @default(autoincrement())
+  name               String
+  currentSize        Int           @default(1)
+  targetSize         Int
+  description        String?
+  telegramLink       String?
+  targetSkills       String[]
+  competitionId      Int
+  tags               String[]
+  goal               String
+  leaderId           Int
+  competition        Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  users_GroupTousers User          @relation("GroupTousers", fields: [leaderId], references: [id], onDelete: Cascade)
+  applications       Application[]
+  form               Form?
+  members            User[]
 }
 
 model Competition {
@@ -135,14 +139,8 @@ model Competition {
   maxSize       Int
   minSize       Int
   firstPrize    String?
+  otherPrizes   String?
   secondPrize   String?
   thirdPrize    String?
-  otherPrizes   String?
   groups        Group[]
-}
-
-model Invitation {
-  id      String @id @default(uuid())
-  groupId Int
-  group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
 }
