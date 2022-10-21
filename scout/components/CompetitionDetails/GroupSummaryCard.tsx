@@ -31,14 +31,13 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
       rounded="md"
       borderWidth="1px"
       _hover={{
-        bgColor: useColorModeValue("white", "gray.700"),
-        borderColor: useColorModeValue("gray.400", "gray.500"),
+        borderColor: useColorModeValue("gray.300", "gray.500"),
         boxShadow: "md",
       }}
       role="group"
     >
       <Wrap align="flex-end">
-        <Text fontSize="xl" fontWeight="semibold">
+        <Text fontSize="xl" fontWeight="semibold" color={useColorModeValue("cyan.900", "white")}>
           {group.name}
         </Text>
         <Spacer />
