@@ -13,6 +13,7 @@ import {
   GroupSummaryData,
 } from "../../core/types/CompetitionDetail";
 import GroupSummaryCard from "./GroupSummaryCard";
+import useIsMember from "./useIsMember";
 
 const GroupSummaryTab = ({
   competition,
@@ -21,6 +22,8 @@ const GroupSummaryTab = ({
   competition: CompetitionData;
   groups: GroupSummaryData[];
 }) => {
+  const { isMember } = useIsMember(competition.id);
+
   return (
     <Stack spacing={8} alignItems="center">
       <Flex width="100%" maxWidth="4xl" alignItems="flex-end">
@@ -37,6 +40,7 @@ const GroupSummaryTab = ({
             leftIcon={<PlusSquareIcon />}
             colorScheme="cyan"
             variant="ghost"
+            disabled={isMember}
           >
             Lead a team
           </Button>
