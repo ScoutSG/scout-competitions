@@ -9,7 +9,7 @@ const ScoutVector: React.FC = () => {
   });
   return (
     <>
-      <ProductImage src={vector} alt="vector" />
+      <ProductImage src={vector} alt="vector" width="100px" height="100px" />
     </>
   );
 };

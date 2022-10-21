@@ -13,8 +13,9 @@ import {
   Icon,
   useDisclosure,
   Collapse,
+  Link,
 } from "@chakra-ui/react";
-import Link from "next/link";
+import NextLink from "next/link";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import SignInButton from "./SignInButton";
@@ -47,13 +48,11 @@ const NavigationBar: React.FC = () => {
       >
         <Container maxW={{ xl: "8xl" }} px="0px">
           <Flex px="4vw" align="center">
-            <Link href="/">
-              <a>
-                <Stack direction={"row"} spacing={4} align={"center"}>
+            <NextLink href="/" passHref>
+                <Stack direction={"row"} spacing={4} align={"center"} cursor="pointer">
                   <ScoutIcon width={96} height={80} />
                 </Stack>
-              </a>
-            </Link>
+            </NextLink>
             <Flex display={{ base: "none", lg: "flex" }} ml={"32px"} mt={"8px"}>
               <DesktopNav />
             </Flex>
@@ -68,6 +67,7 @@ const NavigationBar: React.FC = () => {
       </Flex>
       <Flex
         position={"fixed"}
+        margin={0}
         top={"80px"}
         width={"100%"}
         bgColor={"white"}
@@ -111,32 +111,34 @@ const DesktopNav = () => {
         return (
           <Box key={navItem.label}>
             <Popover trigger={"hover"} placement={"bottom-start"}>
-              <Link href={navItem.href ?? "#"}>
-                <PopoverTrigger>
-                  <Flex
-                    cursor={"pointer"}
-                    p={4}
-                    color={linkColor}
-                    _hover={{
-                      color: linkHoverColor,
-                    }}
-                  >
-                    <Text fontSize="lg" fontWeight="semibold">
-                      {navItem.label}
-                    </Text>
-                    {navItem.children && (
-                      <Flex px={1} alignItems={"center"}>
-                        <Icon
-                          color={linkColor}
-                          w={5}
-                          h={5}
-                          as={ChevronDownIcon}
-                        />
-                      </Flex>
-                    )}
-                  </Flex>
-                </PopoverTrigger>
-              </Link>
+              <NextLink href={navItem.href ? navItem.href : "#"} passHref>
+                <Link style={{textDecoration: "none"}}>
+                  <PopoverTrigger>
+                    <Flex
+                      cursor={"pointer"}
+                      p={4}
+                      color={linkColor}
+                      _hover={{
+                        color: linkHoverColor,
+                      }}
+                    >
+                      <Text fontSize="lg" fontWeight="semibold">
+                        {navItem.label}
+                      </Text>
+                      {navItem.children && (
+                        <Flex px={1} alignItems={"center"}>
+                          <Icon
+                            color={linkColor}
+                            w={5}
+                            h={5}
+                            as={ChevronDownIcon}
+                          />
+                        </Flex>
+                      )}
+                    </Flex>
+                  </PopoverTrigger>
+                  </Link>
+              </NextLink>
 
               {navItem.children && (
                 <PopoverContent
@@ -165,46 +167,46 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link href={href}>
-      <Box
-        cursor={"pointer"}
-        role={"group"}
-        p={2}
-        rounded={"md"}
-        _hover={{ bg: useColorModeValue("cyan.50", "cyan.800") }}
-      >
-        <Stack direction={"row"} align={"center"}>
-          <Box>
-            <Text
-              _groupHover={{ color: useColorModeValue("cyan.600", "white") }}
-              fontWeight="medium"
+    <NextLink href={href} passHref>
+        <Box
+          cursor={"pointer"}
+          role={"group"}
+          p={2}
+          rounded={"md"}
+          _hover={{ bg: useColorModeValue("teal.50", "teal.700") }}
+        >
+          <Stack direction={"row"} align={"center"}>
+            <Box>
+              <Text
+                _groupHover={{ color: useColorModeValue("teal.700", "white") }}
+                fontWeight="medium"
+              >
+                {label}
+              </Text>
+              <Text fontSize={"sm"}>{subLabel}</Text>
+            </Box>
+            <Flex
+              transition={"all .3s ease"}
+              transform={"translateX(-10px)"}
+              opacity={0}
+              _groupHover={{
+                opacity: "100%",
+                transform: "translateX(0)",
+              }}
+              justify={"flex-end"}
+              align={"center"}
+              flex={1}
             >
-              {label}
-            </Text>
-            <Text fontSize={"sm"}>{subLabel}</Text>
-          </Box>
-          <Flex
-            transition={"all .3s ease"}
-            transform={"translateX(-10px)"}
-            opacity={0}
-            _groupHover={{
-              opacity: "100%",
-              transform: "translateX(0)",
-            }}
-            justify={"flex-end"}
-            align={"center"}
-            flex={1}
-          >
-            <Icon
-              color={useColorModeValue("cyan.600", "white")}
-              w={5}
-              h={5}
-              as={ChevronRightIcon}
-            />
-          </Flex>
-        </Stack>
-      </Box>
-    </Link>
+              <Icon
+                color={useColorModeValue("teal.700", "white")}
+                w={5}
+                h={5}
+                as={ChevronRightIcon}
+              />
+            </Flex>
+          </Stack>
+        </Box>
+    </NextLink>
   );
 };
 
@@ -225,6 +227,7 @@ const MobileNav = () => {
 
 const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
+  const color = useColorModeValue("teal.600", "teal.300");
   const bgColor = useColorModeValue("white", "gray.800");
   const popoverContentBgColor = useColorModeValue("gray.50", "gray.700");
 
@@ -269,23 +272,23 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         >
           {children &&
             children.map((child) => (
-              <Link href={child.href}>
-                <Flex
-                  width={"100%"}
-                  cursor={"pointer"}
-                  key={child.label}
-                  py={2}
-                  role="group"
-                >
-                  <Text
-                    transition={"all .3s ease"}
-                    _groupHover={{ color: "red.400" }}
-                    fontWeight="normal"
+              <NextLink href={child.href} passHref key={child.label}>
+                  <Flex
+                    width={"100%"}
+                    cursor={"pointer"}
+                    key={child.label}
+                    py={2}
+                    role="group"
                   >
-                    {child.label}
-                  </Text>
-                </Flex>
-              </Link>
+                    <Text
+                      transition={"all .3s ease"}
+                      _groupHover={{ color: color }}
+                      fontWeight="normal"
+                    >
+                      {child.label}
+                    </Text>
+                  </Flex>
+              </NextLink>
             ))}
         </Stack>
       </Collapse>

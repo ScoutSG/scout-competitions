@@ -3,7 +3,6 @@ import Link from "next/link";
 
 const MobileSignInButton = () => {
   const bgColor = useColorModeValue("white", "gray.800");
-  const color = useColorModeValue("primary.500", "primaryLight");
 
   return (
     <Link href="/auth/signin">
@@ -17,8 +16,7 @@ const MobileSignInButton = () => {
       >
         <Button
           width={"100%"}
-          color={color}
-          borderColor={color}
+          colorScheme="teal"
           variant="outline"
           size="md"
         >

@@ -49,6 +49,7 @@ export default async function handle(req, res) {
         targetSkills,
         tags,
         form,
+        leaderId,
         members,
         withTelegramGroup,
       } = req.body;
@@ -64,7 +65,7 @@ export default async function handle(req, res) {
         if (group.telegramLink === null) {
           const leader = await prisma.user.findUnique({
             where: {
-              id: members[0],
+              id: leaderId,
             },
           });
           telegramGroupId = await createGroup(name, leader.telegramUrl);

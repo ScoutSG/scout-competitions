@@ -94,11 +94,11 @@ const CompetitionSummaryCard: React.FC<{
               )}
             </Wrap>
             <Divider />
-            <Text fontSize="lg" fontWeight="semibold">
+            <Text fontSize="lg" fontWeight="medium">
               Description
             </Text>
             <Collapse startingHeight={72} in={show}>
-              <Text>{competition.description}</Text>
+              <Text whiteSpace="pre-line">{competition.description}</Text>
             </Collapse>
             <Flex>
               <Button
@@ -117,7 +117,7 @@ const CompetitionSummaryCard: React.FC<{
             <Divider />
             <HStack>
               <Icon as={AiFillTrophy} size="lg" />
-              <Text fontSize="lg" fontWeight="semibold">
+              <Text fontSize="lg" fontWeight="medium">
                 Prizes
               </Text>
               {competition.otherPrizes && (
@@ -129,17 +129,17 @@ const CompetitionSummaryCard: React.FC<{
             <Wrap spacing={4}>
               {competition.firstPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="semibold">🥇 First place:</Text><Text>{competition.firstPrize}</Text>
+                  <Text fontWeight="medium">🥇 First place:</Text><Text>{competition.firstPrize}</Text>
                 </HStack>
               )}
               {competition.secondPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="semibold">🥈 Second place:</Text><Text>{competition.secondPrize}</Text>
+                  <Text fontWeight="medium">🥈 Second place:</Text><Text>{competition.secondPrize}</Text>
                 </HStack>
               )}
               {competition.thirdPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="semibold">🥉 Third place:</Text><Text>{competition.thirdPrize}</Text>
+                  <Text fontWeight="medium">🥉 Third place:</Text><Text>{competition.thirdPrize}</Text>
                 </HStack>
               )}
             </Wrap>
@@ -150,7 +150,7 @@ const CompetitionSummaryCard: React.FC<{
           px={1}
           transform="translateX(24px)"
           position="relative"
-          bgColor="cyan.700"
+          bgColor="teal"
           _groupHover={{ transition: ".3s ease", transform: "translateX(0px)" }}
         >
           <ChevronRightIcon w={4} h={4} color="white" />

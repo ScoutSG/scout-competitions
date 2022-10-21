@@ -7,9 +7,6 @@ import {
   Stack,
   Text,
   Image,
-  useColorModeValue,
-  Center,
-  Divider,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
@@ -24,7 +21,15 @@ const CompetitionDiscovery: React.FC = ({
 }) => {
   return (
     <>
-      <Stack position="relative" minH="100vh" padding="0px" margin="0px">
+      <Container
+        position="relative"
+        minH="100vh"
+        width="100vw"
+        maxWidth="100%"
+        padding="0px"
+        margin="0px"
+        alignItems="center"
+      >
         <NavigationBar />
         <Head>
           <title>Competitions - Scout</title>
@@ -34,8 +39,8 @@ const CompetitionDiscovery: React.FC = ({
           justifyContent="center"
           pt="80px"
           px="4vw"
-          minHeight="320px"
-          bgColor={useColorModeValue("primary.900", "primary.900")}
+          minHeight="400px"
+          bgColor="primary.900"
         >
           <HStack spacing={16}>
             <Stack spacing={4} as={"header"}>
@@ -46,18 +51,19 @@ const CompetitionDiscovery: React.FC = ({
               >
                 Discover Competitions
               </Heading>
-              <Text color="white" fontSize="xl">
+              <Text color="white" fontSize={{ base: "lg", md: "xl" }}>
                 From hackathons to case competitions, there's something for
                 everyone.
               </Text>
             </Stack>
             <Box>
               <Image
-                src="/banner-discovery.svg"
+                src="/discoveryBanner.svg"
                 alt="banner"
+                minWidth="320px"
                 width="320px"
                 height="320px"
-                display={{ base: "none", md: "block" }}
+                display={{ base: "none", lg: "block" }}
               />
             </Box>
           </HStack>
@@ -70,7 +76,7 @@ const CompetitionDiscovery: React.FC = ({
           <CompetitionSummaryView competitions={competitions} />
         </Container>
         <Footer />
-      </Stack>
+      </Container>
     </>
   );
 };

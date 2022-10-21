@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 export const client = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
@@ -8,14 +8,6 @@ export const client = axios.create({
   },
   withCredentials: true
 });
-
-// client.interceptors.request.use((config: AxiosRequestConfig) => {
-//   const  = useSession; // getAccessToken
-//   if (config.headers) {
-//     config.headers.Authorization = "Token " + 
-//   }
-//   return config;
-// });
 
 const clientApi = {
   get: client.get,

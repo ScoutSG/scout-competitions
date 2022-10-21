@@ -17,6 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     }
                 });
                 res.status(200).json(user);
+                break;
             case "PATCH":
                 const updateUser = await prisma.user.update({
                     where: {

@@ -1,54 +1,91 @@
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
-  Badge,
-  Box,
   Button,
-  Center,
   Divider,
+  Flex,
   Heading,
-  Icon,
-  ListItem,
   Stack,
-  Text,
-  UnorderedList,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import Head from "next/head";
 import Link from "next/link";
-import { TbChevronRight, TbClock } from "react-icons/tb";
-import { VscOctoface } from "react-icons/vsc";
 import { CompetitionData } from "../../core/types/CompetitionDetail";
-import { formatDate } from "../../core/utils/date";
-import { maxWidth } from "../../core/utils/maxWidth";
-import { useIsMember } from "../../lib/hooks/useUserDetails";
-import GroupSummaryCard from "../Group/Summary";
 import PageContainer from "../PageContainer";
+import CompetitionDetailsTab from "./CompetitionDetailsTab";
+import GroupSummaryTab from "./GroupSummaryTab";
 
-const describeGroupSizeRestriction = (min: number, max: number) => {
-  if (min === null && max === null) {
-    return "There are no restrictions on the group size.";
-  } else if (min === null) {
-    return `Groups can only be formed with a maximum size of ${max} members`;
-  } else if (max === null) {
-    return `Groups must have a minimum size of ${min} members`;
-  } else {
-    return `Groups are restricted to ${min} - ${max} members`;
-  }
-};
+// const describeGroupSizeRestriction = (min: number, max: number) => {
+//   if (min === null && max === null) {
+//     return "There are no restrictions on the group size.";
+//   } else if (min === null) {
+//     return `Groups can only be formed with a maximum size of ${max} members`;
+//   } else if (max === null) {
+//     return `Groups must have a minimum size of ${min} members`;
+//   } else {
+//     return `Groups are restricted to ${min} - ${max} members`;
+//   }
+// };
 
-const CompetitionDetails = ({
+const CompetitionDetails: React.FC = ({
   competition,
 }: {
-  competition: CompetitionData | null;
+  competition: CompetitionData;
 }) => {
-  const onSeeMore = () => {
-    window.open(competition.link, "_blank");
-  };
+  // const onSeeMore = () => {
+  //   window.open(competition.link, "_blank");
+  // };
 
-  // front end validation
-  const isMemberOfCompetition = useIsMember(
-    (competition.groups as any[]).flatMap((group) => group.members)
-  );
+  // // front end validation
+  // const isMemberOfCompetition = useIsMember(
+  //   (competition.groups as any[]).flatMap((group) => group.members)
+  // );
 
   return (
+    <PageContainer>
+      <Stack width="100%" my={8} px={0} spacing={4}>
+        <Flex justifyContent="space-between" align="flex-start" flexWrap="wrap">
+          <Heading fontWeight="semibold" mr={8} mb={4}>
+            {competition.name}
+          </Heading>
+          <Link href={competition.link} passHref>
+            <a target="_blank" rel="noopener noreferrer">
+              <Button
+                size={{ base: "md", md: "lg" }}
+                rightIcon={<ArrowForwardIcon />}
+                colorScheme="teal"
+                mb={4}
+              >
+                Visit website
+              </Button>
+            </a>
+          </Link>
+        </Flex>
+        <Divider />
+        <Tabs variant="soft-rounded" colorScheme="cyan">
+          <TabList gap={4} mb={2}>
+            <Tab rounded="lg">Competition</Tab>
+            <Tab rounded="lg">Groups</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel px={0}>
+              <CompetitionDetailsTab competition={competition} />
+            </TabPanel>
+            <TabPanel px={0}>
+              <GroupSummaryTab
+                competition={competition}
+                groups={competition.groups}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Stack>
+    </PageContainer>
+  );
+  {
+    /*
     <PageContainer>
       <Box>
         <Head>
@@ -176,7 +213,8 @@ const CompetitionDetails = ({
         </Center>
       </Box>
     </PageContainer>
-  );
+    */
+  }
 };
 
 export default CompetitionDetails;

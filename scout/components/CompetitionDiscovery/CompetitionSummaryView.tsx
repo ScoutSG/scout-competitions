@@ -26,7 +26,7 @@ const CompetitionSummaryView: React.FC<{
               Showing {competitions.length} competitions. Can't find a competition or want to organise one? Contact us!
             </Text>
             {competitions.map((competition) => (
-              <CompetitionSummaryCard competition={competition} />
+              <CompetitionSummaryCard key={competition.id} competition={competition} />
             ))}
           </Stack>
         )}

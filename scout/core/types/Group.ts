@@ -2,12 +2,15 @@ export interface Member {
   id: number;
   email: string;
   name: string;
-  year: number;
+  image: string;
+  school: string;
+  yearOfStudy: number;
   major: string;
   specialisation: string;
-  linkedinUrl: string;
-  gitHubUrl: string;
-  telegramUrl: string;
+  skills: string[];
+  linkedinUrl?: string;
+  gitHubUrl?: string;
+  telegramUrl?: string;
 }
 
 export interface Application {
@@ -23,9 +26,12 @@ export interface Application {
 export interface Group {
   id: number;
   name: string;
+  competitionId: number;
   currentSize: number;
   targetSize: number;
   description: string;
+  leader: Member;
+  goal: string;
   targetSkills: string[];
   tags: string[];
   members: Member[];
