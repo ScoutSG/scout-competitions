@@ -128,6 +128,7 @@ model Group {
   leaderId      Int
   leader        User          @relation(name: "leader", fields: [leaderId], references: [id], onDelete: Cascade)
   members       User[]
+  Invitation    Invitation[]
 }
 
 model Competition {
@@ -144,4 +145,10 @@ model Competition {
   thirdPrize    String?
   otherPrizes   String?
   groups        Group[]
+}
+
+model Invitation {
+  id      String @id @default(uuid())
+  groupId Int
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
 }

@@ -24,11 +24,11 @@ const ShareButton = ({ group }) => {
   const clipboard = useUrlClipboard(groupLink);
 
   const shareViaTelegram = () => {
-    const message = `My team, ${group.name}, is participating in a competition!\nJoin us!`;
+    const message = `My team, ${group.name}, is participating in a competition!\n\n Join us!`;
     const link = encodeURIComponent(window.location.origin + groupLink);
 
     window.open(
-      "https://t.me/share/?url=" + link + "&text=" + `\n ${message}`,
+      "https://t.me/share/url?url=" + link + "&text=" + `\n ${message}`,
       "_blank"
     );
   };

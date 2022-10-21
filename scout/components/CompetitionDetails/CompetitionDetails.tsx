@@ -167,16 +167,18 @@ const CompetitionDetails: React.FC = ({
                     <Heading size="md" fontWeight="black">
                       Can't find a suitable team?
                     </Heading>
-                    <Link href={`/competitions/${competition.id}/groups`}>
-                      <Button
-                        rightIcon={<TbChevronRight />}
-                        bgColor="primary.500"
-                        color="white"
-                        _hover={{ bgColor: "gray.200", color: "primary.500" }}
-                      >
-                        Lead a team now
-                      </Button>
-                    </Link>
+                    {isLargerThanMd ? (
+                      <Link href={`/competitions/${competition.id}/groups`}>
+                        <Button
+                          rightIcon={<TbChevronRight />}
+                          bgColor="primary.500"
+                          color="white"
+                          _hover={{ bgColor: "gray.200", color: "primary.500" }}
+                        >
+                          Lead a team
+                        </Button>
+                      </Link>
+                    ) : null}
                   </Stack>
                 </>
               ) : (

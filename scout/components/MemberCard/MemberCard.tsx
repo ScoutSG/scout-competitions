@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { useCustomClipboard } from "../../lib/hooks/useCustomClipboard";
-
+import { useIsLargerThanMd } from "../../lib/hooks/useIsLargerThanMd";
 import {
   TbBrandGithub,
   TbBrandLinkedin,
@@ -22,7 +22,7 @@ import {
 
 const MemberCard = ({ member, isSmall = false }) => {
   // 48em is the default breakpoint for width size = md
-  const [isLargerThanMd] = useMediaQuery("(min-width: 48em)");
+  const isLargerThanMd = useIsLargerThanMd();
 
   const mapFieldToIcon = {
     email: <TbMail />,
