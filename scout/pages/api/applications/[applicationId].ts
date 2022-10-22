@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
+import { validateIfApplicationIsReviewed } from "../../../lib/services/ApplicationValidation";
 
 // GET, PATCH, DELETE /api/applications/id/
 export default async function handle(req, res) {
@@ -41,6 +42,11 @@ export default async function handle(req, res) {
     } else if (httpMethod === "PATCH") {
       // approving / rejecting applications
       const { isApproved, answers } = req.body;
+      validateIfApplicationIsReviewed(applicationId).catch(err => {
+        res.statusMessage = err;
+        res.status(400);
+        res.end();
+      });
 
       const application = await prisma.application.update({
         where: {

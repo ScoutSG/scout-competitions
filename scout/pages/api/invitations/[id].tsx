@@ -1,7 +1,7 @@
-import { truncate } from "fs/promises";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
+import { validateUserIsNotInGroup } from "../../../lib/services/GroupValidation";
 
 // PATCH /api/invitations/id/
 export default async function handle(
@@ -122,20 +122,4 @@ const getCompetition = async (groupId) => {
   )[0];
 
   return competition;
-};
-
-// validation services
-const validateUserIsNotInGroup = async (userId, groupId) => {
-  const group = await prisma.group.findUnique({
-    where: {
-      id: groupId,
-    },
-    include: {
-      members: true,
-    },
-  });
-
-  if (group.members.filter((member) => member.id === userId).length > 0) {
-    throw "User is already a member of the group";
-  }
 };

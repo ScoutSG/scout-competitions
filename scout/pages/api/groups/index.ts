@@ -93,7 +93,6 @@ async function handleAdd(req, res) {
       telegramLink: telegramGroupId ? String(telegramGroupId) : null,
     },
   });
-  console.log(group);
 
   if (telegramGroupId) {
     await sendWelcomeMessage(telegramGroupId, name, competitionId, group.id);
