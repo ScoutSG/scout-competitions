@@ -1,5 +1,5 @@
 import React from "react";
-import { Heading, Box, Stack, Flex } from "@chakra-ui/react";
+import { Heading, Box, Stack, Flex, useColorModeValue } from "@chakra-ui/react";
 import Head from "next/head";
 import { CompetitionData } from "../../../../core/types/CompetitionDetail";
 import AboutCard from "../../../../components/Competition/AboutCard";
@@ -43,7 +43,7 @@ const CreateGroup = ({ competition }: CreateGroupProps) => {
           justify={"center"}
           position={"relative"}
           w={"100%"}
-          bgColor="gray.50"
+          bgColor={useColorModeValue("gray.50", "gray.700")}
           p={4}
         >
           <CreateOrEditGroupForm competition={competition} />
