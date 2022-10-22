@@ -58,8 +58,11 @@ async function handleAdd(req, res) {
 
   validateIfAlreadyRequested(groupId, userId).catch(err => {
     res.statusMessage = err;
-    res.status(400).end()
+    res.status(400).end();
   })
+  if (res.writableEnded) {
+    return;
+  }
 
   let competitions = await prisma.competition.findMany({
     include: {

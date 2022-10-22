@@ -47,6 +47,9 @@ export default async function handle(req, res) {
         res.status(400);
         res.end();
       });
+      if (res.writableEnded) {
+        return;
+      }
 
       const application = await prisma.application.update({
         where: {
