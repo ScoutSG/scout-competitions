@@ -47,19 +47,19 @@ model User {
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
   yearOfStudy    Int?
-  school         String?
   major          String?
   specialisation String?
-  skills         String[]
   linkedinUrl    String?
   gitHubUrl      String?
   telegramUrl    String?
+  school         String?
+  skills         String[]
   applications   Application[]
+  leadingGroups  Group[]       @relation("leader")
+  invitations    Invitation[]
   accounts       Account[]
   sessions       Session[]
-  leadingGroups  Group[]       @relation("leader")
   groups         Group[]
-  invitations    Invitation[]
 
   @@map("users")
 }
@@ -109,7 +109,7 @@ model Application {
   group      Group    @relation(fields: [groupId], references: [id])
   applicant  User     @relation(fields: [userId], references: [id], onDelete: SetNull)
   answers    Answer[]
-} 
+}
 
 model Group {
   id            Int           @id @default(autoincrement())
@@ -120,15 +120,15 @@ model Group {
   telegramLink  String?
   targetSkills  String[]
   competitionId Int
-  goal          String        @default("")
   tags          String[]
+  leaderId      Int
+  goal          String        @default("")
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  leader        User          @relation("leader", fields: [leaderId], references: [id], onDelete: Cascade)
   applications  Application[]
   form          Form?
-  leaderId      Int
-  leader        User          @relation(name: "leader", fields: [leaderId], references: [id], onDelete: Cascade)
-  members       User[]
   Invitation    Invitation[]
+  members       User[]
 }
 
 model Competition {
@@ -141,16 +141,16 @@ model Competition {
   maxSize       Int
   minSize       Int
   firstPrize    String?
+  otherPrizes   String?
   secondPrize   String?
   thirdPrize    String?
-  otherPrizes   String?
   groups        Group[]
 }
 
 model Invitation {
   id      String @id @default(uuid())
   userId  Int?
-  user    User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
   groupId Int
   group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  user    User?  @relation(fields: [userId], references: [id])
 }
