@@ -109,24 +109,24 @@ const groupData: Prisma.GroupCreateInput[] = [
 
 async function main() {
   console.log(`Start seeding ...`);
-  for (const u of userData) {
-    const user = await prisma.user.create({
-      data: u
-    })
-    console.log(`Created user with id: ${user.id}`)
-  }
+  // for (const u of userData) {
+  //   const user = await prisma.user.create({
+  //     data: u
+  //   })
+  //   console.log(`Created user with id: ${user.id}`)
+  // }
   for (const c of competitionData) {
     const competition = await prisma.competition.create({
         data: c
     });
     console.log(`Created competition with id: ${competition.id}`)
   }
-  for (const g of groupData) {
-    const group = await prisma.group.create({
-      data: g
-    });
-    console.log(`Created group with id: ${group.id}`)
-  }
+  // for (const g of groupData) {
+  //   const group = await prisma.group.create({
+  //     data: g
+  //   });
+  //   console.log(`Created group with id: ${group.id}`)
+  // }
   console.log(`Seeding finished.`);
 }
 
