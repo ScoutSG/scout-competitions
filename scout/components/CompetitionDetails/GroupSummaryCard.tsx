@@ -70,6 +70,7 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
             Request to Join
           </Button>
         </Link>
+
         <Link href={`/competitions/${group.competitionId}/groups/${group.id}`}>
           <Button
             variant="outline"
@@ -99,17 +100,16 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
           pb={groupSkills.length > 0 || group.targetSkills.length > 0 ? 4 : 0}
         >
           <Text fontWeight="medium">
-            Members ({group.members.length + 1}/{group.targetSize})
+            Members ({group.members.length}/{group.targetSize})
           </Text>
-          <GroupMember
-            key={group.leader.email}
-            member={group.leader}
-            role="Leader"
-          />
           {group.members &&
             group.members.map((member, index) => {
               return (
-                <GroupMember key={index.toString()} member={member} role="" />
+                <GroupMember
+                  key={index.toString()}
+                  member={member}
+                  role={member.id === group.leaderId ? "Leader" : ""}
+                />
               );
             })}
           <GroupGoal goal={group.goal} />
