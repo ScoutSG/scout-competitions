@@ -1,6 +1,7 @@
 import { truncate } from "fs/promises";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
 
 // PATCH /api/invitations/id/
 export default async function handle(
@@ -51,6 +52,7 @@ const addUserToGroup = async (userId, groupId) => {
     targetSkills,
     tags,
     members,
+    telegramLink,
   } = await prisma.group.findUnique({
     where: {
       id: groupId,
@@ -83,6 +85,30 @@ const addUserToGroup = async (userId, groupId) => {
       },
     },
   });
+
+  if (telegramLink) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    try {
+      await addToGroup(telegramLink, user.telegramUrl);
+      notifyGroup(telegramLink, `Welcome to the group, ${user.name}!`);
+    } catch (err) {
+      let warningMessage: string = `Failed to add ${user.name} to the group.`;
+
+      if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
+        warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${user.telegramUrl} to this group yourself.`;
+      } else if (
+        err.message === `No user has "${user.telegramUrl}" as username`
+      ) {
+        warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${user.email} to get their Telegram username to add them to this group.`;
+      }
+      notifyGroup(telegramLink, warningMessage);
+    }
+  }
 };
 
 const getCompetition = async (groupId) => {
