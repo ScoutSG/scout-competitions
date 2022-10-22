@@ -47,13 +47,13 @@ model User {
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
   yearOfStudy    Int?
+  school         String?
   major          String?
   specialisation String?
+  skills         String[]
   linkedinUrl    String?
   gitHubUrl      String?
   telegramUrl    String?
-  school         String?
-  skills         String[]
   applications   Application[]
   leadingGroups  Group[]       @relation("leader")
   invitations    Invitation[]
@@ -120,9 +120,9 @@ model Group {
   telegramLink  String?
   targetSkills  String[]
   competitionId Int
+  goal          String        @default("")
   tags          String[]
   leaderId      Int
-  goal          String        @default("")
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   leader        User          @relation("leader", fields: [leaderId], references: [id], onDelete: Cascade)
   applications  Application[]
@@ -141,16 +141,16 @@ model Competition {
   maxSize       Int
   minSize       Int
   firstPrize    String?
-  otherPrizes   String?
   secondPrize   String?
   thirdPrize    String?
+  otherPrizes   String?
   groups        Group[]
 }
 
 model Invitation {
   id      String @id @default(uuid())
-  userId  Int?
   groupId Int
+  userId  Int?
   group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
   user    User?  @relation(fields: [userId], references: [id])
 }
