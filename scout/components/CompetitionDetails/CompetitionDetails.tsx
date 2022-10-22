@@ -16,6 +16,7 @@ import { CompetitionData } from "../../core/types/CompetitionDetail";
 import PageContainer from "../PageContainer";
 import CompetitionDetailsTab from "./CompetitionDetailsTab";
 import GroupSummaryTab from "./GroupSummaryTab";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 // const describeGroupSizeRestriction = (min: number, max: number) => {
 //   if (min === null && max === null) {
@@ -43,6 +44,10 @@ const CompetitionDetails: React.FC = ({
   //   (competition.groups as any[]).flatMap((group) => group.members)
   // );
 
+  const eventAnalyticsTracker = useAnalyticsTracker(
+    "Competition Details " + competition.name
+  );
+
   return (
     <PageContainer>
       <Stack width="100%" my={8} px={0} spacing={4}>
@@ -50,7 +55,15 @@ const CompetitionDetails: React.FC = ({
           <Heading fontWeight="semibold" mr={8} mb={4}>
             {competition.name}
           </Heading>
-          <Link href={competition.link} passHref>
+          <Link
+            href={competition.link}
+            passHref
+            onClick={async () => {
+              await eventAnalyticsTracker(
+                "Visited External Website " + competition.name
+              );
+            }}
+          >
             <a target="_blank" rel="noopener noreferrer">
               <Button
                 size={{ base: "md", md: "lg" }}

@@ -27,6 +27,7 @@ import { AiFillTrophy } from "react-icons/ai";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import moment from "moment";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;
@@ -37,9 +38,15 @@ const CompetitionSummaryCard: React.FC<{
     setShow(!show);
   };
   const textColor = useColorModeValue("gray.500", "gray.300");
+  const eventAnalyticsTracker = useAnalyticsTracker("Competition Discovery");
 
   return (
-    <Link href={`/competitions/${competition.id}`}>
+    <Link
+      href={`/competitions/${competition.id}`}
+      onClick={async () => {
+        await eventAnalyticsTracker("Clicked on " + competition.name);
+      }}
+    >
       <HStack
         width="100%"
         rounded="md"
@@ -121,25 +128,26 @@ const CompetitionSummaryCard: React.FC<{
                 Prizes
               </Text>
               {competition.otherPrizes && (
-                <Badge colorScheme="green">
-                  Other prizes available
-                </Badge>
+                <Badge colorScheme="green">Other prizes available</Badge>
               )}
             </HStack>
             <Wrap spacing={4}>
               {competition.firstPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥇 First place:</Text><Text>{competition.firstPrize}</Text>
+                  <Text fontWeight="medium">🥇 First place:</Text>
+                  <Text>{competition.firstPrize}</Text>
                 </HStack>
               )}
               {competition.secondPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥈 Second place:</Text><Text>{competition.secondPrize}</Text>
+                  <Text fontWeight="medium">🥈 Second place:</Text>
+                  <Text>{competition.secondPrize}</Text>
                 </HStack>
               )}
               {competition.thirdPrize && (
                 <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥉 Third place:</Text><Text>{competition.thirdPrize}</Text>
+                  <Text fontWeight="medium">🥉 Third place:</Text>
+                  <Text>{competition.thirdPrize}</Text>
                 </HStack>
               )}
             </Wrap>

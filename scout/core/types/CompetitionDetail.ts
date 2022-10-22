@@ -21,6 +21,7 @@ export interface GroupSummaryData {
   targetSize: number;
   description: string;
   leader: Member;
+  leaderId: number;
   goal: string;
   targetSkills: string[];
   competitionId: number;

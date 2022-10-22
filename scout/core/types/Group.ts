@@ -31,6 +31,7 @@ export interface Group {
   targetSize: number;
   description: string;
   leader: Member;
+  leaderId: number;
   goal: string;
   targetSkills: string[];
   tags: string[];

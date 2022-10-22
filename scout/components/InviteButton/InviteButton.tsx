@@ -18,12 +18,11 @@ import {
   Box,
   Center,
 } from "@chakra-ui/react";
-import { TbSend, TbShare, TbBrandTelegram, TbCopy } from "react-icons/tb";
-import { useRouter } from "next/router";
 import clientApi from "../../core/api/client";
 import { AxiosResponse } from "axios";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import Loading from "../Loading";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const useInvite = () => {
   const [code, setCode] = useState<string>("");
@@ -74,6 +73,7 @@ const InviteButton = ({ group }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { presentToast } = useCustomToast();
   const { setCode, hasCopied, inviteLink } = useInvite();
+  const eventAnalyticsTracker = useAnalyticsTracker("Invite " + group.name);
 
   const generateLink = async () => {
     setIsLoading(true);
@@ -97,6 +97,7 @@ const InviteButton = ({ group }) => {
         setCode(response.data.code);
       }
     }
+    await eventAnalyticsTracker("Generate Invite Link for " + group.name);
     setIsLoading(false);
   };
   return (

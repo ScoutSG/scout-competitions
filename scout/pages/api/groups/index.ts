@@ -65,6 +65,11 @@ async function handleAdd(req, res) {
     telegramGroupId = await createGroup(name, leader.telegramUrl);
   }
 
+  let memberResult = members.map((x) => ({ id: x }));
+  if (members.length === 0) {
+    memberResult.push({id: leaderId}); // add leader to member
+  }
+
   const group = await prisma.group.create({
     data: {
       name,
@@ -78,7 +83,7 @@ async function handleAdd(req, res) {
         connect: { id: leaderId },
       },
       members: {
-        connect: members.map((x) => ({ id: x })),
+        connect: memberResult,
       },
       competition: {
         connect: {

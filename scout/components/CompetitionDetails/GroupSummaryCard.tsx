@@ -12,11 +12,18 @@ import {
 import { Group } from "../../core/types/Group";
 import GroupMember from "./GroupMember";
 import GroupGoal from "./GroupGoal";
-import useIsMember from "./useIsMember";
+import useIsMemberOfCompetition from "./useIsMember";
+import { useIsMember, useIsLeader } from "../../lib/hooks/useUserDetails";
 import Link from "next/link";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const GroupSummaryCard = ({ group }: { group: Group }) => {
-  const { isMember } = useIsMember(group.competitionId);
+  const { isMember } = useIsMemberOfCompetition(group.competitionId);
+  const isPartOfGroup =
+    useIsMember(group.members) || useIsLeader(group.leaderId);
+  const eventAnalyticsTracker = useAnalyticsTracker(
+    "Group Summary Card for " + group.name
+  );
 
   var groupSkills = group.members.concat(group.leader).flatMap((member) => {
     return member.skills;
@@ -37,7 +44,11 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
       role="group"
     >
       <Wrap align="flex-end">
-        <Text fontSize={{base: "xl", md: "2xl"}} fontWeight="semibold" color={useColorModeValue("cyan.900", "white")}>
+        <Text
+          fontSize={{ base: "xl", md: "2xl" }}
+          fontWeight="semibold"
+          color={useColorModeValue("cyan.900", "white")}
+        >
           {group.name}
         </Text>
         <Spacer />
@@ -46,10 +57,33 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
             variant="outline"
             colorScheme="cyan"
             visibility="hidden"
-            _groupHover={{ visibility: isMember ? "hidden" : "visible" }}
+            _groupHover={{
+              visibility: isMember ? "hidden" : "visible",
+            }}
             size="md"
+            onClick={async () => {
+              await eventAnalyticsTracker(
+                "Request to join group " + group.name
+              );
+            }}
           >
             Request to Join
+          </Button>
+        </Link>
+        <Link href={`/competitions/${group.competitionId}/groups/${group.id}`}>
+          <Button
+            variant="outline"
+            colorScheme="cyan"
+            visibility="hidden"
+            _groupHover={{
+              visibility: isPartOfGroup ? "visible" : "hidden",
+            }}
+            size="md"
+            onClick={async () => {
+              await eventAnalyticsTracker("View own group " + group.name);
+            }}
+          >
+            View group
           </Button>
         </Link>
       </Wrap>

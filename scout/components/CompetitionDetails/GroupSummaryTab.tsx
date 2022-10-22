@@ -15,6 +15,7 @@ import {
 import CompetitionInformation from "./CompetitionInformation";
 import GroupSummaryCard from "./GroupSummaryCard";
 import useIsMember from "./useIsMember";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const GroupSummaryTab = ({
   competition,
@@ -24,10 +25,17 @@ const GroupSummaryTab = ({
   groups: GroupSummaryData[];
 }) => {
   const { isMember } = useIsMember(competition.id);
+  const eventAnalyticsTracker = useAnalyticsTracker(
+    "Group Summary Tab for " + competition.name
+  );
 
   return (
-    <Flex gap={{base: 0, xl: 8}}>
-      <Stack width={{base: "100%", xl: "60%"}} spacing={8} alignItems={{base: "center", xl: "left"}}>
+    <Flex gap={{ base: 0, xl: 8 }}>
+      <Stack
+        width={{ base: "100%", xl: "60%" }}
+        spacing={8}
+        alignItems={{ base: "center", xl: "left" }}
+      >
         <Flex width="100%" maxWidth="4xl" alignItems="flex-end">
           <Text
             fontSize="lg"
@@ -43,6 +51,11 @@ const GroupSummaryTab = ({
               colorScheme="cyan"
               variant="ghost"
               visibility={isMember ? "hidden" : "visible"}
+              onClick={async () => {
+                await eventAnalyticsTracker(
+                  "Lead a team for " + competition.name
+                );
+              }}
             >
               Lead a team
             </Button>

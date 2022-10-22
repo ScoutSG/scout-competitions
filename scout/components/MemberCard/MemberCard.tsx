@@ -12,6 +12,7 @@ import {
 
 import { useCustomClipboard } from "../../lib/hooks/useCustomClipboard";
 import { useIsLargerThanMd } from "../../lib/hooks/useIsLargerThanMd";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 import {
   TbBrandGithub,
   TbBrandLinkedin,
@@ -23,6 +24,9 @@ import {
 const MemberCard = ({ member, isSmall = false }) => {
   // 48em is the default breakpoint for width size = md
   const isLargerThanMd = useIsLargerThanMd();
+  const eventAnalyticsTracker = useAnalyticsTracker(
+    "Member Card " + member.name
+  );
 
   const mapFieldToIcon = {
     email: <TbMail />,
@@ -36,6 +40,11 @@ const MemberCard = ({ member, isSmall = false }) => {
     telegramUrl: useCustomClipboard(member.telegramUrl),
     linkedinUrl: useCustomClipboard(member.linkedinUrl),
     gitHubUrl: useCustomClipboard(member.gitHubUrl),
+  };
+
+  const copyContactDetail = async (attr) => {
+    mapFieldToClipboard[attr].onCopy();
+    await eventAnalyticsTracker(`Copy ${attr} from ${member.name}`);
   };
 
   return (
@@ -91,12 +100,12 @@ const MemberCard = ({ member, isSmall = false }) => {
                             : "transparent"
                         }
                         variant="outline"
-                        onClick={mapFieldToClipboard[attribute[0]].onCopy}
+                        onClick={() => copyContactDetail(attribute[0])}
                       />
                     ) : (
                       <Button
                         leftIcon={mapFieldToIcon[attribute[0]]}
-                        onClick={mapFieldToClipboard[attribute[0]].onCopy}
+                        onClick={() => copyContactDetail(attribute[0])}
                         fontWeight="normal"
                         variant="outline"
                       >

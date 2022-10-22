@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
-function useIsMember(competitionId: number) {
+function useIsMemberOfCompetition(competitionId: number) {
   const fetcher = (arg: any, ...args: any[]) =>
     fetch(arg, ...args).then((res) => res.json());
   const { data: session } = useSession();
@@ -17,9 +17,9 @@ function useIsMember(competitionId: number) {
     };
   } else {
     return {
-      isMember: false
-    }
+      isMember: false,
+    };
   }
 }
 
-export default useIsMember;
+export default useIsMemberOfCompetition;
