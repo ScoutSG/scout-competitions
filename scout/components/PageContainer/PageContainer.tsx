@@ -88,7 +88,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
 
   return (
     <>
-      <Container position="relative" minH="100vh" minW="100vw" padding="0px">
+      <Container minH="100vh" width="100vw" maxWidth="100%" padding="0px">
         <NavigationBar />
         <Container
           maxW={{ xl: "8xl" }}

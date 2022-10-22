@@ -47,14 +47,17 @@ model User {
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")
   yearOfStudy    Int?
+  school         String?
   major          String?
   specialisation String?
+  skills         String[]
   linkedinUrl    String?
   gitHubUrl      String?
   telegramUrl    String?
   applications   Application[]
   accounts       Account[]
   sessions       Session[]
+  leadingGroups  Group[]       @relation("leader")
   groups         Group[]
   invitations    Invitation[]
 
@@ -117,10 +120,13 @@ model Group {
   telegramLink  String?
   targetSkills  String[]
   competitionId Int
+  goal          String
   tags          String[]
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   applications  Application[]
   form          Form?
+  leaderId      Int
+  leader        User          @relation(name: "leader", fields: [leaderId], references: [id], onDelete: Cascade)
   members       User[]
   Invitation    Invitation[]
 }

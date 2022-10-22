@@ -37,6 +37,29 @@ export default async function handle(req, res) {
         },
       });
 
+      // remove deleted group from competition
+      const competition = await prisma.competition.findUnique({
+        where: {
+          id: group.competitionId
+        }, include: {
+          groups: true
+        }
+      });
+
+      const updatedGroups = competition.groups.filter(group => group.id !== groupId);
+
+      await prisma.competition.update({
+        where: {
+          id: group.competitionId,
+        },
+        data: {
+          ...competition,
+          groups: {
+            connect: updatedGroups.map(group => ({id: group.id}))
+          }
+        }
+      })
+
       res.status(200).json(group);
 
       // updates member array of group
@@ -49,6 +72,7 @@ export default async function handle(req, res) {
         targetSkills,
         tags,
         form,
+        leaderId,
         members,
         withTelegramGroup,
       } = req.body;
@@ -64,7 +88,7 @@ export default async function handle(req, res) {
         if (group.telegramLink === null) {
           const leader = await prisma.user.findUnique({
             where: {
-              id: members[0],
+              id: leaderId,
             },
           });
           telegramGroupId = await createGroup(name, leader.telegramUrl);

@@ -27,7 +27,7 @@ const NotFound = () => {
           </Text>
         </Stack>
 
-        <NextLink href="/home">
+        <NextLink href="/">
           <Button rightIcon={<ChevronRightIcon />}>
             Don't worry, we'll still find you a team!
           </Button>

@@ -6,6 +6,7 @@ import {
   notifyGroup,
   sendWelcomeMessage,
 } from "../../../core/utils/telegram";
+import {validateUserIsNotInCompetition} from "../../../lib/services/GroupValidation";
 
 // GET POST /api/groups
 export default async function handle(
@@ -28,6 +29,7 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
+
   const groups = await prisma.group.findMany({
     include: {
       members: true,
@@ -52,17 +54,31 @@ async function handleAdd(req, res) {
     leaderId,
     members,
     competitionId,
+    goal,
+    leaderId,
     withTelegramGroup,
   } = req.body;
+  await validateUserIsNotInCompetition(leaderId, competitionId).catch(err => {
+    res.statusMessage = err;
+    res.status(400).end();
+  });
+  if (res.writableEnded) {
+    return;
+  }
 
   let telegramGroupId: number;
   if (withTelegramGroup) {
     const leader = await prisma.user.findUnique({
       where: {
-        id: members[0],
+        id: leaderId,
       },
     });
     telegramGroupId = await createGroup(name, leader.telegramUrl);
+  }
+
+  let memberResult = members.map((x) => ({ id: x }));
+  if (members.length === 0) {
+    memberResult.push({id: leaderId}); // add leader to member
   }
 
   const group = await prisma.group.create({
@@ -73,8 +89,12 @@ async function handleAdd(req, res) {
       description,
       targetSkills,
       tags,
+      goal,
+      leader: {
+        connect: { id: leaderId },
+      },
       members: {
-        connect: members.map((x) => ({ id: x })),
+        connect: memberResult,
       },
       competition: {
         connect: {

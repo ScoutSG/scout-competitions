@@ -15,6 +15,7 @@ import { TbSend, TbShare, TbBrandTelegram, TbCopy } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { useQRCode } from "next-qrcode";
 import { useUrlClipboard } from "../../lib/hooks/useCustomClipboard";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const ShareButton = ({ group }) => {
   const router = useRouter();
@@ -22,8 +23,9 @@ const ShareButton = ({ group }) => {
   const { Canvas } = useQRCode();
   const groupLink = `/competitions/${router.query.competitionId}/groups/${group.id}`;
   const clipboard = useUrlClipboard(groupLink);
+  const eventAnalyticsTracker = useAnalyticsTracker("Share " + group.name);
 
-  const shareViaTelegram = () => {
+  const shareViaTelegram = async () => {
     const message = `My team, ${group.name}, is participating in a competition!\n\n Join us!`;
     const link = encodeURIComponent(window.location.origin + groupLink);
 
@@ -31,6 +33,13 @@ const ShareButton = ({ group }) => {
       "https://t.me/share/url?url=" + link + "&text=" + `\n ${message}`,
       "_blank"
     );
+
+    await eventAnalyticsTracker("Share via Telegram");
+  };
+
+  const copyLink = async () => {
+    clipboard.onCopy();
+    await eventAnalyticsTracker("Copy Link");
   };
 
   return (
@@ -89,7 +98,7 @@ const ShareButton = ({ group }) => {
                   variant="outline"
                   colorScheme="black"
                   rounded="3xl"
-                  onClick={clipboard.onCopy}
+                  onClick={copyLink}
                 >
                   {clipboard.hasCopied ? "Copied" : "Copy Link"}
                 </Button>

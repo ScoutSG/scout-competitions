@@ -25,26 +25,49 @@ import ApplicationReview from "../../../../../components/Group/ApplicationReview
 import Application from "../../../../../components/Group/Application";
 import MemberCard from "../../../../../components/MemberCard";
 import ShareButton from "../../../../../components/ShareButton";
+import InviteButton from "../../../../../components/InviteButton";
 import clientApi from "../../../../../core/api/client";
 import { useRouter } from "next/router";
 import { TbPencil, TbTrash } from "react-icons/tb";
 import { Group, QuestionsData } from "../../../../../core/types/Group";
-import { useIsMember } from "../../../../../lib/hooks/useUserDetails";
+import {
+  useIsMember,
+  useIsLeader,
+} from "../../../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../../../core/utils/maxWidth";
 import PageContainer from "../../../../../components/PageContainer";
+import { useSession } from "next-auth/react";
+import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
+import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
   const { competitionId, groupId } = router.query;
+  const { presentToast } = useCustomToast();
+  const eventAnalyticsTracker = useAnalyticsTracker("Modify Group buttons");
 
   const handleDelete = async () => {
-    const response = clientApi.delete(`/groups/${groupId}`);
+    await eventAnalyticsTracker("Delete group " + groupId);
+    clientApi.delete(`/groups/${groupId}`).catch((err) => {
+      presentToast({
+        position: "top",
+        title: "Error occured!",
+        description: "Unable to delete group, please try again later!",
+        status: "error",
+      });
+    });
+
     router.push(`/competitions/${competitionId}`);
   };
 
   return (
     <>
-      <Link href={`/competitions/${competitionId}/groups/${groupId}/edit`}>
+      <Link
+        href={`/competitions/${competitionId}/groups/${groupId}/edit`}
+        onClick={async () => {
+          await eventAnalyticsTracker("Edit Group " + groupId);
+        }}
+      >
         <Button width="100%" leftIcon={<TbPencil />}>
           Edit Group
         </Button>
@@ -103,7 +126,10 @@ const GroupDetail: React.FC = ({
   questionsData: QuestionsData;
   app: any;
 }) => {
+  console.log(group);
+  const isLeader = useIsLeader(group.leaderId);
   const isMember = useIsMember(group.members);
+  const session = useSession();
 
   return (
     <PageContainer>
@@ -124,18 +150,23 @@ const GroupDetail: React.FC = ({
             <Stack spacing={3}>
               <Flex justifyContent="space-between" alignItems="center">
                 <Heading fontWeight="black">{group.name}</Heading>
-                <Badge px={4}>{isMember ? "Member" : null}</Badge>
+                <Badge px={4}>
+                  {isLeader ? "Leader" : isMember ? "Member" : null}
+                </Badge>
               </Flex>
-              {isMember ? <ShareButton group={group} /> : null}
+              <Stack direction="row">
+                {isMember || isLeader ? <InviteButton group={group} /> : null}
+                {isMember || isLeader ? <ShareButton group={group} /> : null}
+              </Stack>
             </Stack>
 
             <Divider />
-            {isMember ? (
+            {isMember || isLeader ? (
               <ApplicationReview applications={group.applications} />
             ) : (
               <Application questionsData={questionsData} />
             )}
-            {isMember ? (
+            {isMember || isLeader ? (
               <Stack spacing={4}>
                 <Heading size="md" fontWeight="black">
                   Members
@@ -182,7 +213,7 @@ const GroupDetail: React.FC = ({
                 </Box>
               </>
             )}
-            {isMember ? <ModifyGroupButtons /> : null}
+            {isMember || isLeader ? <ModifyGroupButtons /> : null}
           </Stack>
         </Stack>
       </Center>

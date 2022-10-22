@@ -20,19 +20,31 @@ export interface GroupSummaryData {
   currentSize: number;
   targetSize: number;
   description: string;
+  leader: Member;
+  leaderId: number;
+  goal: string;
   targetSkills: string[];
+  competitionId: number;
   tags: string[];
   members: Member[];
+  hasApplied?: boolean;
+  isLeader?: boolean;
+  telegramLink?: string;
 }
 
 export interface Member {
   id: number;
   email: string;
   name: string;
-  year: number;
+  image: string;
+  school: string;
+  yearOfStudy: number;
   major: string;
+  skills: string[];
   specialisation: string;
-  profileUrl: string[];
+  linkedinUrl?: string;
+  gitHubUrl?: string;
+  telegramUrl?: string;
 }
 
 export interface CompetitionDataSummary {
