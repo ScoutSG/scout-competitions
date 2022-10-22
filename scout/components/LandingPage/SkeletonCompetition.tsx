@@ -25,7 +25,15 @@ const SkeletonCompetition: React.FC = () => {
 
   return (
     <Flex pl={{ base: 0, md: 16 }} pt={16} width={{ base: "lg", md: "xl" }}>
-      <Stack width="100%" bgColor={bgColor} boxShadow="lg" rounded="2xl" p={8} spacing={4}>
+      <Stack
+        width="100%"
+        height="max-content"
+        bgColor={bgColor}
+        boxShadow="lg"
+        rounded="2xl"
+        p={8}
+        spacing={4}
+      >
         <Text fontSize="xl" fontWeight="semibold">
           Really Cool Hackathon 😎
         </Text>
@@ -55,31 +63,33 @@ const SkeletonCompetition: React.FC = () => {
             <TagLabel>Dream Company Inc.</TagLabel>
           </Tag>
           <HStack spacing={1.5}>
-            <Text fontWeight="bold">20</Text>
+            <Text fontWeight="semibold">20</Text>
             <Text>groups participating</Text>
           </HStack>
         </Wrap>
         <Divider />
-        <Text fontWeight="semibold">Description</Text>
-        <Box
-          width="100%"
-          height="20px"
-          bgColor={secondaryBgColor}
-          rounded="md"
-        />
-        <Box
-          width="100%"
-          height="20px"
-          bgColor={secondaryBgColor}
-          rounded="md"
-        />
+        <Stack spacing={2}>
+          <Text fontWeight="medium">Description</Text>
+          <Box
+            width="100%"
+            height="20px"
+            bgColor={secondaryBgColor}
+            rounded="md"
+          />
+          <Box
+            width="100%"
+            height="20px"
+            bgColor={secondaryBgColor}
+            rounded="md"
+          />
+        </Stack>
         <Divider />
         <HStack>
           <Icon as={AiFillTrophy} />
-          <Text fontWeight="semibold">Prizes</Text>
+          <Text fontWeight="medium">Prizes</Text>
         </HStack>
         <HStack spacing={1.5}>
-          <Text fontWeight="semibold">🥇 First place:</Text>
+          <Text fontWeight="medium">🥇 First place:</Text>
           <Text> SGD 10,000</Text>
         </HStack>
       </Stack>

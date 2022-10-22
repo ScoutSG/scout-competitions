@@ -63,10 +63,10 @@ export default function SignInPage({ csrfToken, providers }) {
                 </FormControl>
                 <Button
                   type="submit"
-                  bg={"cyan.500"}
+                  bg={"teal.500"}
                   color={"white"}
                   _hover={{
-                    bg: "cyan.600",
+                    bg: "teal.600",
                   }}
                 >
                   Continue

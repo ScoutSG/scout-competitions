@@ -11,13 +11,13 @@ const LandingPage: React.FC = () => {
           <Heading size={{ base: "3xl", md: "4xl" }}>Success starts</Heading>
           <Heading size={{ base: "3xl", md: "4xl" }}>with a</Heading>
           <Heading
-            size={{ base: "3xl", md: "4xl" }}
+            size={{ base: "3xl", sm: "4xl" }}
             bgGradient="linear(to-r, #8B008B, #FF6347)"
             bgClip="text"
           >
             dream team
           </Heading>
-          <Stack pt={4} fontSize={{ base: "2xl", md: "3xl" }}>
+          <Stack pt={4} fontSize={{ base: "2xl", sm: "3xl" }}>
             <Text>Scout for the ideal team to</Text>
             <TypeWriter
               options={{
@@ -36,12 +36,7 @@ const LandingPage: React.FC = () => {
         <Spacer />
         <SkeletonGroup />
       </Flex>
-      <Flex
-        flexWrap="wrap-reverse"
-        flexDirection="revert"
-        justifyContent="right"
-        pt={16}
-      >
+      <Flex flexWrap="wrap-reverse" justifyContent="right" pt={16}>
         <SkeletonCompetition />
         <Spacer />
         <Stack pt={16} pr={{ base: 0, md: 16 }}>
@@ -75,18 +70,12 @@ const LandingPage: React.FC = () => {
       <Flex flexWrap="wrap" justifyContent="right" pt={16}>
         <Stack pt={{ base: 16, md: 32 }} pl={{ base: 0, md: 16 }}>
           <Heading
-            size={{ base: "3xl", md: "4xl" }}
+            textAlign="right"
+            size={{ base: "3xl", sm: "4xl" }}
             bgGradient="linear(to-l, #0052D4, #43C6AC)"
             bgClip="text"
           >
             Telegram,
-          </Heading>
-          <Heading
-            size={{ base: "3xl", md: "4xl" }}
-            bgGradient="linear(to-r, #8B008B, #FF6347)"
-            bgClip="text"
-          >
-            Google Drive
           </Heading>
           <Heading size={{ base: "3xl", md: "4xl" }}>instantly created</Heading>
           <Heading size={{ base: "3xl", md: "4xl" }}>for your team</Heading>

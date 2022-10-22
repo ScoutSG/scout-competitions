@@ -33,6 +33,7 @@ import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import { useForm } from "react-hook-form";
 import Loading from "../Loading";
 import { Profile } from "../../core/types/Profile";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const ProfileForm = () => {
   const {
@@ -44,6 +45,7 @@ const ProfileForm = () => {
   } = useForm<Profile>();
   const [isLoading, setIsLoading] = useState(true);
   const { presentToast } = useCustomToast();
+  const eventAnalyticsTracker = useAnalyticsTracker("Profile Page");
 
   useEffect(() => {
     async function getProfileDetails() {
@@ -56,6 +58,7 @@ const ProfileForm = () => {
   }, []);
 
   const onSubmit = async (values: Profile) => {
+    await eventAnalyticsTracker("Update Profile");
     const updatedProfile = {
       ...values,
       telegramUrl:

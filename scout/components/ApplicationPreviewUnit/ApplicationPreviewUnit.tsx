@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Group, QuestionType } from "../../core/types/Group";
+import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 interface Answer {
   answerResponse: number;
@@ -114,10 +115,11 @@ const ApplicationPreviewUnit = ({
 }: {
   applications: ApplicationData[];
 }) => {
+  const eventAnalyticsTracker = useAnalyticsTracker("View Requests");
+
   const pendingApplications = applications.filter(
     (application) => application.isApproved === null
   );
-
   const approvedApplications = applications.filter(
     (application) => application.isApproved
   );

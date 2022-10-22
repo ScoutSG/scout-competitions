@@ -9,6 +9,7 @@ import {
   Stack,
   Tag,
   TagLabel,
+  TagLeftIcon,
   Text,
   useColorModeValue,
   Wrap,
@@ -20,7 +21,12 @@ const SkeletonGroup: React.FC = () => {
   const bgColor = useColorModeValue("gray.50", "gray.700");
   const secondaryBgColor = useColorModeValue("gray.100", "gray.600");
   return (
-    <Flex width={{base: "lg", md: "xl"}} pt={16} justifyContent="right" pr={{base: 0, md: 16}}>
+    <Flex
+      width={{ base: "lg", md: "xl" }}
+      pt={16}
+      justifyContent="right"
+      pr={{ base: 0, md: 16 }}
+    >
       <Stack
         minWidth={{ base: "none", lg: "500px" }}
         bgColor={bgColor}
@@ -35,79 +41,74 @@ const SkeletonGroup: React.FC = () => {
           <Spacer />
           <Button>Request to Join</Button>
         </Wrap>
-        <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Description</Text>
-          <Box width="100%" height="20px" bgColor={secondaryBgColor} rounded="md" />
-          <Box width="100%" height="20px" bgColor={secondaryBgColor} rounded="md" />
+          <Box
+            width="100%"
+            height="20px"
+            bgColor={secondaryBgColor}
+            rounded="md"
+          />
+          <Box
+            width="100%"
+            height="20px"
+            bgColor={secondaryBgColor}
+            rounded="md"
+          />
           <Text>We want 🫵</Text>
         </Stack>
         <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Members (2/3)</Text>
-          <Wrap spacing={{ base: 2, md: 4 }}>
+          <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Xavier Lee" size="sm" />
             <Text>Xavier Lee</Text>
             <HStack>
               <Tag size="md" borderRadius="full">
-                <FaSchool />
+                <TagLeftIcon as={FaSchool} />
                 <TagLabel ml={1}>NUS</TagLabel>
               </Tag>
               <Tag size="md" borderRadius="full">
-                <IoIosSchool />
+                <TagLeftIcon as={IoIosSchool} />
                 <TagLabel ml={1}>Y3 DSA</TagLabel>
               </Tag>
             </HStack>
           </Wrap>
-          <Wrap spacing={{ base: 2, md: 4 }}>
+          <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Evelyn Goh" size="sm" />
             <Text>Evelyn Goh</Text>
             <HStack>
               <Tag size="md" borderRadius="full">
-                <FaSchool />
-                <TagLabel ml={1}>NTU</TagLabel>
+                <TagLeftIcon as={FaSchool} />
+                <TagLabel>NTU</TagLabel>
               </Tag>
               <Tag size="md" borderRadius="full">
-                <IoIosSchool />
+                <TagLeftIcon as={IoIosSchool} />
                 <TagLabel ml={1}>Y2 Business</TagLabel>
               </Tag>
             </HStack>
           </Wrap>
         </Stack>
         <Divider />
-        <Stack my={4} spacing={2}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're strong in</Text>
           <Wrap spacing={2}>
-            <Tag
-              size="md"
-              borderRadius="full"
-              bgColor={useColorModeValue("red.50", "red.700")}
-            >
+            <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
               <TagLabel>Data visualisation</TagLabel>
             </Tag>
-            <Tag
-              size="md"
-              borderRadius="full"
-              bgColor={useColorModeValue("red.50", "red.700")}
-            >
+            <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
               <TagLabel>Machine learning</TagLabel>
             </Tag>
-            <Tag
-              size="md"
-              borderRadius="full"
-              bgColor={useColorModeValue("red.50", "red.700")}
-            >
+            <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
               <TagLabel>Presentation Skills</TagLabel>
             </Tag>
           </Wrap>
         </Stack>
-        <Divider />
-        <Stack mt={4} spacing={2}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're looking for</Text>
           <Box>
             <Tag
-              size="md"
-              borderRadius="full"
+              rounded="xl"
               bgColor={useColorModeValue("blue.50", "blue.700")}
             >
               <TagLabel>UI/UX design</TagLabel>

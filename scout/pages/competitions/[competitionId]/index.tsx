@@ -1,25 +1,61 @@
-import clientApi from "../../../core/api/client";
-import { AxiosResponse } from "axios";
 import CompetitionDetails from "../../../components/CompetitionDetails";
+import prisma from "../../../lib/prisma";
 
 export async function getStaticPaths() {
+  const competitions = await prisma.competition.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  const paths = competitions.map((competition) => ({
+    params: { competitionId: String(competition.id) },
+  }));
+
   return {
-    paths: [],
-    fallback: "blocking", // can also be true or 'blocking'
+    paths: paths,
+    fallback: "blocking",
   };
 }
 
 export async function getStaticProps(context) {
-  const competitionId = context.params.competitionId;
-  let response: AxiosResponse<any, any>;
-  try {
-    response = await clientApi.get(`/competitions/${competitionId}`);
-  } catch (err) {
-    return { notFound: true };
-  }
-  const competition = response.data;
+  const competitionId = parseInt(context.params.competitionId);
+  const competition = await prisma.competition.findUnique({
+    where: {
+      id: competitionId,
+    },
+    include: {
+      groups: {
+        include: {
+          leader: {
+            select: {
+              name: true,
+              image: true,
+              school: true,
+              yearOfStudy: true,
+              major: true,
+              skills: true
+            }
+          },
+          members: {
+            select: {
+              name: true,
+              image: true,
+              school: true,
+              yearOfStudy: true,
+              major: true,
+              skills: true
+            }
+          }
+        }
+      }
+    }
+  });
 
-  return { props: { competition }, revalidate: 60 };
+  return {
+    props: { competition: JSON.parse(JSON.stringify(competition)) },
+    revalidate: 60,
+  };
 }
 
 export default CompetitionDetails;

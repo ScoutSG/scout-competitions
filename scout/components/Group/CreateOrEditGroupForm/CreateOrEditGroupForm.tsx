@@ -79,12 +79,14 @@ const CreateOrEditGroupForm = ({
           (str) => str.questionString.length > 0
         ),
       },
+      members: [],
+      goal: "Win the competition",
       withTelegramGroup: values.withTelegramGroup,
     };
     if (session.status === "authenticated") {
       const body = {
         ...groupInfo,
-        members: [session.data.user.id],
+        leaderId: session.data.user.id,
       };
 
       let group_id: number;
