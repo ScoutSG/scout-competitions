@@ -19,6 +19,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   FormHelperText,
+  Link,
 } from "@chakra-ui/react";
 import {
   TbBrandGithub,
@@ -180,8 +181,11 @@ const ProfileForm = () => {
           <Input placeholder="username" {...register("telegramUrl")} />
         </InputGroup>
         <FormHelperText>
-          For a smoother user experience, please add @scoutsg as a contact on
-          Telegram.
+          For a smoother user experience, please add{" "}
+          <Link color="teal" href="https://t.me/scoutsg" isExternal>
+            @scoutsg
+          </Link>{" "}
+          as a contact on Telegram.
         </FormHelperText>
       </FormControl>
       <Button

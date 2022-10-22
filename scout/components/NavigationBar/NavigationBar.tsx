@@ -14,6 +14,7 @@ import {
   useDisclosure,
   Collapse,
   Link,
+  Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
@@ -49,9 +50,14 @@ const NavigationBar: React.FC = () => {
         <Container maxW={{ xl: "8xl" }} px="0px">
           <Flex px="4vw" align="center">
             <NextLink href="/" passHref>
-                <Stack direction={"row"} spacing={4} align={"center"} cursor="pointer">
-                  <ScoutIcon width={96} height={80} />
-                </Stack>
+              <Stack
+                direction={"row"}
+                spacing={4}
+                align={"center"}
+                cursor="pointer"
+              >
+                <ScoutIcon width={96} height={80} />
+              </Stack>
             </NextLink>
             <Flex display={{ base: "none", lg: "flex" }} ml={"32px"} mt={"8px"}>
               <DesktopNav />
@@ -112,7 +118,10 @@ const DesktopNav = () => {
           <Box key={navItem.label}>
             <Popover trigger={"hover"} placement={"bottom-start"}>
               <NextLink href={navItem.href ? navItem.href : "#"} passHref>
-                <Link style={{textDecoration: "none"}}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  target={navItem.isExternal ? "_blank" : null}
+                >
                   <PopoverTrigger>
                     <Flex
                       cursor={"pointer"}
@@ -137,7 +146,7 @@ const DesktopNav = () => {
                       )}
                     </Flex>
                   </PopoverTrigger>
-                  </Link>
+                </Link>
               </NextLink>
 
               {navItem.children && (
@@ -165,47 +174,47 @@ const DesktopNav = () => {
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+const DesktopSubNav = ({ label, href, subLabel, isExternal }: NavItem) => {
   return (
-    <NextLink href={href} passHref>
-        <Box
-          cursor={"pointer"}
-          role={"group"}
-          p={2}
-          rounded={"md"}
-          _hover={{ bg: useColorModeValue("teal.50", "teal.700") }}
-        >
-          <Stack direction={"row"} align={"center"}>
-            <Box>
-              <Text
-                _groupHover={{ color: useColorModeValue("teal.700", "white") }}
-                fontWeight="medium"
-              >
-                {label}
-              </Text>
-              <Text fontSize={"sm"}>{subLabel}</Text>
-            </Box>
-            <Flex
-              transition={"all .3s ease"}
-              transform={"translateX(-10px)"}
-              opacity={0}
-              _groupHover={{
-                opacity: "100%",
-                transform: "translateX(0)",
-              }}
-              justify={"flex-end"}
-              align={"center"}
-              flex={1}
+    <NextLink href={href} target={isExternal ? "_blank" : null} passHref>
+      <Box
+        cursor={"pointer"}
+        role={"group"}
+        p={2}
+        rounded={"md"}
+        _hover={{ bg: useColorModeValue("teal.50", "teal.700") }}
+      >
+        <Stack direction={"row"} align={"center"}>
+          <Box>
+            <Text
+              _groupHover={{ color: useColorModeValue("teal.700", "white") }}
+              fontWeight="medium"
             >
-              <Icon
-                color={useColorModeValue("teal.700", "white")}
-                w={5}
-                h={5}
-                as={ChevronRightIcon}
-              />
-            </Flex>
-          </Stack>
-        </Box>
+              {label}
+            </Text>
+            <Text fontSize={"sm"}>{subLabel}</Text>
+          </Box>
+          <Flex
+            transition={"all .3s ease"}
+            transform={"translateX(-10px)"}
+            opacity={0}
+            _groupHover={{
+              opacity: "100%",
+              transform: "translateX(0)",
+            }}
+            justify={"flex-end"}
+            align={"center"}
+            flex={1}
+          >
+            <Icon
+              color={useColorModeValue("teal.700", "white")}
+              w={5}
+              h={5}
+              as={ChevronRightIcon}
+            />
+          </Flex>
+        </Stack>
+      </Box>
     </NextLink>
   );
 };
@@ -225,7 +234,7 @@ const MobileNav = () => {
   );
 };
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href, isExternal }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
   const color = useColorModeValue("teal.600", "teal.300");
   const bgColor = useColorModeValue("white", "gray.800");
@@ -244,13 +253,17 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           bg: popoverContentBgColor,
         }}
       >
-        <Text
+        <Button
+          as="a"
+          variant="link"
+          href={href}
+          target={isExternal ? "_blank" : null}
           fontWeight="semibold"
           fontSize={"lg"}
           color={useColorModeValue("gray.600", "gray.200")}
         >
           {label}
-        </Text>
+        </Button>
         {children && (
           <Icon
             as={ChevronDownIcon}
@@ -273,21 +286,21 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           {children &&
             children.map((child) => (
               <NextLink href={child.href} passHref key={child.label}>
-                  <Flex
-                    width={"100%"}
-                    cursor={"pointer"}
-                    key={child.label}
-                    py={2}
-                    role="group"
+                <Flex
+                  width={"100%"}
+                  cursor={"pointer"}
+                  key={child.label}
+                  py={2}
+                  role="group"
+                >
+                  <Text
+                    transition={"all .3s ease"}
+                    _groupHover={{ color: color }}
+                    fontWeight="normal"
                   >
-                    <Text
-                      transition={"all .3s ease"}
-                      _groupHover={{ color: color }}
-                      fontWeight="normal"
-                    >
-                      {child.label}
-                    </Text>
-                  </Flex>
+                    {child.label}
+                  </Text>
+                </Flex>
               </NextLink>
             ))}
         </Stack>
@@ -301,7 +314,10 @@ interface NavItem {
   subLabel?: string;
   children?: Array<NavItem>;
   href?: string;
+  isExternal?: boolean;
 }
+
+const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
 
 export const NAV_ITEMS: Array<NavItem> = [
   {
@@ -316,6 +332,8 @@ export const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Contact Us",
+    href: BETA_FEEDBACK_LINK,
+    isExternal: true,
   },
 ];
 

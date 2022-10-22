@@ -13,9 +13,11 @@ import SkeletonCompetition from "./SkeletonCompetition";
 import SkeletonGroup from "./SkeletonGroup";
 import TwoStat from "./TwoStat";
 
+const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
+
 const LandingPage: React.FC = () => {
   const betaFeedbackLink = () => {
-    window.open("https://forms.gle/sHALP5znkgQnyQ3U8", "_blank");
+    window.open(BETA_FEEDBACK_LINK, "_blank");
   };
 
   return (

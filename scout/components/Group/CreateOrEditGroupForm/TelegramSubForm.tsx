@@ -24,6 +24,9 @@ type TelegramSubFormProps = Pick<
   group: Group;
 };
 
+const CHECKBOX_TEXT =
+  "Create a Telegram group for this team and automatically add team members into the group chat upon approval. This chat will also be used for notifications when new people request to join your team.";
+
 export default function TelegramSubForm({
   register,
   group,
@@ -55,8 +58,7 @@ export default function TelegramSubForm({
           </Text>
         </Alert>
         <Checkbox disabled isChecked={false}>
-          Create a Telegram group for this team and automatically add team
-          members into the group chat upon approval
+          {CHECKBOX_TEXT}
         </Checkbox>
       </FormControl>
     );
@@ -75,8 +77,7 @@ export default function TelegramSubForm({
           </Text>
         </Alert>
         <Checkbox disabled isChecked>
-          Create a Telegram group for this team and automatically add team
-          members into the group chat upon approval
+          {CHECKBOX_TEXT}
         </Checkbox>
       </FormControl>
     );
@@ -84,10 +85,7 @@ export default function TelegramSubForm({
   return (
     <FormControl>
       {formLabel}
-      <Checkbox {...register("withTelegramGroup")}>
-        Create a Telegram group for this team and automatically add team members
-        into the group chat upon approval
-      </Checkbox>
+      <Checkbox {...register("withTelegramGroup")}>{CHECKBOX_TEXT}</Checkbox>
     </FormControl>
   );
 }

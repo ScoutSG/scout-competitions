@@ -11,6 +11,8 @@ import CompetitionSummaryCard from "./CompetitionSummaryCard";
 import NoCompetitions from "./NoCompetitions";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
+const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
+
 const CompetitionSummaryView: React.FC<{
   competitions: CompetitionDataSummary[];
 }> = ({ competitions }) => {
@@ -30,7 +32,14 @@ const CompetitionSummaryView: React.FC<{
               Showing {competitions.length} competitions. Can't find a
               competition or want to organise one?
               <Spacer />
-              <Button variant="link">Contact us!</Button>
+              <Button
+                variant="link"
+                as="a"
+                href={BETA_FEEDBACK_LINK}
+                target="_blank"
+              >
+                Contact us!
+              </Button>
             </Text>
 
             {competitions.map((competition) => (
