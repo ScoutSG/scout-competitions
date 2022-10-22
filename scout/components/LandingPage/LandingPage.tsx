@@ -7,8 +7,6 @@ import {
   Center,
   Divider,
   Button,
-  useColorMode,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import TypeWriter from "typewriter-effect";
 import SkeletonCompetition from "./SkeletonCompetition";

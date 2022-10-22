@@ -34,8 +34,8 @@ export async function getStaticProps(context) {
               school: true,
               yearOfStudy: true,
               major: true,
-              skills: true
-            }
+              skills: true,
+            },
           },
           members: {
             select: {
@@ -44,12 +44,13 @@ export async function getStaticProps(context) {
               school: true,
               yearOfStudy: true,
               major: true,
-              skills: true
-            }
-          }
-        }
-      }
-    }
+              skills: true,
+              id: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return {

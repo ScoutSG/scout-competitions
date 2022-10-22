@@ -1,4 +1,11 @@
-import { Flex, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Stack,
+  Text,
+  useColorModeValue,
+  Button,
+  Spacer,
+} from "@chakra-ui/react";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "./CompetitionSummaryCard";
 import NoCompetitions from "./NoCompetitions";
@@ -21,8 +28,11 @@ const CompetitionSummaryView: React.FC<{
               textColor={useColorModeValue("gray.500", "gray.300")}
             >
               Showing {competitions.length} competitions. Can't find a
-              competition or want to organise one? Contact us!
+              competition or want to organise one?
+              <Spacer />
+              <Button variant="link">Contact us!</Button>
             </Text>
+
             {competitions.map((competition) => (
               <CompetitionSummaryCard
                 key={competition.id}
