@@ -48,6 +48,8 @@ async function handleAdd(req, res) {
     targetSkills,
     tags,
     form,
+    goal,
+    leaderId,
     members,
     competitionId,
     withTelegramGroup,
