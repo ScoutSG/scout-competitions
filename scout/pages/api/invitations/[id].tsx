@@ -16,7 +16,15 @@ export default async function handle(
     if (httpMethod === "PATCH") {
       const { userId } = req.body;
       const invitation = await getInvitation(id);
-      await validateUserIsNotInGroup(userId, invitation.groupId);
+      await validateUserIsNotInGroup(userId, invitation.groupId).catch(
+        (err) => {
+          res.statusMessage = err;
+          res.status(400).end();
+        }
+      );
+      if (res.writableEnded) {
+        return;
+      }
       await addUserToGroup(userId, invitation.groupId);
       const competition = await getCompetition(invitation.groupId);
       const response = {
