@@ -69,7 +69,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
     if (draftGroup !== null && session.status === "authenticated") {
       const body = {
         ...draftGroup,
-        members: [session.data.user.id],
+        leaderId: session.data.user.id,
       };
       clientApi.post("/groups", body).then((response) => {
         const group_id = response.data.id;

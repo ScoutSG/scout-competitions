@@ -57,14 +57,6 @@ const useInvite = () => {
     };
   }, [code]);
 
-  useEffect(() => {
-    if (hasCopied) {
-      setTimeout(() => {
-        setHasCopied(false);
-      }, 3000);
-    }
-  }, [hasCopied]);
-
   return { setCode, hasCopied, inviteLink };
 };
 
@@ -93,7 +85,7 @@ const InviteButton = ({ group }) => {
         position: "top",
       });
     } finally {
-      if (response || response.data) {
+      if (response && response.data) {
         setCode(response.data.code);
       }
     }
@@ -124,8 +116,10 @@ const InviteButton = ({ group }) => {
                     <AlertTitle>Important!</AlertTitle>
                   </Stack>
                   <AlertDescription>
-                    Sending this unique link will automatically add the user
-                    into the group.
+                    This link is unique and allows the recipient to be added
+                    into the group automatically. You can use it to invite your
+                    friends to join your team without going through the request
+                    and approval process.
                   </AlertDescription>
                 </Stack>
               </Alert>

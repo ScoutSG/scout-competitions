@@ -7,18 +7,19 @@ import {
   Container,
   CircularProgress,
 } from "@chakra-ui/react";
-import { TbLock } from "react-icons/tb";
-import { useSession } from "next-auth/react";
-import clientApi from "../core/api/client";
-import Link from "next/link";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+import { TbLock } from "react-icons/tb";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import clientApi from "../core/api/client";
 import { Group } from "../core/types/Group";
 import Loading from "../components/Loading";
 import { maxWidth } from "../core/utils/maxWidth";
 import PageContainer from "../components/PageContainer";
 
 const ApplicationsPreview = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [applications, setApplications] = useState<
     | {
         group: Group;
@@ -34,11 +35,20 @@ const ApplicationsPreview = () => {
       }[]
     | null
   >(null);
+  const router = useRouter();
 
   useEffect(() => {
     async function getApplications() {
-      const response = await clientApi.get("/applications");
-      setApplications(response.data);
+      try {
+        const response = await clientApi.get("/applications");
+        setApplications(response.data);
+      } catch (err) {
+        if (err.code === "ERR_BAD_REQUEST") {
+          router.push("/");
+        } else {
+          throw err;
+        }
+      }
     }
 
     getApplications();

@@ -14,9 +14,6 @@ import { Group } from "../../../core/types/Group";
 import { Profile } from "../../../core/types/Profile";
 import { CreateOrEditGroupFormValue } from "./types";
 
-const isTelegramUsernameMissing = (profile: Partial<Profile>) =>
-  profile.telegramUrl === "" || profile.telegramUrl === null;
-
 type TelegramSubFormProps = Pick<
   UseFormReturn<CreateOrEditGroupFormValue>,
   "register"
@@ -45,7 +42,7 @@ export default function TelegramSubForm({
   );
 
   // if leader has no Telegram username, cannot check
-  if (isTelegramUsernameMissing(profile)) {
+  if (!profile.telegramUrl) {
     return (
       <FormControl>
         {formLabel}
