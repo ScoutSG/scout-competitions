@@ -44,7 +44,7 @@ export default function TagsSubForm({ control }: TagsSubFormProps) {
         options={SKILLS_OPTIONS}
         onChange={onChange}
         onBlur={onBlur}
-        value={value as OptionType}
+        value={value as unknown as OptionType}
       />
       <FormHelperText>
         You can use this to indicate other miscellaneous characteristics about
