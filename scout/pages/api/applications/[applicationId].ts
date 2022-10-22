@@ -42,7 +42,7 @@ export default async function handle(req, res) {
     } else if (httpMethod === "PATCH") {
       // approving / rejecting applications
       const { isApproved, answers } = req.body;
-      validateIfApplicationIsReviewed(applicationId).catch(err => {
+      validateIfApplicationIsReviewed(applicationId).catch((err) => {
         res.statusMessage = err;
         res.status(400);
         res.end();
@@ -87,29 +87,29 @@ export default async function handle(req, res) {
           },
         });
 
-        if (
-          approvedMember.telegramUrl === "" ||
-          approvedMember.telegramUrl === null
-        ) {
-          warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
-        } else {
-          try {
-            await addToGroup(
-              currentGroup.telegramLink,
-              approvedMember.telegramUrl
-            );
-            notifyGroup(
-              currentGroup.telegramLink,
-              `Welcome to the group, ${approvedMember.name}!`
-            );
-          } catch (err) {
-            if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
-              warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${approvedMember.telegramUrl} to this group yourself.`;
-            } else if (
-              err.message ===
-              `No user has "${approvedMember.telegramUrl}" as username`
-            ) {
-              warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
+        // add to Telegram group if there is one
+        if (currentGroup.telegramLink) {
+          if (!approvedMember.telegramUrl) {
+            warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
+          } else {
+            try {
+              await addToGroup(
+                currentGroup.telegramLink,
+                approvedMember.telegramUrl
+              );
+              notifyGroup(
+                currentGroup.telegramLink,
+                `Welcome to the group, ${approvedMember.name}!`
+              );
+            } catch (err) {
+              if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
+                warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${approvedMember.telegramUrl} to this group yourself.`;
+              } else if (
+                err.message ===
+                `No user has "${approvedMember.telegramUrl}" as username`
+              ) {
+                warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
+              }
             }
           }
         }
