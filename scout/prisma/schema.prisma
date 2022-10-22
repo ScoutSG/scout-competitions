@@ -109,7 +109,7 @@ model Application {
   group      Group    @relation(fields: [groupId], references: [id])
   applicant  User     @relation(fields: [userId], references: [id], onDelete: SetNull)
   answers    Answer[]
-}
+} 
 
 model Group {
   id            Int           @id @default(autoincrement())
@@ -120,7 +120,7 @@ model Group {
   telegramLink  String?
   targetSkills  String[]
   competitionId Int
-  goal          String
+  goal          String        @default("")
   tags          String[]
   competition   Competition   @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   applications  Application[]
