@@ -53,11 +53,13 @@ const ModifyGroupButtons = () => {
       .then(() => {
         router.push(`/competitions/${competitionId}`);
       })
-      .catch(() => {
+      .catch((err) => {
         presentToast({
           position: "top",
           title: "Error occured!",
-          description: "Unable to delete group, please try again later!",
+          description: err.response && err.response.statusText
+            ? err.response.statusText
+            : "Unable to delete group, please try again later!",
           status: "error",
         });
       });

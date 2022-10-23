@@ -37,32 +37,6 @@ export default async function handle(req, res) {
         },
       });
 
-      // remove deleted group from competition
-      const competition = await prisma.competition.findUnique({
-        where: {
-          id: group.competitionId,
-        },
-        include: {
-          groups: true,
-        },
-      });
-
-      const updatedGroups = competition.groups.filter(
-        (group) => group.id !== groupId
-      );
-
-      await prisma.competition.update({
-        where: {
-          id: group.competitionId,
-        },
-        data: {
-          ...competition,
-          groups: {
-            connect: updatedGroups.map((group) => ({ id: group.id })),
-          },
-        },
-      });
-
       res.status(200).json(group);
 
       // updates member array of group

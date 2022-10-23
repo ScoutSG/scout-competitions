@@ -106,7 +106,7 @@ model Application {
   userId     Int
   groupId    Int
   form       Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  group      Group    @relation(fields: [groupId], references: [id])
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   applicant  User     @relation(fields: [userId], references: [id], onDelete: SetNull)
   answers    Answer[]
 }
@@ -151,6 +151,6 @@ model Invitation {
   id      String @id @default(uuid())
   groupId Int
   userId  Int?
-  group   Group  @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  user    User?  @relation(fields: [userId], references: [id])
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

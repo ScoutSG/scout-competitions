@@ -101,7 +101,10 @@ const ApplicationReview: React.FC<{
       .catch((err) => {
         presentToast({
           title: "Rejection failed!",
-          description: "Please try again later",
+          description:
+            err.response && err.response.statusText
+              ? err.response.statusText
+              : "Please try again later",
           status: "error",
           position: "top",
         });
