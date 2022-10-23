@@ -49,7 +49,7 @@ const GroupSummaryTab = ({
             <Button
               leftIcon={<PlusSquareIcon />}
               colorScheme="cyan"
-              variant="ghost"
+              variant="outline"
               visibility={isMember ? "hidden" : "visible"}
               onClick={async () => {
                 await eventAnalyticsTracker(
