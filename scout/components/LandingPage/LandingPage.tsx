@@ -16,10 +16,6 @@ import TwoStat from "./TwoStat";
 const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
 
 const LandingPage: React.FC = () => {
-  const betaFeedbackLink = () => {
-    window.open(BETA_FEEDBACK_LINK, "_blank");
-  };
-
   return (
     <>
       <Stack pb={16}>
@@ -89,9 +85,8 @@ const LandingPage: React.FC = () => {
         <Center py={16}>
           <Stack>
             <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center">
-              Finding and Forming is simple
-            </Heading>
-            <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center">
+              Forming teams is simple
+              <br />
               with Scout
             </Heading>
           </Stack>
@@ -107,7 +102,9 @@ const LandingPage: React.FC = () => {
         </Center>
 
         <Button
-          onClick={betaFeedbackLink}
+          as="a"
+          href={BETA_FEEDBACK_LINK}
+          target="_blank"
           variant="link"
           fontSize={{ base: "xl", md: "2xl" }}
           colorScheme="green"
