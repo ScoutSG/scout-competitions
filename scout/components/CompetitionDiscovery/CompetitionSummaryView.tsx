@@ -32,7 +32,8 @@ const CompetitionSummaryView: React.FC<{
               fontSize="lg"
               textColor={useColorModeValue("gray.500", "gray.300")}
             >
-              Showing {competitions.length} competitions
+              Showing {competitions.length} competition
+              {competitions.length === 1 ? "" : "s"}
               <Spacer />
               Know of a competition that isn't listed here?{" "}
               <Link

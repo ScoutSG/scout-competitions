@@ -42,7 +42,7 @@ const GroupSummaryTab = ({
             textAlign="center"
             textColor={useColorModeValue("gray.500", "gray.300")}
           >
-            Showing {groups.length} groups
+            Showing {groups.length} group{groups.length === 1 ? "" : "s"}
           </Text>
           <Spacer />
           <Link href={`/competitions/${competition.id}/groups`}>

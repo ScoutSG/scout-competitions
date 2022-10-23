@@ -24,8 +24,17 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
+  const userId = parseInt(req.query.userId);
   const groups = await prisma.group.findMany({
+    where: {
+      members: {
+        some: {
+          id: userId,
+        },
+      },
+    },
     include: {
+      leader: true,
       members: true,
       form: true,
       applications: true,
