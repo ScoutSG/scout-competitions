@@ -9,11 +9,10 @@ import {
   Button,
 } from "@chakra-ui/react";
 import TypeWriter from "typewriter-effect";
+import { BETA_FEEDBACK_LINK } from "../../core/constants";
 import SkeletonCompetition from "./SkeletonCompetition";
 import SkeletonGroup from "./SkeletonGroup";
 import TwoStat from "./TwoStat";
-
-const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
 
 const LandingPage: React.FC = () => {
   return (

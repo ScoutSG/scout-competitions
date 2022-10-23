@@ -5,13 +5,16 @@ import {
   useColorModeValue,
   Button,
   Spacer,
+  Link,
 } from "@chakra-ui/react";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "./CompetitionSummaryCard";
 import NoCompetitions from "./NoCompetitions";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
-
-const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
+import {
+  BETA_FEEDBACK_LINK,
+  SUGGEST_COMPETITION_LINK,
+} from "../../core/constants";
 
 const CompetitionSummaryView: React.FC<{
   competitions: CompetitionDataSummary[];
@@ -29,17 +32,17 @@ const CompetitionSummaryView: React.FC<{
               fontSize="lg"
               textColor={useColorModeValue("gray.500", "gray.300")}
             >
-              Showing {competitions.length} competitions. Can't find a
-              competition or want to organise one?
+              Showing {competitions.length} competitions
               <Spacer />
-              <Button
-                variant="link"
-                as="a"
-                href={BETA_FEEDBACK_LINK}
+              Know of a competition that isn't listed here?{" "}
+              <Link
+                href={SUGGEST_COMPETITION_LINK}
                 target="_blank"
+                color="teal"
+                fontWeight="semibold"
               >
-                Contact us!
-              </Button>
+                Let us know!
+              </Link>
             </Text>
 
             {competitions.map((competition) => (
