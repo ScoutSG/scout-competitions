@@ -62,7 +62,7 @@ const MemberCard = ({ member, isSmall = false }) => {
       )}
       <Stack spacing={2} w="full">
         <Text fontWeight="bold" fontSize="xl">
-          {member.name}
+          {member.name ? member.name : "Anonymous"}
         </Text>
         <Stack direction={{ base: "column", md: "row" }} spacing={1}>
           {member.major ? (
@@ -78,7 +78,6 @@ const MemberCard = ({ member, isSmall = false }) => {
         </Stack>
 
         <Stack spacing={1}>
-          <Text fontWeight="semibold">Contact</Text>
           <Wrap spacing={0.5}>
             {Object.entries(member).map((attribute) => {
               if (attribute[0] in mapFieldToIcon && attribute[1]) {

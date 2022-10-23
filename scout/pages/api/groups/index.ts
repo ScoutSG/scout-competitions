@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { getSession } from "next-auth/react";
-import {
-  createGroup,
-  notifyGroup,
-  sendWelcomeMessage,
-} from "../../../core/utils/telegram";
+import { createGroup, sendWelcomeMessage } from "../../../core/utils/telegram";
 import { validateUserIsNotInCompetition } from "../../../lib/services/GroupValidation";
 
 // GET POST /api/groups

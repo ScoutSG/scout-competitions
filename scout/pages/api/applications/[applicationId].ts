@@ -99,7 +99,9 @@ export default async function handle(req, res) {
               );
               notifyGroup(
                 currentGroup.telegramLink,
-                `Welcome to the group, ${approvedMember.name}!`
+                `Welcome to the group, ${
+                  approvedMember.name ? approvedMember.name : "Anonymous"
+                }!`
               );
             } catch (err) {
               if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
@@ -117,7 +119,9 @@ export default async function handle(req, res) {
         if (warningMessage !== "") {
           notifyGroup(
             currentGroup.telegramLink,
-            `You've approved a new member ${approvedMember.name} to join your team. ${warningMessage}`
+            `You've approved a new member ${
+              approvedMember.name ? approvedMember.name : "Anonymous"
+            } to join your team. ${warningMessage}`
           );
         }
 

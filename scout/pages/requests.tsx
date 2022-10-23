@@ -61,7 +61,7 @@ const ApplicationsPreview = () => {
       <Container maxW={maxWidth}>
         <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
           <Stack direction="row" alignItems="center">
-            <Text fontWeight="semibold">Your Applications</Text>
+            <Text fontWeight="semibold">My Requests</Text>
             <TbLock />
           </Stack>
 
