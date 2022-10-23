@@ -51,15 +51,23 @@ const ModifyGroupButtons = () => {
     clientApi
       .delete(`/groups/${groupId}`)
       .then(() => {
+        presentToast({
+          position: "top",
+          title: "Success",
+          description:
+            "Group has been successfully deleted.\n We will be redirecting you to the competitions page.",
+          status: "success",
+        });
         router.push(`/competitions/${competitionId}`);
       })
       .catch((err) => {
         presentToast({
           position: "top",
           title: "Error occured!",
-          description: err.response && err.response.statusText
-            ? err.response.statusText
-            : "Unable to delete group, please try again later!",
+          description:
+            err.response && err.response.statusText
+              ? err.response.statusText
+              : "Unable to delete group, please try again later!",
           status: "error",
         });
       });

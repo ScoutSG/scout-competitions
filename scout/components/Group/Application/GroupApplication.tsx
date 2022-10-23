@@ -93,7 +93,9 @@ const Application = ({ form }: { form: Form }) => {
   return (
     <Stack spacing={5} w={"100%"}>
       <Heading as="h2" size="lg">
-        Tell the team a bit about yourself!
+        {form.questions.length === 0
+          ? null
+          : "Tell the team a bit about yourself!"}
       </Heading>
       <List spacing={5}>
         {application.map((question) => {
@@ -123,7 +125,7 @@ const Application = ({ form }: { form: Form }) => {
         rightIcon={<TbSend />}
         onClick={submitApplication}
       >
-        Submit
+        {form.questions.length === 0 ? "Confirm Request" : "Submit"}
       </Button>
     </Stack>
   );
