@@ -26,10 +26,6 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
   const { id, deadline, organiserName, description, link, maxSize, minSize } =
     props.data;
 
-  const onSeeMore = () => {
-    window.open(link, "_blank");
-  };
-
   return (
     <Box>
       <Stack spacing={4}>
@@ -67,7 +63,9 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
           <Button
             rightIcon={<ChevronRightIcon />}
             width="100%"
-            onClick={onSeeMore}
+            as="a"
+            href={link}
+            target="_blank"
           >
             Visit site
           </Button>

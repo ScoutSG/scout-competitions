@@ -108,10 +108,6 @@ const ApplicationReview: React.FC<{
       });
   };
 
-  const openTelegram = (telegramUsername) => {
-    window.open(`https://www.t.me/${telegramUsername}`, "_blank");
-  };
-
   return (
     <Stack spacing={4} w={"100%"}>
       <Heading size="md" fontWeight="black">
@@ -140,7 +136,9 @@ const ApplicationReview: React.FC<{
                       >
                         <Text>{applicant.name}</Text>
                         <Badge>
-                          {!applicant.yearOfStudy ? "" : "Year " + applicant.yearOfStudy}
+                          {!applicant.yearOfStudy
+                            ? ""
+                            : "Year " + applicant.yearOfStudy}
                         </Badge>
                         <Badge>{!applicant.major ? "" : applicant.major}</Badge>
                         <Badge>
@@ -179,14 +177,13 @@ const ApplicationReview: React.FC<{
                       <ListItem>
                         <Button
                           as="a"
-                          onClick={() => openTelegram(applicant.telegramUrl)}
+                          href={`https://www.t.me/${applicant.telegramUrl}`}
                           target="_blank"
-                          variant="ghost"
                           leftIcon={<TbBrandTelegram />}
-                          rounded="xl"
-                          colorScheme="blue"
+                          variant="outline"
+                          colorScheme="telegram"
                         >
-                          Direct Message
+                          Telegram
                         </Button>
                       </ListItem>
                     )}
@@ -196,8 +193,9 @@ const ApplicationReview: React.FC<{
                           as="a"
                           href={applicant.linkedinUrl}
                           target="_blank"
-                          variant="link"
                           leftIcon={<TbBrandLinkedin />}
+                          variant="outline"
+                          colorScheme="linkedin"
                         >
                           {applicant.linkedinUrl}
                         </Button>
@@ -209,8 +207,8 @@ const ApplicationReview: React.FC<{
                           as="a"
                           href={applicant.gitHubUrl}
                           target="_blank"
-                          variant="link"
                           leftIcon={<TbBrandGithub />}
+                          variant="outline"
                         >
                           {applicant.gitHubUrl}
                         </Button>
