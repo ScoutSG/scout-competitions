@@ -10,7 +10,7 @@ const SignInButton = () => {
         variant="outline"
         size="md"
       >
-        Find your team
+        Sign In
       </Button>
     </Link>
   );

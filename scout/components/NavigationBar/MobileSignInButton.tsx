@@ -14,13 +14,8 @@ const MobileSignInButton = () => {
         pb="40px"
         bgColor={bgColor}
       >
-        <Button
-          width={"100%"}
-          colorScheme="teal"
-          variant="outline"
-          size="md"
-        >
-          Find your team
+        <Button width={"100%"} colorScheme="teal" variant="outline" size="md">
+          Sign In
         </Button>
       </Flex>
     </Link>

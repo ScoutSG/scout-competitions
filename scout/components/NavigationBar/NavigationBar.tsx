@@ -82,7 +82,7 @@ const NavigationBar: React.FC = () => {
       >
         <Box as={Collapse} in={isOpen} width={"100%"}>
           <MobileNav />
-          <MobileSignInButton />
+          {status === "authenticated" ? null : <MobileSignInButton />}
         </Box>
       </Flex>
     </>
