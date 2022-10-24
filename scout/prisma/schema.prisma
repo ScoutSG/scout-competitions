@@ -106,8 +106,8 @@ model Application {
   userId     Int
   groupId    Int
   form       Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  applicant  User     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  applicant  User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   answers    Answer[]
 }
 
