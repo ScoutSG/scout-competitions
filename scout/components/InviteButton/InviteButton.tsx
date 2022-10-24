@@ -21,7 +21,6 @@ import {
 import clientApi from "../../core/api/client";
 import { AxiosResponse } from "axios";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
-import Loading from "../Loading";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const useInvite = () => {
@@ -135,19 +134,14 @@ const InviteButton = ({ group }) => {
               )}
             </ModalBody>
             <ModalFooter>
-              {isLoading ? (
-                <Box>
-                  <Loading />
-                </Box>
-              ) : (
-                <Button
-                  onClick={generateLink}
-                  variant="ghost"
-                  colorScheme="blue"
-                >
-                  {hasCopied ? "Copied" : "Generate Link"}
-                </Button>
-              )}
+              <Button
+                onClick={generateLink}
+                variant="ghost"
+                colorScheme="blue"
+                isLoading={isLoading}
+              >
+                {hasCopied ? "Copied" : "Generate Link"}
+              </Button>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>
