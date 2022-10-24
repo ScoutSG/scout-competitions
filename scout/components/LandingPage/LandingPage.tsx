@@ -28,7 +28,7 @@ const LandingPage: React.FC = () => {
             <Heading size={{ base: "3xl", md: "4xl" }}>Success starts</Heading>
             <Heading size={{ base: "3xl", md: "4xl" }}>with a</Heading>
             <Heading
-              size={{ base: "3xl", sm: "4xl" }}
+              size={{ base: "3xl", md: "4xl" }}
               bgGradient="linear(to-r, #8B008B, #FF6347)"
               bgClip="text"
             >
