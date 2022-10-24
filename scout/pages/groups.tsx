@@ -18,14 +18,31 @@ import PageContainer from "../components/PageContainer";
 import { maxWidth } from "../core/utils/maxWidth";
 import Loading from "../components/Loading";
 import { Group } from "../core/types/Group";
+import { useCustomToast } from "../lib/hooks//useCustomToast";
+import { useRouter } from "next/router";
 
 export default function MyGroups() {
   const { data, status } = useSession();
   const [groups, setGroups] = useState(null);
+  const { presentToast } = useCustomToast();
+  const router = useRouter();
   useEffect(() => {
-    clientApi.get(`/groups?userId=${data.user.id}`).then((response) => {
-      setGroups(response.data);
-    });
+    const getGroups = async () => {
+      try {
+        const response = await clientApi.get(`/groups?userId=${data.user.id}`);
+        setGroups(response.data);
+      } catch (err) {
+        presentToast({
+          title: "Unable to access your groups!",
+          description: "Please log in!",
+          position: "top",
+          status: "warning",
+        });
+        router.push("/");
+      }
+    };
+
+    getGroups();
   }, []);
 
   if (groups === null) {
