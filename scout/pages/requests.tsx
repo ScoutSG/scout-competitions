@@ -16,6 +16,7 @@ import Link from "next/link";
 import Head from "next/head";
 import clientApi from "../core/api/client";
 import { Group } from "../core/types/Group";
+import { useCustomToast } from "../lib/hooks/useCustomToast";
 import Loading from "../components/Loading";
 import { maxWidth } from "../core/utils/maxWidth";
 import PageContainer from "../components/PageContainer";
@@ -38,6 +39,7 @@ const ApplicationsPreview = () => {
     | null
   >(null);
   const router = useRouter();
+  const { presentToast } = useCustomToast();
 
   useEffect(() => {
     async function getApplications() {
@@ -46,6 +48,12 @@ const ApplicationsPreview = () => {
         setApplications(response.data);
       } catch (err) {
         if (err.code === "ERR_BAD_REQUEST") {
+          presentToast({
+            title: "Unable to access request details",
+            description: "Please log in!",
+            status: "warning",
+            position: "top",
+          });
           router.push("/");
         } else {
           throw err;
