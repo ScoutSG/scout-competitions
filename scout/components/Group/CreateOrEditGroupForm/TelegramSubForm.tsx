@@ -30,7 +30,10 @@ export default function TelegramSubForm({
 }: TelegramSubFormProps) {
   const [profile, setProfile] = useState<Partial<Profile>>({});
   useEffect(() => {
-    clientApi.get("/profile").then((response) => setProfile(response.data));
+    clientApi
+      .get("/profile")
+      .then((response) => setProfile(response.data))
+      .catch((err) => {});
   }, []);
 
   const formLabel = (

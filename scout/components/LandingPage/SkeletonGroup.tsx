@@ -39,7 +39,7 @@ const SkeletonGroup: React.FC = () => {
             Champion Team 🏆
           </Text>
           <Spacer />
-          <Button>Request to Join</Button>
+          <Button cursor="initial">Request to Join</Button>
         </Wrap>
         <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Description</Text>

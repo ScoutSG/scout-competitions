@@ -6,12 +6,14 @@ import {
   Button,
   Container,
   CircularProgress,
+  Heading,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { TbLock } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Head from "next/head";
 import clientApi from "../core/api/client";
 import { Group } from "../core/types/Group";
 import Loading from "../components/Loading";
@@ -54,47 +56,51 @@ const ApplicationsPreview = () => {
     getApplications();
   }, [status]);
 
-  return applications === null ? (
-    <Loading />
-  ) : status !== "authenticated" ? (
+  if (applications === null) {
+    return <Loading />;
+  }
+
+  return (
     <PageContainer>
+      <Head>
+        <title>My Requests</title>
+      </Head>
       <Container maxW={maxWidth}>
         <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
           <Stack direction="row" alignItems="center">
-            <Text fontWeight="semibold">Your Applications</Text>
-            <TbLock />
+            <Heading as="h1" size="md">
+              My Requests
+            </Heading>
+            {status === "unauthenticated" ? <TbLock /> : null}
           </Stack>
 
-          <Text fontSize={{ base: "sm" }} textAlign={"left"}>
-            We cannot show you your applications until you've signed in!
-          </Text>
-          <Link href="/auth/signin">
-            <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
-              Sign in to view your applications
-            </Button>
-          </Link>
-        </Stack>
-      </Container>
-    </PageContainer>
-  ) : (
-    <PageContainer>
-      <Container maxW={maxWidth}>
-        <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
-          <Stack direction="row" alignItems="center">
-            <Text fontWeight="semibold">Your Applications</Text>
-          </Stack>
-          {applications === null ? (
-            <CircularProgress isIndeterminate color="primary.500" />
+          {status !== "authenticated" ? (
+            <>
+              <Text fontSize={{ base: "sm" }} textAlign={"left"}>
+                We cannot show you your requests until you've signed in!
+              </Text>
+              <Link href="/auth/signin">
+                <Button colorScheme="purple" rightIcon={<ChevronRightIcon />}>
+                  Sign in to view your requests
+                </Button>
+              </Link>
+            </>
           ) : (
-            <Text fontSize={{ base: "sm" }} textAlign={"left"}>
-              {applications.length === 0
-                ? "You currently have no applications."
-                : "Check the status of your applications below."}
-            </Text>
-          )}
+            <>
+              {applications === null ? (
+                <CircularProgress isIndeterminate color="primary.500" />
+              ) : (
+                <Text>
+                  {applications.length === 0
+                    ? "You currently have no requests."
+                    : "Check the status of your requests below."}
+                </Text>
+              )}
 
-          {applications === null || applications.length === 0 ? null : (
-            <ApplicationPreviewUnit applications={applications} />
+              {applications === null || applications.length === 0 ? null : (
+                <ApplicationPreviewUnit applications={applications} />
+              )}
+            </>
           )}
         </Stack>
       </Container>

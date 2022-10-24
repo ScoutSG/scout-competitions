@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { getSession } from "next-auth/react";
-import {
-  createGroup,
-  notifyGroup,
-  sendWelcomeMessage,
-} from "../../../core/utils/telegram";
+import { createGroup, sendWelcomeMessage } from "../../../core/utils/telegram";
 import { validateUserIsNotInCompetition } from "../../../lib/services/GroupValidation";
 
 // GET POST /api/groups
@@ -29,8 +24,17 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
+  const userId = parseInt(req.query.userId);
   const groups = await prisma.group.findMany({
+    where: {
+      members: {
+        some: {
+          id: userId,
+        },
+      },
+    },
     include: {
+      leader: true,
       members: true,
       form: true,
       applications: true,

@@ -29,16 +29,16 @@ import InviteButton from "../../../../../components/InviteButton";
 import clientApi from "../../../../../core/api/client";
 import { useRouter } from "next/router";
 import { TbPencil, TbTrash } from "react-icons/tb";
-import { Group, QuestionsData } from "../../../../../core/types/Group";
+import { Form, Group } from "../../../../../core/types/Group";
 import {
   useIsMember,
   useIsLeader,
 } from "../../../../../lib/hooks/useUserDetails";
 import { maxWidth } from "../../../../../core/utils/maxWidth";
 import PageContainer from "../../../../../components/PageContainer";
-import { useSession } from "next-auth/react";
 import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
+import NotFound from "../../../../_error";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -48,16 +48,29 @@ const ModifyGroupButtons = () => {
 
   const handleDelete = async () => {
     await eventAnalyticsTracker("Delete group " + groupId);
-    clientApi.delete(`/groups/${groupId}`).catch((err) => {
-      presentToast({
-        position: "top",
-        title: "Error occured!",
-        description: "Unable to delete group, please try again later!",
-        status: "error",
+    clientApi
+      .delete(`/groups/${groupId}`)
+      .then(() => {
+        presentToast({
+          position: "top",
+          title: "Success",
+          description:
+            "Group has been successfully deleted.\n We will be redirecting you to the competitions page.",
+          status: "success",
+        });
+        router.push(`/competitions/${competitionId}`);
+      })
+      .catch((err) => {
+        presentToast({
+          position: "top",
+          title: "Error occured!",
+          description:
+            err.response && err.response.statusText
+              ? err.response.statusText
+              : "Unable to delete group, please try again later!",
+          status: "error",
+        });
       });
-    });
-
-    router.push(`/competitions/${competitionId}`);
   };
 
   return (
@@ -109,27 +122,29 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const groupId = context.params.groupId;
-  const response = await clientApi.get(`/groups/${groupId}`);
-  const group = response.data;
+  let group = null;
+  let form = null;
 
-  const res = await clientApi.get(`/forms/${group.form.id}`);
-  const questionsData = res.data;
+  try {
+    const response = await clientApi.get(`/groups/${groupId}`);
+    group = response?.data;
 
-  return { props: { group, questionsData }, revalidate: 60 };
+    if (group) {
+      const formResponse = await clientApi.get(`/forms/${group.form.id}`);
+      form = formResponse.data;
+    }
+  } catch (err) {}
+
+  return { props: { group, form }, revalidate: 60 };
 }
 
-const GroupDetail: React.FC = ({
-  group,
-  questionsData,
-}: {
-  group: Group;
-  questionsData: QuestionsData;
-  app: any;
-}) => {
-  console.log(group);
-  const isLeader = useIsLeader(group.leaderId);
-  const isMember = useIsMember(group.members);
-  const session = useSession();
+const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
+  const isLeader = useIsLeader(group?.leaderId);
+  const isMember = useIsMember(group?.members);
+
+  if (!group) {
+    return <NotFound />;
+  }
 
   return (
     <PageContainer>
@@ -164,7 +179,7 @@ const GroupDetail: React.FC = ({
             {isMember || isLeader ? (
               <ApplicationReview applications={group.applications} />
             ) : (
-              <Application questionsData={questionsData} />
+              <Application form={form} />
             )}
             {isMember || isLeader ? (
               <Stack spacing={4}>

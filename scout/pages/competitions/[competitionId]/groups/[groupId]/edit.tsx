@@ -7,19 +7,28 @@ import clientApi from "../../../../../core/api/client";
 import CreateOrEditGroupForm from "../../../../../components/Group/CreateOrEditGroupForm";
 import { Form, Group } from "../../../../../core/types/Group";
 import PageContainer from "../../../../../components/PageContainer";
+import NotFound from "../../../../_error";
 
 export async function getServerSideProps(context) {
   const { competitionId, groupId } = context.params;
-  const [competitionResponse, groupResponse] = await Promise.all([
-    clientApi.get(`/competitions/${competitionId}`),
-    clientApi.get(`/groups/${groupId}`),
-  ]);
+  let competition = null;
+  let group = null;
+  let form = null;
 
-  const competition = competitionResponse.data;
-  const group = groupResponse.data;
+  try {
+    const [competitionResponse, groupResponse] = await Promise.all([
+      clientApi.get(`/competitions/${competitionId}`),
+      clientApi.get(`/groups/${groupId}`),
+    ]);
 
-  const formResponse = await clientApi.get(`/forms/${group.form.id}`);
-  const form = formResponse.data;
+    competition = competitionResponse.data;
+    group = groupResponse.data;
+
+    if (group) {
+      const formResponse = await clientApi.get(`/forms/${group.form.id}`);
+      form = formResponse.data;
+    }
+  } catch (err) {}
 
   return { props: { competition, group, form } };
 }
@@ -31,6 +40,9 @@ type EditGroupProps = {
 };
 
 const EditGroup = ({ competition, group, form }: EditGroupProps) => {
+  if (!group) {
+    return <NotFound />;
+  }
   return (
     <PageContainer>
       <Head>

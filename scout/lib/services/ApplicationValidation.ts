@@ -1,22 +1,26 @@
 import prisma from "../prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export const validateIfApplicationIsReviewed = async (applicationId: number) => {
+export const validateIfApplicationIsReviewed = async (
+  applicationId: number
+) => {
   let application = await prisma.application.findUnique({
     where: {
-      id: applicationId
-    }
-  })
+      id: applicationId,
+    },
+  });
 
   if (application.isApproved === null || application.isApproved === undefined) {
     // no decision made on application
     return;
   }
-
   throw "Application has already been reviewed";
-}
+};
 
-export const validateIfAlreadyRequested = async (groupId: number, userId: number) => {
+export const validateIfAlreadyRequested = async (
+  groupId: number,
+  userId: number
+) => {
   let existingApplication = await prisma.application.findFirst({
     where: {
       group: {
@@ -31,4 +35,4 @@ export const validateIfAlreadyRequested = async (groupId: number, userId: number
   if (existingApplication) {
     throw "User has already requested to join group.";
   }
-}
+};

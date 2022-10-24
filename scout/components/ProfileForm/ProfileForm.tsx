@@ -142,7 +142,7 @@ const ProfileForm = () => {
         />
       </FormControl>
       <FormControl id="specialization">
-        <FormLabel>Speicalization</FormLabel>
+        <FormLabel>Specialisation</FormLabel>
         <Input placeholder="e.g. Finance" {...register("specialisation")} />
       </FormControl>
       <FormControl id="linkedin">

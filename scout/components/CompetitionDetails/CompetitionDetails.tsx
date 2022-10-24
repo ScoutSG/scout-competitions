@@ -17,6 +17,7 @@ import PageContainer from "../PageContainer";
 import CompetitionDetailsTab from "./CompetitionDetailsTab";
 import GroupSummaryTab from "./GroupSummaryTab";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import NotFound from "../NotFound";
 
 // const describeGroupSizeRestriction = (min: number, max: number) => {
 //   if (min === null && max === null) {
@@ -45,8 +46,12 @@ const CompetitionDetails: React.FC = ({
   // );
 
   const eventAnalyticsTracker = useAnalyticsTracker(
-    "Competition Details " + competition.name
+    "Competition Details " + competition?.name
   );
+
+  if (!competition) {
+    return <NotFound />;
+  }
 
   return (
     <PageContainer>

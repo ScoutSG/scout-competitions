@@ -14,6 +14,24 @@ const TwoStat: React.FC = () => {
     <Flex flexWrap="wrap" gap={16}>
       <Stack flex={1} p={8} bgColor={bgColor} rounded="xl" boxShadow="xl">
         <Heading
+          size={{ base: "2xl", md: "3xl" }}
+          width="fit-content"
+          bgGradient="linear(to-l, #4285f4, #34a853, #fbbc05, #ea4335)"
+          bgClip="text"
+        >
+          Google-Backed
+        </Heading>
+        <Heading size={{ base: "2xl", md: "3xl" }}>Questions</Heading>
+        <Stack pt={4}>
+          <Text fontSize={{ base: "xl", md: "2xl" }}>
+            📎 Get to know your prospective team members by asking them
+            questions. Our templates are adapted from Google's research on what
+            drives effective teams.
+          </Text>
+        </Stack>
+      </Stack>
+      <Stack flex={1} p={8} bgColor={bgColor} rounded="xl" boxShadow="xl">
+        <Heading
           size={{ base: "2xl", sm: "3xl" }}
           bgGradient="linear(to-l, #4e65ff, #92effd)"
           bgClip="text"
@@ -27,31 +45,14 @@ const TwoStat: React.FC = () => {
           <TypeWriter
             options={{
               strings: [
-                "asking teammates for their contacts",
-                "manually adding them",
+                "asking teammates for their usernames",
+                "manually adding them to the group",
               ],
               autoStart: true,
               loop: true,
               delay: 20,
             }}
           />
-        </Stack>
-      </Stack>
-
-      <Stack flex={1} p={8} bgColor={bgColor} rounded="xl" boxShadow="xl">
-        <Heading
-          size={{ base: "2xl", md: "3xl" }}
-          bgGradient="linear(to-l, #4285f4, #34a853, #fbbc05, #ea4335)"
-          bgClip="text"
-        >
-          Google - Backed
-        </Heading>
-        <Heading size={{ base: "2xl", md: "3xl" }}>Questions</Heading>
-        <Stack pt={4}>
-          <Text fontSize={{ base: "xl", md: "2xl" }}>
-            📎 Our template questions are adapted from Google's research on what
-            drives effective teams.
-          </Text>
         </Stack>
       </Stack>
     </Flex>

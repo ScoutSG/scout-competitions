@@ -3,7 +3,7 @@ import { useState } from "react";
 import { TbSend } from "react-icons/tb";
 import { useSession } from "next-auth/react";
 
-import { QuestionsData, QuestionType } from "../../../core/types/Group";
+import { Form, QuestionType } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
 import { useRouter } from "next/router";
@@ -23,14 +23,14 @@ interface RequestBody {
   answers: Answer[];
 }
 
-const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
+const Application = ({ form }: { form: Form }) => {
   const router = useRouter();
   const session = useSession();
   const { presentToast } = useCustomToast();
   const { setDraftRequest } = useDraftRequest();
 
   const [application, setApplication] = useState(
-    questionsData.questions.map((question) => {
+    form.questions.map((question) => {
       if (question.questionType === QuestionType.Range) {
         return { ...question, answer: "3" };
       } else {
@@ -51,8 +51,8 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
 
   const submitApplication = async () => {
     const applicationInfo = {
-      formId: questionsData.id,
-      groupId: questionsData.groupId,
+      formId: form.id,
+      groupId: form.groupId,
       answers: application.map((app) => ({
         answerString: app.answer,
         questionId: app.id,
@@ -93,7 +93,9 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
   return (
     <Stack spacing={5} w={"100%"}>
       <Heading as="h2" size="lg">
-        Tell the team a bit about yourself!
+        {form.questions.length === 0
+          ? null
+          : "Tell the team a bit about yourself!"}
       </Heading>
       <List spacing={5}>
         {application.map((question) => {
@@ -123,7 +125,7 @@ const Application = ({ questionsData }: { questionsData: QuestionsData }) => {
         rightIcon={<TbSend />}
         onClick={submitApplication}
       >
-        Submit
+        {form.questions.length === 0 ? "Confirm Request" : "Submit"}
       </Button>
     </Stack>
   );
