@@ -53,18 +53,8 @@ export interface Question {
   questionType: QuestionType;
 }
 
-export interface QuestionsData {
-  groupId: number;
-  id: number; // formId
-  questions: Question[];
-}
-
 export interface Form {
   id: number;
   groupId: number;
-  questions: {
-    id: number;
-    questionString: string;
-    formId: number;
-  }[];
+  questions: Question[];
 }

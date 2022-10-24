@@ -5,15 +5,12 @@ import {
   Text,
   Button,
   Stack,
-  Wrap,
-  WrapItem,
   FormControl,
   FormLabel,
   Input,
   InputGroup,
   InputLeftElement,
   NumberInput,
-  CircularProgress,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInputField,
@@ -35,6 +32,7 @@ import { useForm } from "react-hook-form";
 import Loading from "../Loading";
 import { Profile } from "../../core/types/Profile";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import { useRouter } from "next/router";
 
 const ProfileForm = () => {
   const {
@@ -45,14 +43,29 @@ const ProfileForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<Profile>();
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
   const { presentToast } = useCustomToast();
   const eventAnalyticsTracker = useAnalyticsTracker("Profile Page");
 
   useEffect(() => {
     async function getProfileDetails() {
-      const response = await clientApi.get("/profile");
-      reset(response.data);
-      setIsLoading(false);
+      try {
+        const response = await clientApi.get("/profile");
+        reset(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        if (err.code === "ERR_BAD_REQUEST") {
+          presentToast({
+            title: "Unable to access profile details",
+            description: "Please log in!",
+            status: "warning",
+            position: "top",
+          });
+          router.push("/");
+        } else {
+          throw err;
+        }
+      }
     }
 
     getProfileDetails();
@@ -142,7 +155,7 @@ const ProfileForm = () => {
         />
       </FormControl>
       <FormControl id="specialization">
-        <FormLabel>Speicalization</FormLabel>
+        <FormLabel>Specialisation</FormLabel>
         <Input placeholder="e.g. Finance" {...register("specialisation")} />
       </FormControl>
       <FormControl id="linkedin">

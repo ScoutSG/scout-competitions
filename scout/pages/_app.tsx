@@ -41,7 +41,11 @@ function Auth({ children }) {
   const { status } = useSession();
 
   if (status === "loading") {
-    return <Loading />;
+    return (
+      <ChakraProvider theme={theme}>
+        <Loading />
+      </ChakraProvider>
+    );
   }
 
   return children;

@@ -15,8 +15,18 @@ type DraftGroup = {
   };
 } | null;
 
+type TelegramUrl = {
+  telegramUrl: string;
+};
+
 const draftGroupState = atom<DraftGroup>({
   key: "DRAFT_GROUP",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
+const telegramUrlState = atom<TelegramUrl>({
+  key: "TELEGRAM_URL",
   default: null,
   effects_UNSTABLE: [persistAtom],
 });
@@ -27,5 +37,15 @@ export const useDraftGroup = () => {
   return {
     draftGroup,
     setDraftGroup,
+  };
+};
+
+export const useDraftTelegram = () => {
+  const [telegramUrlDraft, setTelegramUrlDraft] =
+    useRecoilState(telegramUrlState);
+
+  return {
+    telegramUrlDraft,
+    setTelegramUrlDraft,
   };
 };

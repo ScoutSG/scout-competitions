@@ -20,38 +20,42 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const competitionId = parseInt(context.params.competitionId);
-  const competition = await prisma.competition.findUnique({
-    where: {
-      id: competitionId,
-    },
-    include: {
-      groups: {
-        include: {
-          leader: {
-            select: {
-              name: true,
-              image: true,
-              school: true,
-              yearOfStudy: true,
-              major: true,
-              skills: true,
+
+  let competition = null;
+  if (Number.isInteger(competitionId)) {
+    competition = await prisma.competition.findUnique({
+      where: {
+        id: competitionId,
+      },
+      include: {
+        groups: {
+          include: {
+            leader: {
+              select: {
+                name: true,
+                image: true,
+                school: true,
+                yearOfStudy: true,
+                major: true,
+                skills: true,
+              },
             },
-          },
-          members: {
-            select: {
-              name: true,
-              image: true,
-              school: true,
-              yearOfStudy: true,
-              major: true,
-              skills: true,
-              id: true,
+            members: {
+              select: {
+                name: true,
+                image: true,
+                school: true,
+                yearOfStudy: true,
+                major: true,
+                skills: true,
+                id: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    });
+  }
 
   return {
     props: { competition: JSON.parse(JSON.stringify(competition)) },

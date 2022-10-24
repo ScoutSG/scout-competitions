@@ -51,13 +51,10 @@ export default async function handle(req, res) {
         return;
       }
 
-      const application = await prisma.application.update({
+      const application = await prisma.application.findUnique({
         where: {
           id: applicationId,
-        },
-        data: {
-          isApproved,
-        },
+        }
       });
 
       if (answers) {
@@ -99,7 +96,9 @@ export default async function handle(req, res) {
               );
               notifyGroup(
                 currentGroup.telegramLink,
-                `Welcome to the group, ${approvedMember.name}!`
+                `Welcome to the group, ${
+                  approvedMember.name ? approvedMember.name : "Anonymous"
+                }!`
               );
             } catch (err) {
               if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
@@ -117,7 +116,9 @@ export default async function handle(req, res) {
         if (warningMessage !== "") {
           notifyGroup(
             currentGroup.telegramLink,
-            `You've approved a new member ${approvedMember.name} to join your team. ${warningMessage}`
+            `You've approved a new member ${
+              approvedMember.name ? approvedMember.name : "Anonymous"
+            } to join your team. ${warningMessage}`
           );
         }
 
@@ -137,6 +138,15 @@ export default async function handle(req, res) {
           },
         });
       }
+
+      await prisma.application.update({
+        where: {
+          id: applicationId,
+        },
+        data: {
+          isApproved,
+        },
+      });
 
       res.status(200).json({ application, warningMessage });
     } else {

@@ -26,6 +26,7 @@ import ThemeButton from "./ThemeButton";
 import MobileSignInButton from "./MobileSignInButton";
 import MobileButton from "./MobileButton";
 import AvatarMenu from "./AvatarMenu";
+import { BETA_FEEDBACK_LINK } from "../../core/constants";
 
 const NavigationBar: React.FC = () => {
   const scrollPosition = useScrollPosition();
@@ -81,7 +82,7 @@ const NavigationBar: React.FC = () => {
       >
         <Box as={Collapse} in={isOpen} width={"100%"}>
           <MobileNav />
-          <MobileSignInButton />
+          {status === "authenticated" ? null : <MobileSignInButton />}
         </Box>
       </Flex>
     </>
@@ -317,8 +318,6 @@ interface NavItem {
   isExternal?: boolean;
 }
 
-const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
-
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Discover",
@@ -331,7 +330,7 @@ export const NAV_ITEMS: Array<NavItem> = [
     ],
   },
   {
-    label: "Contact Us",
+    label: "Feedback",
     href: BETA_FEEDBACK_LINK,
     isExternal: true,
   },

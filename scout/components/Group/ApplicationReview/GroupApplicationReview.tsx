@@ -101,15 +101,14 @@ const ApplicationReview: React.FC<{
       .catch((err) => {
         presentToast({
           title: "Rejection failed!",
-          description: "Please try again later",
+          description:
+            err.response && err.response.statusText
+              ? err.response.statusText
+              : "Please try again later",
           status: "error",
           position: "top",
         });
       });
-  };
-
-  const openTelegram = (telegramUsername) => {
-    window.open(`https://www.t.me/${telegramUsername}`, "_blank");
   };
 
   return (
@@ -127,32 +126,32 @@ const ApplicationReview: React.FC<{
       <Accordion allowMultiple>
         {applicationsToDisplay.map(({ applicant, answers, id }, index) => (
           <AccordionItem key={index}>
-            {({ isExpanded }) => (
-              <>
-                <h2>
-                  <AccordionButton>
-                    <Flex flex="1" gap="1">
-                      <Stack
-                        direction={{ base: "column", sm: "row" }}
-                        spacing={2}
-                        align={{ base: "left", sm: "center" }}
-                        textAlign="left"
-                      >
-                        <Text>{applicant.name}</Text>
-                        <Badge>
-                          {!applicant.yearOfStudy ? "" : "Year " + applicant.yearOfStudy}
-                        </Badge>
-                        <Badge>{!applicant.major ? "" : applicant.major}</Badge>
-                        <Badge>
-                          {!applicant.specialisation
-                            ? ""
-                            : applicant.specialisation}
-                        </Badge>
-                      </Stack>
-                    </Flex>
-                    <Flex gap={2} alignItems="center">
-                      {/* TODO: FIX REACT HYDRATION ERROR */}
-                      {/* <IconButton
+            <h2>
+              <AccordionButton>
+                <Flex flex="1" gap="1">
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    spacing={2}
+                    align={{ base: "left", sm: "center" }}
+                    textAlign="left"
+                  >
+                    <Text>{applicant.name ? applicant.name : "Anonymous"}</Text>
+                    <Badge>
+                      {!applicant.yearOfStudy
+                        ? ""
+                        : "Year " + applicant.yearOfStudy}
+                    </Badge>
+                    <Badge>{!applicant.major ? "" : applicant.major}</Badge>
+                    <Badge>
+                      {!applicant.specialisation
+                        ? ""
+                        : applicant.specialisation}
+                    </Badge>
+                  </Stack>
+                </Flex>
+                <Flex gap={2} alignItems="center">
+                  {/* TODO: FIX REACT HYDRATION ERROR */}
+                  {/* <IconButton
                           aria-label="reject"
                           colorScheme="red"
                           size="sm"
@@ -168,102 +167,96 @@ const ApplicationReview: React.FC<{
                           visibility={isExpanded ? "hidden" : null}
                           onClick={(event) => event.stopPropagation()}
                         /> */}
-                      <Spacer />
-                      <AccordionIcon />
-                    </Flex>
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <List spacing={3}>
-                    {!applicant.telegramUrl ? null : (
-                      <ListItem>
-                        <Button
-                          as="a"
-                          onClick={() => openTelegram(applicant.telegramUrl)}
-                          target="_blank"
-                          variant="ghost"
-                          leftIcon={<TbBrandTelegram />}
-                          rounded="xl"
-                          colorScheme="blue"
-                        >
-                          Direct Message
-                        </Button>
-                      </ListItem>
-                    )}
-                    {!applicant.linkedinUrl ? null : (
-                      <ListItem>
-                        <Button
-                          as="a"
-                          href={applicant.linkedinUrl}
-                          target="_blank"
-                          variant="link"
-                          leftIcon={<TbBrandLinkedin />}
-                        >
-                          {applicant.linkedinUrl}
-                        </Button>
-                      </ListItem>
-                    )}
-                    {!applicant.gitHubUrl ? null : (
-                      <ListItem>
-                        <Button
-                          as="a"
-                          href={applicant.gitHubUrl}
-                          target="_blank"
-                          variant="link"
-                          leftIcon={<TbBrandGithub />}
-                        >
-                          {applicant.gitHubUrl}
-                        </Button>
-                      </ListItem>
-                    )}
-
-                    {answers.map(({ question, answerResponse }) => (
-                      <ListItem display="flex" flexDirection="column">
-                        <Text fontWeight="bold">{question.questionString}</Text>
-                        {question.questionType === QuestionType.Range ? (
-                          <Flex alignItems="center" gap={5}>
-                            <Progress
-                              value={(answerResponse / 5) * 100}
-                              flex="1"
-                              bgColor="gray.200"
-                              borderRadius="10px"
-                              colorScheme="primary"
-                            />
-                            <Text>{answerResponse}/5</Text>
-                          </Flex>
-                        ) : (
-                          <Text>{answerResponse}</Text>
-                        )}
-                      </ListItem>
-                    ))}
-                    <ButtonGroup
-                      display="flex"
-                      justifyContent="flex-end"
-                      gap={2}
+                  <Spacer />
+                  <AccordionIcon />
+                </Flex>
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <List spacing={3}>
+                {!applicant.telegramUrl ? null : (
+                  <ListItem>
+                    <Button
+                      as="a"
+                      href={`https://www.t.me/${applicant.telegramUrl}`}
+                      target="_blank"
+                      leftIcon={<TbBrandTelegram />}
+                      variant="outline"
+                      colorScheme="telegram"
                     >
-                      <Button
-                        bgColor="red.400"
-                        color="white"
-                        colorScheme="red"
-                        leftIcon={<TbX />}
-                        onClick={() => rejectRequest(id)}
-                      >
-                        Reject
-                      </Button>
-                      <Button
-                        bgColor="green.400"
-                        color="white"
-                        colorScheme="green"
-                        leftIcon={<TbCheck />}
-                        onClick={() => approveRequest(id)}
-                      >
-                        Approve
-                      </Button>
-                    </ButtonGroup>
-                  </List>
-                </AccordionPanel>
-              </>
-            )}
+                      Telegram
+                    </Button>
+                  </ListItem>
+                )}
+                {!applicant.linkedinUrl ? null : (
+                  <ListItem>
+                    <Button
+                      as="a"
+                      href={applicant.linkedinUrl}
+                      target="_blank"
+                      leftIcon={<TbBrandLinkedin />}
+                      variant="outline"
+                      colorScheme="linkedin"
+                    >
+                      {applicant.linkedinUrl}
+                    </Button>
+                  </ListItem>
+                )}
+                {!applicant.gitHubUrl ? null : (
+                  <ListItem>
+                    <Button
+                      as="a"
+                      href={applicant.gitHubUrl}
+                      target="_blank"
+                      leftIcon={<TbBrandGithub />}
+                      variant="outline"
+                    >
+                      {applicant.gitHubUrl}
+                    </Button>
+                  </ListItem>
+                )}
+
+                {answers.map(({ question, answerResponse }) => (
+                  <ListItem display="flex" flexDirection="column">
+                    <Text fontWeight="bold">{question.questionString}</Text>
+                    {question.questionType === QuestionType.Range ? (
+                      <Flex alignItems="center" gap={5}>
+                        <Progress
+                          value={(answerResponse / 5) * 100}
+                          flex="1"
+                          bgColor="gray.200"
+                          borderRadius="10px"
+                          colorScheme="primary"
+                        />
+                        <Text>{answerResponse}/5</Text>
+                      </Flex>
+                    ) : (
+                      <Text>{answerResponse}</Text>
+                    )}
+                  </ListItem>
+                ))}
+                <ButtonGroup display="flex" justifyContent="flex-end" gap={2}>
+                  <Button
+                    bgColor="red.400"
+                    color="white"
+                    colorScheme="red"
+                    leftIcon={<TbX />}
+                    onClick={() => rejectRequest(id)}
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    bgColor="green.400"
+                    color="white"
+                    colorScheme="green"
+                    leftIcon={<TbCheck />}
+                    onClick={() => approveRequest(id)}
+                  >
+                    Approve
+                  </Button>
+                </ButtonGroup>
+              </List>
+            </AccordionPanel>
           </AccordionItem>
         ))}
       </Accordion>

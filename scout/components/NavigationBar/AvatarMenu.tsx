@@ -14,6 +14,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { ImProfile } from "react-icons/im";
 import { AiOutlineTeam } from "react-icons/ai";
+import { TbSend } from "react-icons/tb";
 const AvatarMenu = () => {
   const { data: session } = useSession();
   const avatarImage = session.user.image;
@@ -50,14 +51,28 @@ const AvatarMenu = () => {
         </Stack>
         <MenuDivider />
         <Link href="/profile">
-          <MenuItem><ImProfile style={{marginLeft: "8px"}} /><Text ml="8px">Profile</Text></MenuItem>
+          <MenuItem>
+            <ImProfile style={{ marginLeft: "8px" }} />
+            <Text ml="8px">Profile</Text>
+          </MenuItem>
         </Link>
         <Link href="/requests">
-          <MenuItem><AiOutlineTeam style={{marginLeft: "8px"}} /><Text ml="8px">My Requests</Text></MenuItem>
+          <MenuItem>
+            <TbSend style={{ marginLeft: "8px" }} />
+            <Text ml="8px">My Requests</Text>
+          </MenuItem>
+        </Link>
+        <Link href="/groups">
+          <MenuItem>
+            <AiOutlineTeam style={{ marginLeft: "8px" }} />
+            <Text ml="8px">My Groups</Text>
+          </MenuItem>
         </Link>
         <MenuDivider />
         <Center py={2}>
-            <Button width="120px" variant='outline' onClick={() => signOut()}>Sign out</Button>
+          <Button width="120px" variant="outline" onClick={() => signOut()}>
+            Sign out
+          </Button>
         </Center>
       </MenuList>
     </Menu>

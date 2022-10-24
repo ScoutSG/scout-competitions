@@ -3,7 +3,7 @@ import prisma from "../../../lib/prisma";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { notifyGroup } from "../../../core/utils/telegram";
-import { validateIfAlreadyRequested } from '../../../lib/services/ApplicationValidation'
+import { validateIfAlreadyRequested } from "../../../lib/services/ApplicationValidation";
 
 // GET POST /api/applications
 export default async function handle(
@@ -56,10 +56,10 @@ async function handleRead(req: NextApiRequest, res: NextApiResponse) {
 async function handleAdd(req, res) {
   const { formId, userId, answers, groupId } = req.body;
 
-  validateIfAlreadyRequested(groupId, userId).catch(err => {
+  validateIfAlreadyRequested(groupId, userId).catch((err) => {
     res.statusMessage = err;
     res.status(400).end();
-  })
+  });
   if (res.writableEnded) {
     return;
   }
@@ -129,7 +129,11 @@ async function handleAdd(req, res) {
     });
     await notifyGroup(
       group.telegramLink,
-      `${user.name} has just requested to join this team!\n\nReview their request at ${process.env.NEXTAUTH_URL}/competitions/${competition.id}/groups/${groupId}.`
+      `${
+        user.name ? user.name : "Anonymous"
+      } has just requested to join this team!\n\nReview their request at ${
+        process.env.NEXTAUTH_URL
+      }/competitions/${competition.id}/groups/${groupId}.`
     );
   }
 

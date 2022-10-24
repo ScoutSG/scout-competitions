@@ -14,7 +14,6 @@ import GroupMember from "./GroupMember";
 import GroupGoal from "./GroupGoal";
 import useIsMemberOfCompetition from "./useIsMember";
 import { useIsMember, useIsLeader } from "../../lib/hooks/useUserDetails";
-import Link from "next/link";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const GroupSummaryCard = ({ group }: { group: Group }) => {
@@ -29,6 +28,27 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
     return member.skills;
   });
   groupSkills = Array.from(new Set(groupSkills));
+
+  const viewButton = (
+    <Button
+      as="a"
+      href={`/competitions/${group.competitionId}/groups/${group.id}`}
+      variant="outline"
+      colorScheme="cyan"
+      visibility="hidden"
+      _groupHover={{ visibility: "visible" }}
+      size="md"
+      onClick={async () => {
+        if (!isMember) {
+          await eventAnalyticsTracker("Request to join group " + group.name);
+        } else if (isPartOfGroup) {
+          await eventAnalyticsTracker("View own group " + group.name);
+        }
+      }}
+    >
+      {!isMember ? "Request to join" : "View group"}
+    </Button>
+  );
 
   return (
     <Stack
@@ -52,41 +72,7 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
           {group.name}
         </Text>
         <Spacer />
-        <Link href={`/competitions/${group.competitionId}/groups/${group.id}`}>
-          <Button
-            variant="outline"
-            colorScheme="cyan"
-            visibility="hidden"
-            _groupHover={{
-              visibility: isMember ? "hidden" : "visible",
-            }}
-            size="md"
-            onClick={async () => {
-              await eventAnalyticsTracker(
-                "Request to join group " + group.name
-              );
-            }}
-          >
-            Request to Join
-          </Button>
-        </Link>
-
-        <Link href={`/competitions/${group.competitionId}/groups/${group.id}`}>
-          <Button
-            variant="outline"
-            colorScheme="cyan"
-            visibility="hidden"
-            _groupHover={{
-              visibility: isPartOfGroup ? "visible" : "hidden",
-            }}
-            size="md"
-            onClick={async () => {
-              await eventAnalyticsTracker("View own group " + group.name);
-            }}
-          >
-            View group
-          </Button>
-        </Link>
+        {!isMember || isPartOfGroup ? viewButton : null}
       </Wrap>
       <Stack pt={2}>
         <Stack spacing={2} pb={4}>

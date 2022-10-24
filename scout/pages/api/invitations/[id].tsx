@@ -103,9 +103,14 @@ const addUserToGroup = async (userId, groupId) => {
 
     try {
       await addToGroup(telegramLink, user.telegramUrl);
-      notifyGroup(telegramLink, `Welcome to the group, ${user.name}!`);
+      notifyGroup(
+        telegramLink,
+        `Welcome to the group, ${user.name ? user.name : "Anonymous"}!`
+      );
     } catch (err) {
-      let warningMessage: string = `Failed to add ${user.name} to the group.`;
+      let warningMessage: string = `Failed to add ${
+        user.name ? user.name : "Anonymous"
+      } to the group.`;
 
       if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
         warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${user.telegramUrl} to this group yourself.`;

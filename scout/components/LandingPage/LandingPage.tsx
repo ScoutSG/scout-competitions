@@ -13,18 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { TbHandClick } from "react-icons/tb";
 import TypeWriter from "typewriter-effect";
+import { BETA_FEEDBACK_LINK } from "../../core/constants";
 import SkeletonCompetition from "./SkeletonCompetition";
 import SkeletonGroup from "./SkeletonGroup";
 import SkeletonQuestions from "./SkeletonQuestions";
 import TwoStat from "./TwoStat";
 
-const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
-
 const LandingPage: React.FC = () => {
-  const betaFeedbackLink = () => {
-    window.open(BETA_FEEDBACK_LINK, "_blank");
-  };
-
   return (
     <>
       <Stack pb={16}>
@@ -127,7 +122,9 @@ const LandingPage: React.FC = () => {
         </Center>
 
         <Button
-          onClick={betaFeedbackLink}
+          as="a"
+          href={BETA_FEEDBACK_LINK}
+          target="_blank"
           variant="link"
           fontSize={{ base: "xl", md: "2xl" }}
           colorScheme="green"
