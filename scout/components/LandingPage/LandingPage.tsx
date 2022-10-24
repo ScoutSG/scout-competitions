@@ -7,10 +7,15 @@ import {
   Center,
   Divider,
   Button,
+  Highlight,
+  Icon,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import { TbHandClick } from "react-icons/tb";
 import TypeWriter from "typewriter-effect";
 import SkeletonCompetition from "./SkeletonCompetition";
 import SkeletonGroup from "./SkeletonGroup";
+import SkeletonQuestions from "./SkeletonQuestions";
 import TwoStat from "./TwoStat";
 
 const BETA_FEEDBACK_LINK = "https://forms.gle/sHALP5znkgQnyQ3U8";
@@ -24,17 +29,17 @@ const LandingPage: React.FC = () => {
     <>
       <Stack pb={16}>
         <Flex flexWrap="wrap" justifyContent="right">
-          <Stack pt={{ base: 16, md: 32 }} pl={{ base: 0, md: 16 }}>
-            <Heading size={{ base: "3xl", md: "4xl" }}>Success starts</Heading>
-            <Heading size={{ base: "3xl", md: "4xl" }}>with a</Heading>
+          <Stack pt={{ base: 16, lg: 32 }} pl={{ base: 0, sm: 8, md: 16 }} pr={16}>
+            <Heading size={{ base: "3xl", sm: "4xl" }}>Success starts</Heading>
+            <Heading size={{ base: "3xl", sm: "4xl" }}>with a</Heading>
             <Heading
-              size={{ base: "3xl", md: "4xl" }}
+              size={{ base: "3xl", sm: "4xl" }}
               bgGradient="linear(to-r, #8B008B, #FF6347)"
               bgClip="text"
             >
               dream team
             </Heading>
-            <Stack pt={4} fontSize={{ base: "2xl", sm: "3xl" }}>
+            <Stack pt={4} fontSize={{ base: "xl", sm: "3xl" }}>
               <Text>Scout for the ideal team to</Text>
               <TypeWriter
                 options={{
@@ -56,50 +61,65 @@ const LandingPage: React.FC = () => {
         <Flex flexWrap="wrap-reverse" justifyContent="right" pt={16}>
           <SkeletonCompetition />
           <Spacer />
-          <Stack pt={16} pr={{ base: 0, md: 16 }}>
-            <Heading textAlign="right" size={{ base: "3xl", md: "4xl" }}>
+          <Stack pt={16} pr={{ base: 0, sm: 8, md: 16 }} pl={16}>
+            <Heading textAlign="right" size={{ base: "3xl", sm: "4xl" }}>
               Discover the
             </Heading>
             <Heading
               textAlign="right"
-              size={{ base: "3xl", md: "4xl" }}
+              size={{ base: "3xl", sm: "4xl" }}
               bgGradient="linear(to-l, #0052D4, #43C6AC)"
               bgClip="text"
             >
               best events
             </Heading>
-            <Heading textAlign="right" size={{ base: "3xl", md: "4xl" }}>
+            <Heading textAlign="right" size={{ base: "3xl", sm: "4xl" }}>
               to try
             </Heading>
-            <Stack pt={4}>
-              <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
+            <Stack pt={4} fontSize={{ base: "xl", sm: "3xl" }}>
+              <Text textAlign="right">
                 We keep you up-to-date on the
               </Text>
-              <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
+              <Text textAlign="right">
                 latest competitions so you will
               </Text>
-              <Text textAlign="right" fontSize={{ base: "2xl", md: "3xl" }}>
+              <Text textAlign="right">
                 never miss an opportunity
               </Text>
             </Stack>
           </Stack>
         </Flex>
+        <Flex flexWrap="wrap" justifyContent="right" pt={16}>
+          <Stack pt={16} pl={{ base: 0, sm: 8, md: 16 }} pr={16}>
+            <Heading size={{ base: "3xl", sm: "4xl" }}>Get to</Heading>
+            <Heading size={{ base: "3xl", sm: "4xl" }}>know your</Heading>
+            <Heading size={{ base: "3xl", sm: "4xl" }}>teammates</Heading>
+            <Stack pt={4} fontSize={{ base: "xl", sm: "3xl" }}>
+              <Text>Ask your potential teammates</Text>
+              <Text>questions to build an</Text>
+              <Text>effective team</Text>
+            </Stack>
+          </Stack>
+          <Spacer />
+          <SkeletonQuestions />
+        </Flex>
         <Divider py={16} />
 
         <Center py={16}>
-          <Stack>
-            <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center">
-              Finding and Forming is simple
+          <Stack justify="center" spacing={4}>
+            <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center" textColor={useColorModeValue("green.500", "green.300")}>
+              <Icon as={TbHandClick} mr={4} color={useColorModeValue("green.500", "green.300")} />
+              One-click
             </Heading>
             <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center">
-              with Scout
+              Group Set Up
             </Heading>
           </Stack>
         </Center>
         <TwoStat />
       </Stack>
       <Divider />
-      <Stack py={16} spacing={4}>
+      <Stack pt={16} pb={8} spacing={4}>
         <Center>
           <Heading size={{ base: "xl", md: "2xl" }}>
             We are in private beta.

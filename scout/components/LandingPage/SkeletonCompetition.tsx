@@ -24,7 +24,7 @@ const SkeletonCompetition: React.FC = () => {
   const secondaryBgColor = useColorModeValue("gray.100", "gray.600");
 
   return (
-    <Flex pl={{ base: 0, md: 16 }} pt={16} width={{ base: "lg", md: "xl" }}>
+    <Flex pl={{ base: 0, sm: 8, md: 16 }} pt={{base: 16, xl: 24}} width={{ base: "lg", md: "xl" }}>
       <Stack
         width="100%"
         height="max-content"

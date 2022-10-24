@@ -25,7 +25,7 @@ const SkeletonGroup: React.FC = () => {
       width={{ base: "lg", md: "xl" }}
       pt={16}
       justifyContent="right"
-      pr={{ base: 0, md: 16 }}
+      pr={{ base: 0, sm: 8, md: 16 }}
     >
       <Stack
         minWidth={{ base: "none", lg: "500px" }}
