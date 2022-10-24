@@ -141,8 +141,12 @@ export async function getStaticProps(context) {
 const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
   const isLeader = useIsLeader(group?.leaderId);
   const isMember = useIsMember(group?.members);
+  const router = useRouter();
 
-  if (!group) {
+  if (
+    !group ||
+    group.competitionId !== parseInt(router.query.competitionId as string)
+  ) {
     return <NotFound />;
   }
 

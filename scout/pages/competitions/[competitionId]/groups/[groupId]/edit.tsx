@@ -40,7 +40,7 @@ type EditGroupProps = {
 };
 
 const EditGroup = ({ competition, group, form }: EditGroupProps) => {
-  if (!group) {
+  if (!group || group.competitionId !== competition.id) {
     return <NotFound />;
   }
   return (
