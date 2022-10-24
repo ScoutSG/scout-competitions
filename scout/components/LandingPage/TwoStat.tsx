@@ -2,20 +2,15 @@ import {
   Stack,
   useColorModeValue,
   Text,
-  Heading,
   SimpleGrid,
-  Highlight,
   Icon,
   Box,
 } from "@chakra-ui/react";
 import { TbBrandTelegram, TbTemplate } from "react-icons/tb";
-import TypeWriter from "typewriter-effect";
 
 const TwoStat: React.FC = () => {
-  const bgColor = useColorModeValue("gray.50", "gray.700");
-
   return (
-    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={16}>
+    <SimpleGrid columns={{ base: 1, md: 2 }}>
       <Stack p={8} alignItems="center">
         <Icon as={TbBrandTelegram} color="#0088CC" w={16} h={16} />
         <Text
@@ -23,6 +18,7 @@ const TwoStat: React.FC = () => {
           fontSize={{ base: "3xl", sm: "4xl" }}
           textAlign="center"
           color="#0088CC"
+          minW="380px"
         >
           Telegram Integration
         </Text>

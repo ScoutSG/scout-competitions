@@ -56,7 +56,7 @@ const CompetitionDetails: React.FC = ({
   return (
     <PageContainer>
       <Stack width="100%" my={8} px={0} spacing={4}>
-        <Flex justifyContent="space-between" align="flex-start" flexWrap="wrap">
+        <Flex justifyContent="space-between" align="flex-end" flexWrap="wrap">
           <Heading fontWeight="semibold" mr={8} mb={4}>
             {competition.name}
           </Heading>
