@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -16,10 +17,12 @@ import {
 } from "@chakra-ui/react";
 import { FaSchool } from "react-icons/fa";
 import { IoIosSchool } from "react-icons/io";
+import { slideUpAnimation } from "../../core/utils/animation";
 
 const SkeletonGroup: React.FC = () => {
   const bgColor = useColorModeValue("gray.50", "gray.700");
   const secondaryBgColor = useColorModeValue("gray.100", "gray.600");
+
   return (
     <Flex
       width={{ base: "lg", md: "xl" }}
@@ -34,14 +37,17 @@ const SkeletonGroup: React.FC = () => {
         rounded="2xl"
         p={8}
       >
-        <Wrap mb={2}>
+        <Wrap mb={2} animation={slideUpAnimation}>
           <Text fontSize="xl" fontWeight="semibold">
             Champion Team 🏆
           </Text>
           <Spacer />
-          <Button cursor="initial">Request to Join</Button>
+
+          <Button cursor="initial" _active={{}} _hover={{}}>
+            Request to Join
+          </Button>
         </Wrap>
-        <Stack py={2} spacing={2}>
+        <Stack py={2} spacing={2} animation={slideUpAnimation}>
           <Text fontWeight="medium">Description</Text>
           <Box
             width="100%"
@@ -58,7 +64,7 @@ const SkeletonGroup: React.FC = () => {
           <Text>We want 🫵</Text>
         </Stack>
         <Divider />
-        <Stack py={2} spacing={2}>
+        <Stack py={2} spacing={2} animation={slideUpAnimation}>
           <Text fontWeight="medium">Members (2/3)</Text>
           <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Xavier Lee" size="sm" />
@@ -90,7 +96,7 @@ const SkeletonGroup: React.FC = () => {
           </Wrap>
         </Stack>
         <Divider />
-        <Stack pt={2} spacing={2}>
+        <Stack pt={2} spacing={2} animation={slideUpAnimation}>
           <Text fontWeight="medium">We're strong in</Text>
           <Wrap spacing={2}>
             <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
@@ -104,7 +110,7 @@ const SkeletonGroup: React.FC = () => {
             </Tag>
           </Wrap>
         </Stack>
-        <Stack pt={2} spacing={2}>
+        <Stack pt={2} spacing={2} animation={slideUpAnimation}>
           <Text fontWeight="medium">We're looking for</Text>
           <Box>
             <Tag
