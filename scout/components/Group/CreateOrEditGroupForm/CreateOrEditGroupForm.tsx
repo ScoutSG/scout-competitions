@@ -23,7 +23,10 @@ import clientApi from "../../../core/api/client";
 import { CompetitionData } from "../../../core/types/CompetitionDetail";
 import { Form, Group } from "../../../core/types/Group";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
-import { useDraftGroup } from "../../../lib/hooks/useDraftGroup";
+import {
+  useDraftGroup,
+  useDraftTelegram,
+} from "../../../lib/hooks/useDraftGroup";
 
 import QuestionsSubForm from "./QuestionsSubForm";
 import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
@@ -63,6 +66,7 @@ const CreateOrEditGroupForm = ({
   const session = useSession();
   const router = useRouter();
   const { setDraftGroup } = useDraftGroup();
+  const { setTelegramUrlDraft } = useDraftTelegram();
   const { presentToast } = useCustomToast();
 
   const onSubmit = async (values: CreateOrEditGroupFormValue) => {
@@ -83,7 +87,22 @@ const CreateOrEditGroupForm = ({
       goal: "Win the competition",
       withTelegramGroup: values.withTelegramGroup,
     };
+
+    const telegramUrl = values.telegramUrl;
+
     if (session.status === "authenticated") {
+      if (telegramUrl) {
+        const updateProfileTelegram = async () => {
+          const profileBody = {
+            telegramUrl: telegramUrl,
+          };
+
+          await clientApi.patch("/profile", profileBody);
+        };
+
+        updateProfileTelegram();
+      }
+
       const body = {
         ...groupInfo,
         leaderId: session.data.user.id,
@@ -122,6 +141,10 @@ const CreateOrEditGroupForm = ({
       }
     } else {
       setDraftGroup(groupInfo);
+      if (telegramUrl) {
+        setTelegramUrlDraft({ telegramUrl: telegramUrl });
+      }
+
       router.push("/auth/signin");
       presentToast({
         title:

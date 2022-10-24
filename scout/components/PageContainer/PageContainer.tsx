@@ -8,7 +8,7 @@ import { useDraftRequest } from "../../lib/hooks/useDraftRequest";
 import NavigationBar from "../NavigationBar";
 import Footer from "../Footer";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
-import { useDraftGroup } from "../../lib/hooks/useDraftGroup";
+import { useDraftGroup, useDraftTelegram } from "../../lib/hooks/useDraftGroup";
 import { useJoinRequest } from "../../lib/hooks/useJoinRequest";
 
 interface PageContainerProps {
@@ -20,6 +20,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   const router = useRouter();
   const { draftRequest, setDraftRequest } = useDraftRequest();
   const { draftGroup, setDraftGroup } = useDraftGroup();
+  const { telegramUrlDraft, setTelegramUrlDraft } = useDraftTelegram();
   const { joinRequest, setJoinRequest } = useJoinRequest();
   const { presentToast } = useCustomToast();
 
@@ -67,6 +68,20 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
 
   useEffect(() => {
     if (draftGroup !== null && session.status === "authenticated") {
+      if (telegramUrlDraft) {
+        const updateProfileTelegram = async () => {
+          const profileBody = { ...telegramUrlDraft };
+          await clientApi
+            .patch("/profile", profileBody)
+            .then((res) => {
+              setTelegramUrlDraft(null);
+            })
+            .catch((err) => {});
+        };
+
+        updateProfileTelegram();
+      }
+
       const body = {
         ...draftGroup,
         leaderId: session.data.user.id,
