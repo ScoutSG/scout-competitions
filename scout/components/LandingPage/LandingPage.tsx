@@ -9,7 +9,9 @@ import {
   Button,
   Icon,
   useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { TbHandClick } from "react-icons/tb";
 import TypeWriter from "typewriter-effect";
 import { BETA_FEEDBACK_LINK } from "../../core/constants";
@@ -23,7 +25,7 @@ const LandingPage: React.FC = () => {
     <>
       <Stack pb={16}>
         <Flex flexWrap="wrap" justifyContent="right">
-          <Stack pt={{ base: 16, lg: 32 }} pl={{ base: 0, sm: 8, md: 16 }} pr={16}>
+          <Stack pt={{ base: 16, lg: 24 }} pl={{ base: 0, sm: 8, md: 16 }} pr={16}>
             <Heading size={{ base: "3xl", sm: "4xl" }}>Success starts</Heading>
             <Heading size={{ base: "3xl", sm: "4xl" }}>with a</Heading>
             <Heading
@@ -47,6 +49,14 @@ const LandingPage: React.FC = () => {
                   delay: 30,
                 }}
               />
+            </Stack>
+            <Stack pt={4}>
+              <Link href="/competitions">
+              <Button fontSize="xl" color="white" height="48px" width="160px" bgGradient="linear(to-r, #8B008B, #FF6347)" _hover={{bgGradient: "linear(to-r, #8B008B, #FF6347)"}} role="group">
+                <Box height="48px" width="160px" position="absolute" bgColor="whiteAlpha.400" rounded="md" visibility="hidden" _groupHover={{visibility: "visible"}}/>
+                Start now
+              </Button>
+              </Link>
             </Stack>
           </Stack>
           <Spacer />
