@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Flex,
   HStack,
@@ -16,12 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { FaSchool } from "react-icons/fa";
 import { IoIosSchool } from "react-icons/io";
-import { useSlideLeftAnimation } from "../../lib/hooks/useAnimation";
 
 const SkeletonGroup: React.FC = () => {
   const bgColor = useColorModeValue("gray.50", "gray.700");
   const secondaryBgColor = useColorModeValue("gray.100", "gray.600");
-  const { ref, animation } = useSlideLeftAnimation();
 
   return (
     <Flex
@@ -29,7 +26,6 @@ const SkeletonGroup: React.FC = () => {
       pt={16}
       justifyContent="right"
       pr={{ base: 0, sm: 8, md: 16 }}
-      ref={ref}
     >
       <Stack
         minWidth={{ base: "none", lg: "500px" }}
@@ -38,13 +34,13 @@ const SkeletonGroup: React.FC = () => {
         rounded="2xl"
         p={8}
       >
-        <Wrap mb={2} animation={animation}>
+        <Wrap mb={2}>
           <Text fontSize="xl" fontWeight="semibold">
             Champion Team 🏆
           </Text>
           <Spacer />
         </Wrap>
-        <Stack py={2} spacing={2} animation={animation}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Description</Text>
           <Box
             width="100%"
@@ -61,7 +57,7 @@ const SkeletonGroup: React.FC = () => {
           <Text>We want 🫵</Text>
         </Stack>
         <Divider />
-        <Stack py={2} spacing={2} animation={animation}>
+        <Stack py={2} spacing={2}>
           <Text fontWeight="medium">Members (2/3)</Text>
           <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Xavier Lee" size="sm" />
@@ -93,7 +89,7 @@ const SkeletonGroup: React.FC = () => {
           </Wrap>
         </Stack>
         <Divider />
-        <Stack pt={2} spacing={2} animation={animation}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're strong in</Text>
           <Wrap spacing={2}>
             <Tag rounded="xl" bgColor={useColorModeValue("red.50", "red.700")}>
@@ -107,7 +103,7 @@ const SkeletonGroup: React.FC = () => {
             </Tag>
           </Wrap>
         </Stack>
-        <Stack pt={2} spacing={2} animation={animation}>
+        <Stack pt={2} spacing={2}>
           <Text fontWeight="medium">We're looking for</Text>
           <Box>
             <Tag

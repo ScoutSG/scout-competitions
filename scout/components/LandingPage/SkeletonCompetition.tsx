@@ -18,20 +18,17 @@ import { AiFillTrophy, AiTwotoneCalendar } from "react-icons/ai";
 import { MdTimer } from "react-icons/md";
 import { RiTeamLine } from "react-icons/ri";
 import { VscOctoface } from "react-icons/vsc";
-import { useSlideUpAnimation } from "../../lib/hooks/useAnimation";
 
 const SkeletonCompetition: React.FC = () => {
   const bgColor = useColorModeValue("gray.50", "gray.700");
   const textColor = useColorModeValue("gray.500", "gray.300");
   const secondaryBgColor = useColorModeValue("gray.100", "gray.600");
-  const { ref, animation } = useSlideUpAnimation();
 
   return (
     <Flex
       pl={{ base: 0, sm: 8, md: 16 }}
       pt={{base: 16, xl: 24}}
       width={{ base: "lg", md: "xl" }}
-      ref={ref}
     >
       <Stack
         width="100%"
@@ -42,10 +39,10 @@ const SkeletonCompetition: React.FC = () => {
         p={8}
         spacing={4}
       >
-        <Text fontSize="xl" fontWeight="semibold" animation={animation}>
+        <Text fontSize="xl" fontWeight="semibold">
           Really Cool Hackathon 😎
         </Text>
-        <Wrap spacing={4} animation={animation}>
+        <Wrap spacing={4}>
           <Tag>
             <TagLeftIcon as={RiTeamLine} color={textColor} />
             <TagLabel fontSize="md" textColor={textColor}>
@@ -65,7 +62,7 @@ const SkeletonCompetition: React.FC = () => {
             </TagLabel>
           </Tag>
         </Wrap>
-        <Wrap spacing={4} animation={animation}>
+        <Wrap spacing={4}>
           <Tag colorScheme="cyan" fontSize="md" textColor={textColor}>
             <TagLeftIcon as={VscOctoface} />
             <TagLabel>Dream Company Inc.</TagLabel>
@@ -76,7 +73,7 @@ const SkeletonCompetition: React.FC = () => {
           </HStack>
         </Wrap>
         <Divider />
-        <Stack spacing={2} animation={animation}>
+        <Stack spacing={2}>
           <Text fontWeight="medium">Description</Text>
           <Box
             width="100%"
@@ -92,11 +89,11 @@ const SkeletonCompetition: React.FC = () => {
           />
         </Stack>
         <Divider />
-        <HStack animation={animation}>
+        <HStack>
           <Icon as={AiFillTrophy} />
           <Text fontWeight="medium">Prizes</Text>
         </HStack>
-        <HStack spacing={1.5} animation={animation}>
+        <HStack spacing={1.5}>
           <Text fontWeight="medium">🥇 First place:</Text>
           <Text> SGD 10,000</Text>
         </HStack>
