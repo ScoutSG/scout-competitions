@@ -67,7 +67,6 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
         <Text
           fontSize={{ base: "xl", md: "2xl" }}
           fontWeight="semibold"
-          color={useColorModeValue("cyan.900", "white")}
         >
           {group.name}
         </Text>
