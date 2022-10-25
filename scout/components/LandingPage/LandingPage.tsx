@@ -7,7 +7,6 @@ import {
   Center,
   Divider,
   Button,
-  Highlight,
   Icon,
   useColorModeValue,
 } from "@chakra-ui/react";

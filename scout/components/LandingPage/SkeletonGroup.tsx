@@ -43,10 +43,6 @@ const SkeletonGroup: React.FC = () => {
             Champion Team 🏆
           </Text>
           <Spacer />
-
-          <Button cursor="initial" _active={{}} _hover={{}}>
-            Request to Join
-          </Button>
         </Wrap>
         <Stack py={2} spacing={2} animation={animation}>
           <Text fontWeight="medium">Description</Text>
@@ -69,7 +65,7 @@ const SkeletonGroup: React.FC = () => {
           <Text fontWeight="medium">Members (2/3)</Text>
           <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Xavier Lee" size="sm" />
-            <Text>Xavier Lee</Text>
+            <Box width="100px" height="20px" rounded="md" bgColor={secondaryBgColor} />
             <HStack>
               <Tag size="md" borderRadius="full">
                 <TagLeftIcon as={FaSchool} />
@@ -83,7 +79,7 @@ const SkeletonGroup: React.FC = () => {
           </Wrap>
           <Wrap spacing={{ base: 2, md: 4 }} align="center">
             <Avatar name="Evelyn Goh" size="sm" />
-            <Text>Evelyn Goh</Text>
+            <Box width="100px" height="20px" rounded="md" bgColor={secondaryBgColor} />
             <HStack>
               <Tag size="md" borderRadius="full">
                 <TagLeftIcon as={FaSchool} />
