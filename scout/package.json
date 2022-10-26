@@ -34,6 +34,7 @@
     "react-ga4": "^1.4.1",
     "react-hook-form": "^7.37.0",
     "react-icons": "^4.4.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-markdown": "8.0.3",
     "recoil": "^0.7.5",
     "recoil-persist": "^4.2.0",
