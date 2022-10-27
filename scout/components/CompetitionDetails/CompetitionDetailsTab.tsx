@@ -1,8 +1,5 @@
-import {
-  Flex,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
+import Linkify from "react-linkify";
 import { CompetitionData } from "../../core/types/CompetitionDetail";
 import CompetitionInformation from "./CompetitionInformation";
 
@@ -21,7 +18,11 @@ const CompetitionDetailsTab = ({
         <Text fontSize="xl" fontWeight="semibold">
           About
         </Text>
-        <Text whiteSpace="pre-line">{competition.description}</Text>
+        <Linkify>
+          {competition.description.split("\\n").map((text) => (
+            <Text whiteSpace="pre-line">{text}</Text>
+          ))}
+        </Linkify>
       </Stack>
       <CompetitionInformation competition={competition} xlDisplay="flex" />
     </Flex>
