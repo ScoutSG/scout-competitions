@@ -25,7 +25,11 @@ const LandingPage: React.FC = () => {
     <>
       <Stack pb={16}>
         <Flex flexWrap="wrap" justifyContent="right">
-          <Stack pt={{ base: 16, lg: 24 }} pl={{ base: 0, sm: 8, md: 16 }} pr={16}>
+          <Stack
+            pt={{ base: 16, lg: 24 }}
+            pl={{ base: 0, sm: 8, md: 16 }}
+            pr={16}
+          >
             <Heading size={{ base: "3xl", sm: "4xl" }}>Success starts</Heading>
             <Heading size={{ base: "3xl", sm: "4xl" }}>with a</Heading>
             <Heading
@@ -52,10 +56,26 @@ const LandingPage: React.FC = () => {
             </Stack>
             <Stack pt={4}>
               <Link href="/competitions">
-              <Button fontSize="xl" color="white" height="48px" width="160px" bgGradient="linear(to-r, #8B008B, #FF6347)" _hover={{bgGradient: "linear(to-r, #8B008B, #FF6347)"}} role="group">
-                <Box height="48px" width="160px" position="absolute" bgColor="whiteAlpha.400" rounded="md" visibility="hidden" _groupHover={{visibility: "visible"}}/>
-                Start now
-              </Button>
+                <Button
+                  fontSize="xl"
+                  color="white"
+                  height="48px"
+                  width="160px"
+                  bgGradient="linear(to-r, #8B008B, #FF6347)"
+                  _hover={{ bgGradient: "linear(to-r, #8B008B, #FF6347)" }}
+                  role="group"
+                >
+                  <Box
+                    height="48px"
+                    width="160px"
+                    position="absolute"
+                    bgColor="whiteAlpha.400"
+                    rounded="md"
+                    visibility="hidden"
+                    _groupHover={{ visibility: "visible" }}
+                  />
+                  Start now
+                </Button>
               </Link>
             </Stack>
           </Stack>
@@ -81,15 +101,9 @@ const LandingPage: React.FC = () => {
               to try
             </Heading>
             <Stack pt={4} fontSize={{ base: "xl", sm: "3xl" }}>
-              <Text textAlign="right">
-                We keep you up-to-date on the
-              </Text>
-              <Text textAlign="right">
-                latest competitions so you will
-              </Text>
-              <Text textAlign="right">
-                never miss an opportunity
-              </Text>
+              <Text textAlign="right">We keep you up-to-date on the</Text>
+              <Text textAlign="right">latest competitions so you will</Text>
+              <Text textAlign="right">never miss an opportunity</Text>
             </Stack>
           </Stack>
         </Flex>
@@ -111,8 +125,16 @@ const LandingPage: React.FC = () => {
 
         <Center py={16}>
           <Stack justify="center" spacing={4}>
-            <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center" textColor={useColorModeValue("green.500", "green.300")}>
-              <Icon as={TbHandClick} mr={4} color={useColorModeValue("green.500", "green.300")} />
+            <Heading
+              size={{ base: "3xl", md: "4xl" }}
+              textAlign="center"
+              textColor={useColorModeValue("green.500", "green.300")}
+            >
+              <Icon
+                as={TbHandClick}
+                mr={4}
+                color={useColorModeValue("green.500", "green.300")}
+              />
               One-click
             </Heading>
             <Heading size={{ base: "3xl", md: "4xl" }} textAlign="center">
@@ -126,7 +148,7 @@ const LandingPage: React.FC = () => {
       <Stack pt={16} pb={8} spacing={4}>
         <Center>
           <Heading size={{ base: "xl", md: "2xl" }}>
-            We are in private beta.
+            We are in beta mode.
           </Heading>
         </Center>
 
