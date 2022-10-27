@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { createGroup, sendWelcomeMessage } from "../../../core/utils/telegram";
+import {
+  attemptToAddToGroup,
+  createGroup,
+  sendWelcomeMessage,
+} from "../../../core/utils/telegram";
 
 // GET, PATCH, DELETE /api/groups/id/
 export default async function handle(req, res) {
@@ -60,6 +64,9 @@ export default async function handle(req, res) {
           where: {
             id: groupId,
           },
+          include: {
+            members: true,
+          },
         });
 
         if (group.telegramLink === null) {
@@ -74,6 +81,11 @@ export default async function handle(req, res) {
             name,
             group.competitionId,
             groupId
+          );
+          await Promise.all(
+            group.members.map((member) =>
+              attemptToAddToGroup(telegramGroupId, member)
+            )
           );
         }
       }
