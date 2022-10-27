@@ -25,6 +25,7 @@ import { AiTwotoneCalendar } from "react-icons/ai";
 import { RiTeamLine } from "react-icons/ri";
 import { AiFillTrophy } from "react-icons/ai";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import Linkify from "react-linkify";
 import Link from "next/link";
 import moment from "moment";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
@@ -105,7 +106,11 @@ const CompetitionSummaryCard: React.FC<{
               Description
             </Text>
             <Collapse startingHeight={72} in={show}>
-              <Text whiteSpace="pre-line">{competition.description}</Text>
+              <Linkify>
+                {competition.description.split("\\n").map((text) => (
+                  <Text whiteSpace="pre-line">{text}</Text>
+                ))}
+              </Linkify>
             </Collapse>
             <Flex>
               <Button
