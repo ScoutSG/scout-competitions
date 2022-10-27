@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { Api, TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions";
 
@@ -74,7 +75,7 @@ export const sendWelcomeMessage = async (
   await notifyGroup(telegramGroupId, message);
 };
 
-export const addToGroup = async (groupId: string, userId: string) => {
+export const addToGroup = async (groupId: string | number, userId: string) => {
   await client.connect();
   const result = await client.invoke(
     new Api.messages.AddChatUser({
@@ -96,4 +97,40 @@ export const notifyGroup = async (
       randomId: toBigInt(generateRandomId()),
     })
   );
+};
+
+export const attemptToAddToGroup = async (
+  groupId: string | number,
+  member: User
+) => {
+  let warningMessage = "";
+  // add to Telegram group if there is one
+  if (!member.telegramUrl) {
+    warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${member.email} to get their Telegram username to add them to this group.`;
+  } else {
+    try {
+      await addToGroup(groupId, member.telegramUrl);
+      return notifyGroup(
+        groupId,
+        `Welcome to the group, ${member.name ? member.name : "Anonymous"}!`
+      );
+    } catch (err) {
+      if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
+        warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${member.telegramUrl} to this group yourself.`;
+      } else if (
+        err.message === `No user has "${member.telegramUrl}" as username`
+      ) {
+        warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email} to get their Telegram username to add them to this group.`;
+      }
+    }
+  }
+
+  if (warningMessage !== "") {
+    return notifyGroup(
+      groupId,
+      `You've approved a new member ${
+        member.name ? member.name : "Anonymous"
+      } to join your team. ${warningMessage}`
+    );
+  }
 };
