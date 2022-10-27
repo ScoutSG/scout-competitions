@@ -39,7 +39,6 @@ const JoinPage = () => {
         })
         .catch((err) => {
           presentToast({
-            title: "Error!",
             position: "top",
             status: "error",
             description: "Unable to join group",

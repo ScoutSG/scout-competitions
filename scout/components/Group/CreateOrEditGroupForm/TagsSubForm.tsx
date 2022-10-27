@@ -1,6 +1,7 @@
-import { FormControl, FormHelperText, FormLabel } from "@chakra-ui/react";
+import { FormControl, FormLabel } from "@chakra-ui/react";
 import { CreatableSelect, GroupBase, OptionBase } from "chakra-react-select";
 import { useController, UseFormReturn } from "react-hook-form";
+import Explanation from "../../Explanation";
 import { CreateOrEditGroupFormValue } from "./types";
 
 const SUGGESTED_TAGS = [
@@ -20,6 +21,9 @@ export const toOptionType = (skill: string): OptionType => ({
 });
 const SKILLS_OPTIONS: OptionType[] = SUGGESTED_TAGS.map(toOptionType);
 
+const HELPER_TEXT =
+  "Indicate other miscellaneous characteristics about your team (e.g. motivations for joining, preference for problem statement etc.). This helps you attract the right people to join your team!";
+
 type TagsSubFormProps = Pick<
   UseFormReturn<CreateOrEditGroupFormValue>,
   "control"
@@ -35,7 +39,10 @@ export default function TagsSubForm({ control }: TagsSubFormProps) {
 
   return (
     <FormControl>
-      <FormLabel>Tags</FormLabel>
+      <FormLabel>
+        Tags
+        <Explanation label={HELPER_TEXT} />
+      </FormLabel>
       <CreatableSelect<OptionType, true, GroupBase<OptionType>>
         placeholder="Tags"
         name="tags"
@@ -46,13 +53,6 @@ export default function TagsSubForm({ control }: TagsSubFormProps) {
         onBlur={onBlur}
         value={value as unknown as OptionType}
       />
-      <FormHelperText>
-        You can use this to indicate other miscellaneous characteristics about
-        your team. For instance, you can indicate your motivations for joining
-        this competition, or your preference for problem statement (if there are
-        multiple problem statements). This helps you attract the right people to
-        join your team!
-      </FormHelperText>
     </FormControl>
   );
 }

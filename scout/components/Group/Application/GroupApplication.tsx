@@ -66,7 +66,7 @@ const Application = ({ form }: { form: Form }) => {
       try {
         await clientApi.post("/applications", body);
         presentToast({
-          title: "Sent your request to the team!",
+          description: "Request sent!",
           status: "success",
           position: "top",
         });
@@ -82,8 +82,8 @@ const Application = ({ form }: { form: Form }) => {
       setDraftRequest(applicationInfo);
       router.push("/auth/signin");
       presentToast({
-        title:
-          "Almost there! Login to submit your request to join. Don't worry, your answers will be saved.",
+        title: "Almost there! Login to submit your request to join.",
+        description: "Don't worry, your answers will be saved.",
         position: "top",
         status: "info",
       });

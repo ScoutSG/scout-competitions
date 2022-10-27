@@ -55,13 +55,13 @@ const ApplicationReview: React.FC<{
           )
         );
         presentToast({
-          title: "Approval was successful!",
+          description: "Approved!",
           status: "success",
           position: "top",
         });
         if (res.data.warningMessage) {
           presentToast({
-            title: res.data.warningMessage,
+            description: res.data.warningMessage,
             status: "warning",
             position: "top",
           });
@@ -92,7 +92,7 @@ const ApplicationReview: React.FC<{
           )
         );
         presentToast({
-          title: "Rejection was successful!",
+          title: "Rejected!",
           status: "success",
           position: "top",
         });

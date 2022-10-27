@@ -39,9 +39,8 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         })
         .catch((err) => {
           presentToast({
-            title: "Error!",
             position: "top",
-            status: "info",
+            status: "error",
             description: "Unable to join group",
           });
           router.push("/");
@@ -59,7 +58,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       setDraftRequest(null);
       router.push("/requests");
       presentToast({
-        title: "Sent your request to the team!",
+        title: "Request sent!",
         status: "success",
         position: "top",
       });
@@ -93,7 +92,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           `/competitions/${draftGroup.competitionId}/groups/${group_id}`
         );
         presentToast({
-          title: "Created group!",
+          title: "Group created!",
           status: "success",
           position: "top",
         });

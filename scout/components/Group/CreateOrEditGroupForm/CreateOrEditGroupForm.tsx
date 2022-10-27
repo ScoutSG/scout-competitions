@@ -147,8 +147,8 @@ const CreateOrEditGroupForm = ({
 
       router.push("/auth/signin");
       presentToast({
-        title:
-          "Almost there! Login to finish creating your group. Don't worry, your group details will be saved.",
+        title: "Almost there! Login to finish creating your group.",
+        description: "Don't worry, your group details will be saved.",
         position: "top",
         status: "info",
       });
