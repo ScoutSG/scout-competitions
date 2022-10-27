@@ -147,9 +147,7 @@ const LandingPage: React.FC = () => {
       <Divider />
       <Stack pt={16} pb={8} spacing={4}>
         <Center>
-          <Heading size={{ base: "xl", md: "2xl" }}>
-            We are in beta mode.
-          </Heading>
+          <Heading size={{ base: "xl", md: "2xl" }}>We are in beta.</Heading>
         </Center>
 
         <Button
