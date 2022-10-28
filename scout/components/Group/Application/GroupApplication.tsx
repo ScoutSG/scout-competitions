@@ -70,6 +70,7 @@ const Application = ({ form }: { form: Form }) => {
           status: "success",
           position: "top",
         });
+        router.push("/requests");
       } catch (err) {
         presentToast({
           title: "Failed to submit your request",

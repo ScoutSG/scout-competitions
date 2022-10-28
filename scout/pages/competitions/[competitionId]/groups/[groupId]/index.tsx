@@ -53,7 +53,7 @@ const ModifyGroupButtons = () => {
       .then(() => {
         presentToast({
           position: "top",
-          title: "Group deleted!",
+          description: "Group deleted!",
           status: "success",
         });
         router.push(`/competitions/${competitionId}`);

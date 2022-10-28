@@ -58,7 +58,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       setDraftRequest(null);
       router.push("/requests");
       presentToast({
-        title: "Request sent!",
+        description: "Request sent!",
         status: "success",
         position: "top",
       });
@@ -92,7 +92,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           `/competitions/${draftGroup.competitionId}/groups/${group_id}`
         );
         presentToast({
-          title: "Group created!",
+          description: "Group created!",
           status: "success",
           position: "top",
         });

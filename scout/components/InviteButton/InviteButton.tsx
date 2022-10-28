@@ -78,7 +78,7 @@ const InviteButton = ({ group }) => {
       response = await clientApi.post("/invitations", body);
     } catch (err) {
       presentToast({
-        title: "Failed to generate link",
+        description: "Failed to generate link",
         status: "error",
         position: "top",
       });

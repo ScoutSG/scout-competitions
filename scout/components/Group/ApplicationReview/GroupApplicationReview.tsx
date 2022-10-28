@@ -92,7 +92,7 @@ const ApplicationReview: React.FC<{
           )
         );
         presentToast({
-          title: "Rejected!",
+          description: "Rejected!",
           status: "success",
           position: "top",
         });
@@ -184,7 +184,7 @@ const ApplicationReview: React.FC<{
                       variant="outline"
                       colorScheme="telegram"
                     >
-                      Telegram
+                      @{applicant.telegramUrl}
                     </Button>
                   </ListItem>
                 )}

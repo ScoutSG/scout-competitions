@@ -133,7 +133,6 @@ const CreateOrEditGroupForm = ({
         router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {
         presentToast({
-          title: "Unable to submit",
           position: "top",
           status: "error",
           description: err.response.statusText,

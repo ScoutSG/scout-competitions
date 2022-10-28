@@ -83,7 +83,7 @@ const ProfileForm = () => {
     try {
       await clientApi.patch("/profile", updatedProfile);
       presentToast({
-        title: "Profile updated!",
+        description: "Profile updated!",
         status: "success",
         position: "top",
       });
