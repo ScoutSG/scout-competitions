@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import { addToGroup, notifyGroup } from "../../../core/utils/telegram";
+import {
+  addToGroup,
+  attemptToAddToGroup,
+  notifyGroup,
+} from "../../../core/utils/telegram";
 import { validateIfApplicationIsReviewed } from "../../../lib/services/ApplicationValidation";
 
 // GET, PATCH, DELETE /api/applications/id/
@@ -54,7 +58,7 @@ export default async function handle(req, res) {
       const application = await prisma.application.findUnique({
         where: {
           id: applicationId,
-        }
+        },
       });
 
       if (answers) {
@@ -86,39 +90,9 @@ export default async function handle(req, res) {
 
         // add to Telegram group if there is one
         if (currentGroup.telegramLink) {
-          if (!approvedMember.telegramUrl) {
-            warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
-          } else {
-            try {
-              await addToGroup(
-                currentGroup.telegramLink,
-                approvedMember.telegramUrl
-              );
-              notifyGroup(
-                currentGroup.telegramLink,
-                `Welcome to the group, ${
-                  approvedMember.name ? approvedMember.name : "Anonymous"
-                }!`
-              );
-            } catch (err) {
-              if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
-                warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${approvedMember.telegramUrl} to this group yourself.`;
-              } else if (
-                err.message ===
-                `No user has "${approvedMember.telegramUrl}" as username`
-              ) {
-                warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${approvedMember.email} to get their Telegram username to add them to this group.`;
-              }
-            }
-          }
-        }
-
-        if (warningMessage !== "") {
-          notifyGroup(
+          warningMessage = await attemptToAddToGroup(
             currentGroup.telegramLink,
-            `You've approved a new member ${
-              approvedMember.name ? approvedMember.name : "Anonymous"
-            } to join your team. ${warningMessage}`
+            approvedMember
           );
         }
 

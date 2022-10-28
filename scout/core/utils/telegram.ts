@@ -56,7 +56,11 @@ export const createGroup = async (title: string, userId: string) => {
       throw new Error(
         `I couldn't find anyone with the Telegram username you've indicated, @${userId}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
       );
+    } else {
+      throw err;
     }
+  } finally {
+    client.disconnect();
   }
 };
 
@@ -83,6 +87,7 @@ export const addToGroup = async (groupId: string | number, userId: string) => {
       userId,
     })
   );
+  await client.disconnect();
 };
 
 export const notifyGroup = async (
@@ -97,12 +102,13 @@ export const notifyGroup = async (
       randomId: toBigInt(generateRandomId()),
     })
   );
+  await client.disconnect();
 };
 
 export const attemptToAddToGroup = async (
   groupId: string | number,
   member: User
-) => {
+): Promise<string> => {
   let warningMessage = "";
   // add to Telegram group if there is one
   if (!member.telegramUrl) {
@@ -110,27 +116,35 @@ export const attemptToAddToGroup = async (
   } else {
     try {
       await addToGroup(groupId, member.telegramUrl);
-      return notifyGroup(
+      await notifyGroup(
         groupId,
         `Welcome to the group, ${member.name ? member.name : "Anonymous"}!`
       );
     } catch (err) {
-      if (err.errorMessage === "USER_PRIVACY_RESTRICTED") {
+      if (
+        ["USER_PRIVACY_RESTRICTED", "USER_IS_BLOCKED"].includes(
+          err.errorMessage
+        )
+      ) {
         warningMessage = `They have enabled privacy settings and we are unable to add them to the group. Please add @${member.telegramUrl} to this group yourself.`;
       } else if (
         err.message === `No user has "${member.telegramUrl}" as username`
       ) {
         warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email} to get their Telegram username to add them to this group.`;
+      } else {
+        throw err;
       }
     }
   }
 
   if (warningMessage !== "") {
-    return notifyGroup(
+    await notifyGroup(
       groupId,
       `You've approved a new member ${
         member.name ? member.name : "Anonymous"
       } to join your team. ${warningMessage}`
     );
   }
+
+  return warningMessage;
 };

@@ -198,7 +198,7 @@ const CreateOrEditGroupForm = ({
       <SkillsSubForm control={control} />
       <TagsSubForm control={control} />
       <QuestionsSubForm control={control} register={register} />
-      <TelegramSubForm register={register} group={group} />
+      <TelegramSubForm control={control} register={register} group={group} />
       <Spacer />
       <Button
         color="white"
