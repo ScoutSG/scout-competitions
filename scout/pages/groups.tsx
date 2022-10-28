@@ -43,7 +43,7 @@ export default function MyGroups() {
     };
 
     getGroups();
-  }, []);
+  }, [data]);
 
   if (groups === null) {
     return <Loading />;
