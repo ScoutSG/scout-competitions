@@ -30,10 +30,12 @@ import {
 import clientApi from "../../../core/api/client";
 import { Group, QuestionType } from "../../../core/types/Group";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
+import { useRouter } from "next/router";
 
 const ApplicationReview: React.FC<{
   applications: Group["applications"];
 }> = ({ applications }) => {
+  const router = useRouter();
   // only display applications with no decision made
   const [applicationsToDisplay, setApplicationsToDisplay] = useState(
     applications.filter((application) => application.isApproved === null)
@@ -76,6 +78,7 @@ const ApplicationReview: React.FC<{
           position: "top",
         })
       );
+    router.reload();
   };
 
   const rejectRequest = async (applicationId) => {
