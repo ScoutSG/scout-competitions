@@ -106,7 +106,19 @@ const CompetitionSummaryCard: React.FC<{
               Description
             </Text>
             <Collapse startingHeight={72} in={show}>
-              <Linkify>
+              <Linkify
+                componentDecorator={(decoratedHref, decoratedText, key) => (
+                  <a
+                    target="_blank"
+                    style={{ color: "#3182ce" }}
+                    href={decoratedHref}
+                    key={key}
+                    onClick={(event) => event.stopPropagation()}
+                  >
+                    {decoratedText}
+                  </a>
+                )}
+              >
                 {competition.description.split("\\n").map((text) => (
                   <Text whiteSpace="pre-line">{text}</Text>
                 ))}
