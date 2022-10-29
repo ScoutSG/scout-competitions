@@ -29,7 +29,7 @@ export default function MyGroups() {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const response = await clientApi.get(`/groups?userId=${data.user.id}`);
+        const response = await clientApi.get("/groups");
         setGroups(response.data);
       } catch (err) {
         presentToast({

@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import { createGroup, sendWelcomeMessage } from "../../../core/utils/telegram";
 import { validateUserIsNotInCompetition } from "../../../lib/services/GroupValidation";
+import { authOptions } from "../auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth/next";
 
 // GET POST /api/groups
 export default async function handle(
@@ -24,7 +26,13 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
-  const userId = parseInt(req.query.userId);
+  const session = await unstable_getServerSession(req, res, authOptions)
+  if (!session) {
+    res.status(401).end()
+    return;
+  }
+
+  const userId = session.user.id;
   const groups = await prisma.group.findMany({
     where: {
       members: {
@@ -74,7 +82,13 @@ async function handleAdd(req, res) {
         id: leaderId,
       },
     });
-    telegramGroupId = await createGroup(name, leader.telegramUrl);
+    try {
+      telegramGroupId = await createGroup(name, leader);
+    } catch (err) {
+      res.statusMessage = err;
+      res.status(400).end();
+      return;
+    }
   }
 
   let memberResult = members.map((x) => ({ id: x }));

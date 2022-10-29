@@ -133,7 +133,6 @@ const CreateOrEditGroupForm = ({
         router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {
         presentToast({
-          title: "Unable to submit",
           position: "top",
           status: "error",
           description: err.response.statusText,
@@ -147,8 +146,8 @@ const CreateOrEditGroupForm = ({
 
       router.push("/auth/signin");
       presentToast({
-        title:
-          "Almost there! Login to finish creating your group. Don't worry, your group details will be saved.",
+        title: "Almost there! Login to finish creating your group.",
+        description: "Don't worry, your group details will be saved.",
         position: "top",
         status: "info",
       });
@@ -199,7 +198,7 @@ const CreateOrEditGroupForm = ({
       <SkillsSubForm control={control} />
       <TagsSubForm control={control} />
       <QuestionsSubForm control={control} register={register} />
-      <TelegramSubForm register={register} group={group} />
+      <TelegramSubForm control={control} register={register} group={group} />
       <Spacer />
       <Button
         color="white"

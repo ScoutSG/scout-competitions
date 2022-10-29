@@ -7,6 +7,7 @@ import {
 import { CompetitionData, GroupSummaryData } from "../../core/types/CompetitionDetail";
 import CompetitionInformation from "./CompetitionInformation";
 import GroupSummaryTab from "./GroupSummary";
+import Linkify from "react-linkify";
 
 const CompetitionDescription = ({
   competition,
@@ -24,7 +25,11 @@ const CompetitionDescription = ({
         <Text fontSize="xl" fontWeight="semibold">
           About
         </Text>
-        <Text whiteSpace="pre-line">{competition.description}</Text>
+        <Linkify>
+          {competition.description.split("\\n").map((text) => (
+            <Text whiteSpace="pre-line">{text}</Text>
+          ))}
+        </Linkify>
         <Box height={8} />
         <Text fontSize="xl" fontWeight="semibold">
           Groups

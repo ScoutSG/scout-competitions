@@ -3,16 +3,14 @@ import {
   Stack,
   Text,
   useColorModeValue,
-  Button,
   Spacer,
-  Link,
+  Link
 } from "@chakra-ui/react";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "./CompetitionSummaryCard";
 import NoCompetitions from "./NoCompetitions";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 import {
-  BETA_FEEDBACK_LINK,
   SUGGEST_COMPETITION_LINK,
 } from "../../core/constants";
 
@@ -37,6 +35,7 @@ const CompetitionSummaryView: React.FC<{
               <Spacer />
               Know of a competition that isn't listed here?{" "}
               <Link
+                isExternal={true}
                 href={SUGGEST_COMPETITION_LINK}
                 target="_blank"
                 fontWeight="semibold"
