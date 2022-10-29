@@ -5,7 +5,7 @@ import Explanation from "../../Explanation";
 import { CreateOrEditGroupFormValue } from "./types";
 
 const SUGGESTED_TAGS = [
-  "Here for fun",
+  "Here to have fun",
   "Here to win",
   "Here to learn",
   "Here to make friends",

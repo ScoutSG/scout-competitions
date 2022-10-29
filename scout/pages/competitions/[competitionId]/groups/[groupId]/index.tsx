@@ -28,7 +28,7 @@ import ShareButton from "../../../../../components/ShareButton";
 import InviteButton from "../../../../../components/InviteButton";
 import clientApi from "../../../../../core/api/client";
 import { useRouter } from "next/router";
-import { TbPencil, TbTrash } from "react-icons/tb";
+import { TbBrandTelegram, TbPencil, TbTrash } from "react-icons/tb";
 import { Form, Group } from "../../../../../core/types/Group";
 import {
   useIsMember,
@@ -39,6 +39,7 @@ import PageContainer from "../../../../../components/PageContainer";
 import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../../../../_error";
+import Linkify from "../../../../../components/Linkify";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -72,21 +73,21 @@ const ModifyGroupButtons = () => {
   };
 
   return (
-    <>
+    <ButtonGroup>
       <Link
         href={`/competitions/${competitionId}/groups/${groupId}/edit`}
         onClick={async () => {
           await eventAnalyticsTracker("Edit Group " + groupId);
         }}
       >
-        <Button width="100%" leftIcon={<TbPencil />}>
-          Edit Group
+        <Button width="50%" leftIcon={<TbPencil />}>
+          Edit
         </Button>
       </Link>
       <Popover>
         <PopoverTrigger>
-          <Button width="100%" colorScheme="red" leftIcon={<TbTrash />}>
-            Delete Group
+          <Button width="50%" colorScheme="red" leftIcon={<TbTrash />}>
+            Delete
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -107,7 +108,7 @@ const ModifyGroupButtons = () => {
           </PopoverFooter>
         </PopoverContent>
       </Popover>
-    </>
+    </ButtonGroup>
   );
 };
 
@@ -209,7 +210,10 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
             >
               {group.targetSize - group.currentSize} spots left!
             </Text>
-            <Text>{group.description}</Text>
+
+            <Linkify>
+              <Text>{group.description}</Text>
+            </Linkify>
             {group.targetSkills.length === 0 ? null : (
               <>
                 <Text fontWeight={800}>Looking for</Text>
@@ -230,6 +234,19 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
                 </Box>
               </>
             )}
+            {(isMember || isLeader) && group.telegramInviteLink ? (
+              <>
+                <Button
+                  leftIcon={<TbBrandTelegram />}
+                  colorScheme="telegram"
+                  onClick={() =>
+                    window.open(group.telegramInviteLink, "_blank")
+                  }
+                >
+                  Join Telegram group
+                </Button>
+              </>
+            ) : null}
             {isMember || isLeader ? <ModifyGroupButtons /> : null}
           </Stack>
         </Stack>

@@ -1,14 +1,11 @@
+import { Box, Divider, Flex, Stack, Text } from "@chakra-ui/react";
 import {
-  Box,
-  Divider,
-  Flex,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { CompetitionData, GroupSummaryData } from "../../core/types/CompetitionDetail";
+  CompetitionData,
+  GroupSummaryData,
+} from "../../core/types/CompetitionDetail";
+import Linkify from "../Linkify";
 import CompetitionInformation from "./CompetitionInformation";
 import GroupSummaryTab from "./GroupSummary";
-import Linkify from "react-linkify";
 
 const CompetitionDescription = ({
   competition,

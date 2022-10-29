@@ -25,6 +25,7 @@ import { useIsMember } from "../../../lib/hooks/useUserDetails";
 import ShareButton from "../../ShareButton";
 import MemberCard from "../../MemberCard";
 import InviteButton from "../../InviteButton";
+import Linkify from "../../Linkify";
 
 const GroupSummaryCard = ({
   group,
@@ -82,7 +83,9 @@ const GroupSummaryCard = ({
             {group.description?.length > 0 ? (
               <Stack spacing={2}>
                 <Text fontWeight="bold">Description</Text>
-                <Text>{group.description}</Text>
+                <Linkify>
+                  <Text>{group.description}</Text>
+                </Linkify>
               </Stack>
             ) : null}
 

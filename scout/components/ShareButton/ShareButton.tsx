@@ -86,20 +86,13 @@ const ShareButton = ({ group }) => {
             <ModalFooter>
               <ButtonGroup>
                 <Button
-                  variant="ghost"
-                  colorScheme="blue"
+                  colorScheme="telegram"
                   leftIcon={<TbBrandTelegram />}
                   onClick={shareViaTelegram}
                 >
                   Telegram
                 </Button>
-                <Button
-                  leftIcon={<TbCopy />}
-                  variant="outline"
-                  colorScheme="black"
-                  rounded="3xl"
-                  onClick={copyLink}
-                >
+                <Button leftIcon={<TbCopy />} onClick={copyLink}>
                   {clipboard.hasCopied ? "Copied" : "Copy Link"}
                 </Button>
               </ButtonGroup>

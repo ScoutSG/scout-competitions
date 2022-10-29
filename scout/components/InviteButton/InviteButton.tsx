@@ -22,6 +22,8 @@ import clientApi from "../../core/api/client";
 import { AxiosResponse } from "axios";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import { TbPlus } from "react-icons/tb";
+import { useQRCode } from "next-qrcode";
 
 const useInvite = () => {
   const [code, setCode] = useState<string>("");
@@ -65,6 +67,7 @@ const InviteButton = ({ group }) => {
   const { presentToast } = useCustomToast();
   const { setCode, hasCopied, inviteLink } = useInvite();
   const eventAnalyticsTracker = useAnalyticsTracker("Invite " + group.name);
+  const { Canvas } = useQRCode();
 
   const generateLink = async () => {
     setIsLoading(true);
@@ -93,18 +96,19 @@ const InviteButton = ({ group }) => {
   return (
     <>
       <Button
+        leftIcon={<TbPlus />}
         variant="ghost"
         color="primary.500"
         _hover={{ color: "white", bgColor: "primary.500" }}
         onClick={onOpen}
         w="fit-content"
       >
-        Invite
+        Add Members
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay>
           <ModalContent>
-            <ModalHeader>Invite</ModalHeader>
+            <ModalHeader>Add Members</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Alert status="warning">
@@ -114,10 +118,9 @@ const InviteButton = ({ group }) => {
                     <AlertTitle>Important!</AlertTitle>
                   </Stack>
                   <AlertDescription>
-                    This link is unique and allows the recipient to be added
-                    into the group automatically. You can use it to invite your
-                    friends to join your team without going through the request
-                    and approval process.
+                    This link allows the recipient to be added into the group
+                    automatically. Use it to invite your friends to join your
+                    team without going through the request and approval process.
                   </AlertDescription>
                 </Stack>
               </Alert>
@@ -130,6 +133,19 @@ const InviteButton = ({ group }) => {
                   <Box borderWidth={1} px={4} py={2}>
                     <Center>{inviteLink}</Center>
                   </Box>
+                  <Center>
+                    <Canvas
+                      text={inviteLink}
+                      options={{
+                        type: "image/jpeg",
+                        quality: 0.3,
+                        level: "M",
+                        margin: 3,
+                        scale: 4,
+                        width: 200,
+                      }}
+                    />
+                  </Center>
                 </Stack>
               )}
             </ModalBody>

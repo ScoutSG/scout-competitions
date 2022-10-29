@@ -25,10 +25,10 @@ import { AiTwotoneCalendar } from "react-icons/ai";
 import { RiTeamLine } from "react-icons/ri";
 import { AiFillTrophy } from "react-icons/ai";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import Linkify from "react-linkify";
 import Link from "next/link";
 import moment from "moment";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import Linkify from "../Linkify";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;

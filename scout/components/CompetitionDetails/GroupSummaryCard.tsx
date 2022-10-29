@@ -9,14 +9,15 @@ import {
   Tag,
   TagLabel,
 } from "@chakra-ui/react";
-import { Group } from "../../core/types/Group";
 import GroupMember from "./GroupMember";
 import GroupGoal from "./GroupGoal";
 import useIsMemberOfCompetition from "./useIsMember";
 import { useIsMember, useIsLeader } from "../../lib/hooks/useUserDetails";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import { GroupSummaryData } from "../../core/types/CompetitionDetail";
+import Linkify from "../Linkify";
 
-const GroupSummaryCard = ({ group }: { group: Group }) => {
+const GroupSummaryCard = ({ group }: { group: GroupSummaryData }) => {
   const { isMember } = useIsMemberOfCompetition(group.competitionId);
   const isPartOfGroup =
     useIsMember(group.members) || useIsLeader(group.leaderId);
@@ -64,17 +65,16 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
       role="group"
     >
       <Wrap align="flex-end">
-        <Text
-          fontSize={{ base: "xl", md: "2xl" }}
-          fontWeight="semibold"
-        >
+        <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="semibold">
           {group.name}
         </Text>
         <Spacer />
         {!isMember || isPartOfGroup ? viewButton : null}
       </Wrap>
       <Stack pt={2}>
-        <Text>{group.description}</Text>
+        <Linkify>
+          <Text>{group.description}</Text>
+        </Linkify>
         <Stack
           spacing={2}
           pt={4}

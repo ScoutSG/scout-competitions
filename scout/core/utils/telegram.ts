@@ -21,6 +21,12 @@ const generateRandomId = () => {
   return Math.floor(Math.random() * 999999999999999);
 };
 
+const sendToMyself = async (message: string) => {
+  await client.connect();
+  await client.sendMessage("me", { message });
+  await client.disconnect();
+};
+
 export const addContact = async (user: User) => {
   await client.invoke(
     new Api.contacts.AddContact({
@@ -71,6 +77,7 @@ export const createGroup = async (title: string, user: User) => {
         `I couldn't find anyone with the Telegram username you've indicated, @${user.telegramUrl}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
       );
     } else {
+      sendToMyself(`Unknown error in createGroup: ${JSON.stringify(err)}`);
       throw err;
     }
   } finally {
@@ -103,6 +110,23 @@ export const addToGroup = async (groupId: string | number, user: User) => {
     })
   );
   await client.disconnect();
+};
+
+export const getInviteLink = async (groupId: string | number) => {
+  await client.connect();
+  const result = (await client.invoke(
+    new Api.messages.GetExportedChatInvites({
+      peer: new Api.InputPeerChat({ chatId: toBigInt(groupId) }),
+      adminId: "me",
+      limit: 2,
+      revoked: false,
+    })
+  )) as Api.messages.ExportedChatInvites;
+  if (result.invites.length > 0 && "link" in result.invites[0]) {
+    return result.invites[0].link;
+  }
+  client.disconnect();
+  return "";
 };
 
 export const notifyGroup = async (
@@ -147,6 +171,9 @@ export const attemptToAddToGroup = async (
       ) {
         warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email}.`;
       } else {
+        sendToMyself(
+          `Unknown error in attemptToAddToGroup: ${JSON.stringify(err)}`
+        );
         warningMessage = `Failed to add ${
           member.name ? member.name : "Anonymous"
         } to the group. Please add @${

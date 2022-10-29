@@ -26,7 +26,7 @@ const GroupMember = ({ goal }: { goal: String }) => {
       <Text>We're here to ...</Text>
       <Tag colorScheme={colorScheme}>
         <TagLeftIcon as={icon} />
-        <TagLabel>{goal}</TagLabel>
+        <TagLabel>{goal.replace("Here to ", "")}</TagLabel>
       </Tag>
     </Wrap>
   );

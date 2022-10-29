@@ -84,7 +84,9 @@ const CreateOrEditGroupForm = ({
         ),
       },
       members: [],
-      goal: "Win the competition",
+      goal:
+        values.tags.find(({ value }) => value.startsWith("Here to"))?.value ??
+        "",
       withTelegramGroup: values.withTelegramGroup,
     };
 
