@@ -15,6 +15,7 @@ import useIsMemberOfCompetition from "./useIsMember";
 import { useIsMember, useIsLeader } from "../../lib/hooks/useUserDetails";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 import { GroupSummaryData } from "../../core/types/CompetitionDetail";
+import Linkify from "../Linkify";
 
 const GroupSummaryCard = ({ group }: { group: GroupSummaryData }) => {
   const { isMember } = useIsMemberOfCompetition(group.competitionId);
@@ -71,7 +72,9 @@ const GroupSummaryCard = ({ group }: { group: GroupSummaryData }) => {
         {!isMember || isPartOfGroup ? viewButton : null}
       </Wrap>
       <Stack pt={2}>
-        <Text>{group.description}</Text>
+        <Linkify>
+          <Text>{group.description}</Text>
+        </Linkify>
         <Stack
           spacing={2}
           pt={4}

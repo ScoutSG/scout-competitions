@@ -5,7 +5,6 @@ import {
   Stack,
   Text,
   Badge,
-  SimpleGrid,
   Button,
   ButtonGroup,
   Icon,
@@ -16,6 +15,7 @@ import NextLink from "next/link";
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
 import { formatDate } from "../../../core/utils/date";
 import { TbClock } from "react-icons/tb";
+import Linkify from "../../Linkify";
 
 type AboutCardProps = {
   data: CompetitionDataSummary;
@@ -56,7 +56,9 @@ const AboutCard: React.FC<AboutCardProps> = (props) => {
 
         <Box>
           <Heading size="sm">About</Heading>
-          <Text>{description}</Text>
+          <Linkify>
+            <Text>{description}</Text>
+          </Linkify>
         </Box>
 
         <ButtonGroup>

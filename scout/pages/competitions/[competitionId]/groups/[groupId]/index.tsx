@@ -39,6 +39,7 @@ import PageContainer from "../../../../../components/PageContainer";
 import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../../../../_error";
+import Linkify from "../../../../../components/Linkify";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
@@ -209,7 +210,10 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
             >
               {group.targetSize - group.currentSize} spots left!
             </Text>
-            <Text>{group.description}</Text>
+
+            <Linkify>
+              <Text>{group.description}</Text>
+            </Linkify>
             {group.targetSkills.length === 0 ? null : (
               <>
                 <Text fontWeight={800}>Looking for</Text>

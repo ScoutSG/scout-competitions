@@ -18,6 +18,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { CompetitionDataSummary } from "../../../core/types/CompetitionDetail";
 import { daysLeft } from "../../../core/utils/date";
 import { maxWidth } from "../../../core/utils/maxWidth";
+import Linkify from "../../Linkify";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;
@@ -91,9 +92,11 @@ const CompetitionSummaryCard: React.FC<{
               </Stack>
 
               <Stack>
-                <Text noOfLines={{ base: 5, md: 100 }}>
-                  {competition.description}
-                </Text>
+                <Linkify>
+                  <Text noOfLines={{ base: 5, md: 100 }}>
+                    {competition.description}
+                  </Text>
+                </Linkify>
               </Stack>
               {isHovering ? (
                 <Fade in={isHovering}>

@@ -25,10 +25,10 @@ import { AiTwotoneCalendar } from "react-icons/ai";
 import { RiTeamLine } from "react-icons/ri";
 import { AiFillTrophy } from "react-icons/ai";
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import Linkify from "react-linkify";
 import Link from "next/link";
 import moment from "moment";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import Linkify from "../Linkify";
 
 const CompetitionSummaryCard: React.FC<{
   competition: CompetitionDataSummary;
@@ -106,19 +106,7 @@ const CompetitionSummaryCard: React.FC<{
               Description
             </Text>
             <Collapse startingHeight={72} in={show}>
-              <Linkify
-                componentDecorator={(decoratedHref, decoratedText, key) => (
-                  <a
-                    target="_blank"
-                    style={{ color: "#3182ce" }}
-                    href={decoratedHref}
-                    key={key}
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    {decoratedText}
-                  </a>
-                )}
-              >
+              <Linkify>
                 {competition.description.split("\\n").map((text) => (
                   <Text whiteSpace="pre-line">{text}</Text>
                 ))}

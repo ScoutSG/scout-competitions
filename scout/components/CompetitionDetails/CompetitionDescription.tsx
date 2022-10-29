@@ -1,14 +1,11 @@
+import { Box, Divider, Flex, Stack, Text } from "@chakra-ui/react";
 import {
-  Box,
-  Divider,
-  Flex,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { CompetitionData, GroupSummaryData } from "../../core/types/CompetitionDetail";
+  CompetitionData,
+  GroupSummaryData,
+} from "../../core/types/CompetitionDetail";
+import Linkify from "../Linkify";
 import CompetitionInformation from "./CompetitionInformation";
 import GroupSummaryTab from "./GroupSummary";
-import Linkify from "react-linkify";
 
 const CompetitionDescription = ({
   competition,
@@ -26,19 +23,7 @@ const CompetitionDescription = ({
         <Text fontSize="xl" fontWeight="semibold">
           About
         </Text>
-        <Linkify
-          componentDecorator={(decoratedHref, decoratedText, key) => (
-            <a
-              target="_blank"
-              style={{ color: "#3182ce" }}
-              href={decoratedHref}
-              key={key}
-              onClick={(event) => event.stopPropagation()}
-            >
-              {decoratedText}
-            </a>
-          )}
-        >
+        <Linkify>
           {competition.description.split("\\n").map((text) => (
             <Text whiteSpace="pre-line">{text}</Text>
           ))}
