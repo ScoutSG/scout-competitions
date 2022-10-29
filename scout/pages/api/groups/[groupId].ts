@@ -76,7 +76,7 @@ export default async function handle(req, res) {
             },
           });
           try {
-            telegramGroupId = await createGroup(name, leader.telegramUrl);
+            telegramGroupId = await createGroup(name, leader);
             await sendWelcomeMessage(
               telegramGroupId,
               name,

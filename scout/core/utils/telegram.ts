@@ -21,12 +21,24 @@ const generateRandomId = () => {
   return Math.floor(Math.random() * 999999999999999);
 };
 
-export const createGroup = async (title: string, userId: string) => {
+export const addContact = async (user: User) => {
+  await client.invoke(
+    new Api.contacts.AddContact({
+      id: user.telegramUrl,
+      firstName: user.name,
+      lastName: "",
+      phone: "",
+    })
+  );
+};
+
+export const createGroup = async (title: string, user: User) => {
   await client.connect();
   try {
+    await addContact(user);
     const result = (await client.invoke(
       new Api.messages.CreateChat({
-        users: ["me", userId],
+        users: ["me", user.telegramUrl],
         title,
       })
     )) as Api.Updates;
@@ -34,7 +46,7 @@ export const createGroup = async (title: string, userId: string) => {
     await client.invoke(
       new Api.messages.EditChatAdmin({
         chatId: toBigInt(chatId),
-        userId,
+        userId: user.telegramUrl,
         isAdmin: true,
       })
     );
@@ -43,7 +55,7 @@ export const createGroup = async (title: string, userId: string) => {
     if (err.errorMessage === "USERS_TOO_FEW") {
       client.invoke(
         new Api.messages.SendMessage({
-          peer: userId,
+          peer: user.telegramUrl,
           message:
             "Hello from ScoutSG! I wasn't able to add you to a group chat due to your privacy settings.\nCould you add @scoutsg as a contact? Then I'll be able to add you to a Telegram group!\nAlternatively, you could also add @scoutsg as an exception under Privacy and Security > Groups & Channels.",
           randomId: toBigInt(generateRandomId()),
@@ -52,9 +64,11 @@ export const createGroup = async (title: string, userId: string) => {
       throw new Error(
         "Please add @scoutsg as a contact on Telegram so that we can set up a Telegram group for you!"
       );
-    } else if (err.message === `No user has "${userId}" as username`) {
+    } else if (
+      err.message === `No user has "${user.telegramUrl}" as username`
+    ) {
       throw new Error(
-        `I couldn't find anyone with the Telegram username you've indicated, @${userId}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
+        `I couldn't find anyone with the Telegram username you've indicated, @${user.telegramUrl}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
       );
     } else {
       throw err;
@@ -79,12 +93,13 @@ export const sendWelcomeMessage = async (
   await notifyGroup(telegramGroupId, message);
 };
 
-export const addToGroup = async (groupId: string | number, userId: string) => {
+export const addToGroup = async (groupId: string | number, user: User) => {
   await client.connect();
-  const result = await client.invoke(
+  await addContact(user);
+  await client.invoke(
     new Api.messages.AddChatUser({
       chatId: toBigInt(groupId),
-      userId,
+      userId: user.telegramUrl,
     })
   );
   await client.disconnect();
@@ -115,7 +130,7 @@ export const attemptToAddToGroup = async (
     warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${member.email}.`;
   } else {
     try {
-      await addToGroup(groupId, member.telegramUrl);
+      await addToGroup(groupId, member);
       await notifyGroup(
         groupId,
         `Welcome to the group, ${member.name ? member.name : "Anonymous"}!`
@@ -132,7 +147,11 @@ export const attemptToAddToGroup = async (
       ) {
         warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email}.`;
       } else {
-        throw err;
+        warningMessage = `Failed to add ${
+          member.name ? member.name : "Anonymous"
+        } to the group. Please add @${
+          member.telegramUrl
+        } to this group yourself.`;
       }
     }
   }

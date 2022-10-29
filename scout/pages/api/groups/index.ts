@@ -75,7 +75,7 @@ async function handleAdd(req, res) {
       },
     });
     try {
-      telegramGroupId = await createGroup(name, leader.telegramUrl);
+      telegramGroupId = await createGroup(name, leader);
     } catch (err) {
       res.statusMessage = err;
       res.status(400).end();
