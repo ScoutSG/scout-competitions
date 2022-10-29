@@ -58,6 +58,7 @@ export default async function handle(req, res) {
         description,
         targetSkills,
         tags,
+        goal,
         form,
         leaderId,
         members,
@@ -112,6 +113,7 @@ export default async function handle(req, res) {
           description,
           targetSkills,
           tags,
+          goal,
           members: {
             connect: members.map((x) => ({ id: x })),
           },
