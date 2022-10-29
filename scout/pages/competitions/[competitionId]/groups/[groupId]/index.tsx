@@ -41,10 +41,6 @@ import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../../../../_error";
 import Linkify from "../../../../../components/Linkify";
-import {
-  useHasEditGroup,
-  useHasDeleteGroup,
-} from "../../../../../lib/hooks/useEditDeleteGroup";
 import prisma from "../../../../../lib/prisma";
 
 const ModifyGroupButtons = () => {
@@ -165,8 +161,6 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
   const isLeader = useIsLeader(group?.leaderId);
   const isMember = useIsMember(group?.members);
   const router = useRouter();
-  const { hasEdit, setHasEdit } = useHasEditGroup();
-  const { hasDelete, setHasDelete } = useHasDeleteGroup();
 
   if (
     !group ||
@@ -174,27 +168,6 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
   ) {
     return <NotFound />;
   }
-
-  // const [_group, setGroup] = useState(group);
-
-  // useEffect(() => {
-  //   if (hasEdit || hasDelete) {
-  //     const updateGroupDetails = async () => {
-  //       const response = await clientApi.get(`/groups${group.id}`);
-  //       setGroup(response.data);
-  //     };
-
-  //     updateGroupDetails();
-  //   }
-
-  //   if (hasEdit) {
-  //     setHasEdit(false);
-  //   }
-
-  //   if (hasDelete) {
-  //     setHasDelete(false);
-  //   }
-  // }, [hasEdit, hasDelete]);
 
   return (
     <PageContainer>
