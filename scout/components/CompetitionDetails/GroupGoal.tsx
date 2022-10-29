@@ -1,21 +1,27 @@
 import { Wrap, Tag, TagLeftIcon, TagLabel, Text } from "@chakra-ui/react";
 import { AiFillTrophy } from "react-icons/ai";
-import { IoMdBuild } from "react-icons/io";
 import { FaRegLightbulb } from "react-icons/fa";
+import { TbMoodHappy, TbUsers } from "react-icons/tb";
 
 const GroupMember = ({ goal }: { goal: String }) => {
+  if (!goal) return;
+
   let colorScheme = "orange";
   let icon = AiFillTrophy;
   switch (goal) {
-    case "Win the competition":
+    case "Here to win":
       colorScheme = "orange";
       icon = AiFillTrophy;
       break;
-    case "Apply existing skills":
-      colorScheme = "purple";
-      icon = IoMdBuild;
+    case "Here to have fun":
+      colorScheme = "yellow";
+      icon = TbMoodHappy;
       break;
-    case "Try something new":
+    case "Here to make friends":
+      colorScheme = "purple";
+      icon = TbUsers;
+      break;
+    case "Here to learn":
       colorScheme = "green";
       icon = FaRegLightbulb;
       break;
