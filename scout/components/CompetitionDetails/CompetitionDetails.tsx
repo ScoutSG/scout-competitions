@@ -31,8 +31,6 @@ const CompetitionDetails: React.FC = ({
     "Competition Details " + competition?.name
   );
 
-  console.log(isMember);
-
   if (!competition) {
     return <NotFound />;
   }

@@ -63,7 +63,6 @@ const ModifyGroupButtons = () => {
           description: "Group deleted!",
           status: "success",
         });
-        console.log("setting has delete to true");
         setHasDelete(true); // delete group
         router.push(`/competitions/${competitionId}`);
       })
@@ -161,8 +160,6 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
 
   useEffect(() => {
     if (hasEdit || hasDelete) {
-      console.log("hasEdit: " + hasEdit);
-      console.log("hasDelete: " + hasDelete);
       router.reload();
     }
 
