@@ -45,9 +45,21 @@ export default async function handle(req, res) {
         where: {
           id: groupId,
         },
+        include: {
+          competition: true,
+        }
       });
 
       res.status(200).json(group);
+
+      try {
+        await res.revalidate(`/competitions/${group.competition.id}`);
+        await res.revalidate(`/competitions/${group.competition.id}/groups/${groupId}`);
+        res.json({revalidated: true});
+      } catch (err) {
+        // if there was an error, next will continue to show
+        // the last successfully generated page
+      }
 
       // updates member array of group
     } else if (httpMethod === "PATCH") {
@@ -123,6 +135,9 @@ export default async function handle(req, res) {
           id: groupId,
         },
         data: newGroupData,
+        include: {
+          competition: true,
+        }
       });
 
       const updatedGroup = await prisma.group.findUnique({
@@ -137,6 +152,15 @@ export default async function handle(req, res) {
       });
 
       res.status(200).json(updatedGroup);
+
+      try {
+        await res.revalidate(`/competitions/${group.competition.id}/groups/${groupId}`);
+        return res.json({revalidated: true});
+      } catch (err) {
+        // if there was an error, next will continue to show
+        // the last successfully generated page
+        return res.status(500).send({message: "Error revalidating"});
+      }
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
       res.status(405).end(`Method ${httpMethod} Not Allowed`);

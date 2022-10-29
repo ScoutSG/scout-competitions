@@ -28,11 +28,12 @@ export async function getStaticProps(context) {
         id: competitionId,
       },
       select: {
+        id: true,
         name: true,
         description: true,
         minSize: true,
-        maxSize: true
-      }
+        maxSize: true,
+      },
     });
   }
 
