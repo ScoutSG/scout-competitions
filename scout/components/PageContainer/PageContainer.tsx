@@ -51,18 +51,39 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
 
   useEffect(() => {
     if (draftRequest !== null && session.status === "authenticated") {
+      presentToast({
+        description: "Loading your saved request",
+        status: "info",
+        position: "top",
+      });
+
       const body = {
         ...draftRequest,
         userId: session.data.user.id,
       };
-      clientApi.post("/applications", body);
-      setDraftRequest(null);
-      router.push("/requests");
-      presentToast({
-        description: "Request sent!",
-        status: "success",
-        position: "top",
-      });
+
+      const submitApplication = async () => {
+        try {
+          await clientApi.post("/applications", body);
+          presentToast({
+            description: "Request sent!",
+            status: "success",
+            position: "top",
+          });
+          router.push("/requests");
+        } catch (err) {
+          presentToast({
+            title: "Failed to submit your request",
+            position: "top",
+            status: "error",
+            description: err.response.statusText,
+          });
+        } finally {
+          setDraftRequest(null);
+        }
+      };
+
+      submitApplication();
     }
   }, [draftRequest, session]);
 
