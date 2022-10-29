@@ -66,8 +66,10 @@ const ModifyGroupButtons = () => {
           status: "success",
         });
 
-        router.prefetch(`/competitions/${competitionId}`);
-        router.push(`/competitions/${competitionId}`);
+        // router.prefetch(`/competitions/${competitionId}`);
+        router
+          .push(`/competitions/${competitionId}`)
+          .then(() => router.reload());
       })
       .catch((err) => {
         presentToast({
