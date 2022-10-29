@@ -37,13 +37,13 @@ const AvatarMenu = () => {
           <Stack>
             {session.user.name !== "" && (
               <Center>
-                <Text fontSize={"xl"} fontWeight="semibold">
+                <Text fontSize={"xl"} fontWeight="semibold" textAlign="center">
                   {session.user.name}
                 </Text>
               </Center>
             )}
             <Center>
-              <Text fontSize={"md"} fontWeight="normal">
+              <Text fontSize={"md"} fontWeight="normal" textAlign="center">
                 {session.user.email}
               </Text>
             </Center>
