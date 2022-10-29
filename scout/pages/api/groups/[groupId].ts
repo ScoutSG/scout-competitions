@@ -75,18 +75,23 @@ export default async function handle(req, res) {
               id: leaderId,
             },
           });
-          telegramGroupId = await createGroup(name, leader.telegramUrl);
-          await sendWelcomeMessage(
-            telegramGroupId,
-            name,
-            group.competitionId,
-            groupId
-          );
-          await Promise.all(
-            group.members.map((member) =>
-              attemptToAddToGroup(telegramGroupId, member)
-            )
-          );
+          try {
+            telegramGroupId = await createGroup(name, leader);
+            await sendWelcomeMessage(
+              telegramGroupId,
+              name,
+              group.competitionId,
+              groupId
+            );
+            await Promise.all(
+              group.members.map((member) =>
+                attemptToAddToGroup(telegramGroupId, member)
+              )
+            );
+          } catch (err) {
+            res.statusMessage = err;
+            res.status(400).end();
+          }
         }
       }
 

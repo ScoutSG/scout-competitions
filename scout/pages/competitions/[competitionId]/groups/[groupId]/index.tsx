@@ -53,9 +53,7 @@ const ModifyGroupButtons = () => {
       .then(() => {
         presentToast({
           position: "top",
-          title: "Success",
-          description:
-            "Group has been successfully deleted.\n We will be redirecting you to the competitions page.",
+          description: "Group deleted!",
           status: "success",
         });
         router.push(`/competitions/${competitionId}`);

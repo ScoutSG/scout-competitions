@@ -9,73 +9,61 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
-  Button,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, useWatch } from "react-hook-form";
 import clientApi from "../../../core/api/client";
 import { Group } from "../../../core/types/Group";
 import { Profile } from "../../../core/types/Profile";
 import { CreateOrEditGroupFormValue } from "./types";
-import { TbBrandTelegram, TbChevronRight, TbPlus } from "react-icons/tb";
+import { TbBrandTelegram } from "react-icons/tb";
+import Explanation from "../../Explanation";
 
 type TelegramSubFormProps = Pick<
   UseFormReturn<CreateOrEditGroupFormValue>,
-  "register"
+  "register" | "control"
 > & {
   group: Group;
 };
 
-const CHECKBOX_TEXT =
-  "Create a Telegram group for this team and automatically add team members into the group chat upon approval. This chat will also be used for notifications when new people request to join your team.";
+const CHECKBOX_TEXT = "Create a Telegram group for this team";
+const HELPER_TEXT =
+  "This chat will be notified when new people request to join your team. When new members are approved, they will automatically be added to the group chat.";
 
+const formLabel = (
+  <FormLabel htmlFor="withTelegramGroup">
+    <Heading as="h3" size="md" display="inline">
+      One-click Telegram Group Setup
+    </Heading>
+    <Explanation label={HELPER_TEXT} />
+  </FormLabel>
+);
 export default function TelegramSubForm({
+  control,
   register,
   group,
 }: TelegramSubFormProps) {
   const [profile, setProfile] = useState<Partial<Profile>>({});
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+
+  const isChecked = useWatch({ control, name: "withTelegramGroup" });
 
   useEffect(() => {
-    clientApi
-      .get("/profile")
-      .then((response) => {
-        setProfile(response.data);
-      })
-      .catch((err) => {
-        setIsAuthenticated(false);
-      });
+    clientApi.get("/profile").then((response) => {
+      setProfile(response.data);
+    });
   }, []);
 
-  const formLabel = (
-    <FormLabel htmlFor="withTelegramGroup">
-      <Heading as="h3" size="md">
-        Create Telegram Group
-      </Heading>
-    </FormLabel>
-  );
-
-  // if leader has no Telegram username, cannot check
+  // if leader has no Telegram username, and they check, then show the tg username field
   if (!profile.telegramUrl) {
     return (
       <>
         <FormControl>
           {formLabel}
-          <Alert status="info" rounded="xl" mt={3} mb={3}>
-            <AlertIcon />
-            <Text>
-              {isAuthenticated
-                ? "You haven't indicated your Telegram username. Check this box to tell us your telegram username and we'll create the group for you!"
-                : "You're not signed in. Check this box to tell us your telegram username and we'll create the group for you!"}
-            </Text>
-          </Alert>
-          <Checkbox isChecked={isCheck} onChange={() => setIsCheck(!isCheck)}>
+          <Checkbox {...register("withTelegramGroup")}>
             {CHECKBOX_TEXT}
           </Checkbox>
         </FormControl>
-        {isCheck ? (
+        {isChecked ? (
           <FormControl isRequired>
             <FormLabel htmlFor="name">Telegram Username</FormLabel>
             <InputGroup>
@@ -99,8 +87,7 @@ export default function TelegramSubForm({
         <Alert status="info">
           <AlertIcon />
           <Text>
-            There's already a Telegram group chat linked to this group! If your
-            team is complete, you may remove @scoutsg from your group chat.
+            There's already a Telegram group chat linked to this group!
           </Text>
         </Alert>
         <Checkbox disabled isChecked>
