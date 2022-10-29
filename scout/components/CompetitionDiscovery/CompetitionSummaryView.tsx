@@ -4,15 +4,13 @@ import {
   Text,
   useColorModeValue,
   Spacer,
-  Link
+  Link,
 } from "@chakra-ui/react";
 import { CompetitionDataSummary } from "../../core/types/CompetitionDetail";
 import CompetitionSummaryCard from "./CompetitionSummaryCard";
 import NoCompetitions from "./NoCompetitions";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
-import {
-  SUGGEST_COMPETITION_LINK,
-} from "../../core/constants";
+import { SUGGEST_COMPETITION_LINK } from "../../core/constants";
 
 const CompetitionSummaryView: React.FC<{
   competitions: CompetitionDataSummary[];
@@ -39,6 +37,7 @@ const CompetitionSummaryView: React.FC<{
                 href={SUGGEST_COMPETITION_LINK}
                 target="_blank"
                 fontWeight="semibold"
+                color="blue.500"
               >
                 Let us know!
               </Link>
