@@ -29,6 +29,7 @@ import {
   useDraftGroup,
   useDraftTelegram,
 } from "../../../lib/hooks/useDraftGroup";
+import { useHasEditGroup } from "../../../lib/hooks/useEditDeleteGroup";
 
 import QuestionsSubForm from "./QuestionsSubForm";
 import SkillsSubForm, { toOptionType } from "./SkillsSubForm";
@@ -70,6 +71,7 @@ const CreateOrEditGroupForm = ({
   const { setDraftGroup } = useDraftGroup();
   const { setTelegramUrlDraft } = useDraftTelegram();
   const { presentToast } = useCustomToast();
+  const { setHasEdit } = useHasEditGroup();
 
   const onSubmit = async (values: CreateOrEditGroupFormValue) => {
     const groupInfo = {
@@ -134,8 +136,12 @@ const CreateOrEditGroupForm = ({
             );
           }
         }
-        router.replace(`/competitions/${competition.id}/groups/${group_id}`);
-        // router.push(`/competitions/${competition.id}/groups/${group_id}`);
+
+        if (group) {
+          setHasEdit(true);
+        }
+
+        router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {
         presentToast({
           position: "top",

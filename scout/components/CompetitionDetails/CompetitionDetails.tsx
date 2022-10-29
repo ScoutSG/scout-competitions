@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ArrowForwardIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -15,6 +16,8 @@ import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../NotFound";
 import useIsMemberOfCompetition from "./useIsMemberOfCompetition";
 import CompetitionDescription from "./CompetitionDescription";
+import { useHasDeleteGroup } from "../../lib/hooks/useEditDeleteGroup";
+import { useRouter } from "next/router";
 
 const CompetitionDetails: React.FC = ({
   competition,
@@ -22,6 +25,8 @@ const CompetitionDetails: React.FC = ({
   competition: CompetitionData;
 }) => {
   const { isMember } = useIsMemberOfCompetition(competition.id);
+  const { hasDelete, setHasDelete } = useHasDeleteGroup();
+  const router = useRouter();
   const eventAnalyticsTracker = useAnalyticsTracker(
     "Competition Details " + competition?.name
   );
@@ -29,6 +34,13 @@ const CompetitionDetails: React.FC = ({
   if (!competition) {
     return <NotFound />;
   }
+
+  useEffect(() => {
+    if (hasDelete) {
+      router.reload();
+    }
+    setHasDelete(false);
+  }, [hasDelete]);
 
   return (
     <PageContainer>
@@ -68,10 +80,7 @@ const CompetitionDetails: React.FC = ({
                 );
               }}
             >
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a target="_blank" rel="noopener noreferrer">
                 <Button
                   size={{ base: "md", md: "lg" }}
                   rightIcon={<ArrowForwardIcon />}
