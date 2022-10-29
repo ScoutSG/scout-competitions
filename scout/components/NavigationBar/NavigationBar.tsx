@@ -321,13 +321,8 @@ interface NavItem {
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Discover",
-    children: [
-      {
-        label: "Competitions",
-        subLabel: "Hackathons, case competitions, etc.",
-        href: "/competitions",
-      },
-    ],
+    href: "/competitions",
+    isExternal: false
   },
   {
     label: "Feedback",
