@@ -72,8 +72,8 @@ export const sendWelcomeMessage = async (
 ) => {
   const message = [
     `Welcome to the group chat for your team ${name}!`,
-    `You may review requests to join your team at ${process.env.NEXTAUTH_URL}/competitions/${competitionId}/groups/${groupId}.`,
-    `When you approve new members to join the team, they will automatically be added to this group chat if they have indicated their Telegram username and if their privacy settings allow.`,
+    `Review requests to join your team at ${process.env.NEXTAUTH_URL}/competitions/${competitionId}/groups/${groupId}.`,
+    `When new members are approved, they will automatically be added (if they have indicated their Telegram username and if their privacy settings allow).`,
   ].join("\n\n");
 
   await notifyGroup(telegramGroupId, message);
@@ -112,7 +112,7 @@ export const attemptToAddToGroup = async (
   let warningMessage = "";
   // add to Telegram group if there is one
   if (!member.telegramUrl) {
-    warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${member.email} to get their Telegram username to add them to this group.`;
+    warningMessage = `They did not indicate their Telegram username on their Scout profile. Please contact them at ${member.email}.`;
   } else {
     try {
       await addToGroup(groupId, member.telegramUrl);
@@ -130,7 +130,7 @@ export const attemptToAddToGroup = async (
       } else if (
         err.message === `No user has "${member.telegramUrl}" as username`
       ) {
-        warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email} to get their Telegram username to add them to this group.`;
+        warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email}.`;
       } else {
         throw err;
       }

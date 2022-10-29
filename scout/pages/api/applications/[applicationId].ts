@@ -1,10 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
-import {
-  addToGroup,
-  attemptToAddToGroup,
-  notifyGroup,
-} from "../../../core/utils/telegram";
+import { attemptToAddToGroup } from "../../../core/utils/telegram";
 import { validateIfApplicationIsReviewed } from "../../../lib/services/ApplicationValidation";
 
 // GET, PATCH, DELETE /api/applications/id/
