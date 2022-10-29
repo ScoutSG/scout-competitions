@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   Flex,
   Stack,
   Text,
@@ -30,7 +31,9 @@ const CompetitionDescription = ({
             <Text whiteSpace="pre-line">{text}</Text>
           ))}
         </Linkify>
-        <Box height={8} />
+        <Box height={4} />
+        <Divider />
+        <Box height={4} />
         <Text fontSize="xl" fontWeight="semibold">
           Groups
         </Text>
