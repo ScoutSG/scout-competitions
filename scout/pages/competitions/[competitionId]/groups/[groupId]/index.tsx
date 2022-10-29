@@ -66,6 +66,7 @@ const ModifyGroupButtons = () => {
           status: "success",
         });
 
+        router.prefetch(`/competitions/${competitionId}`);
         router.push(`/competitions/${competitionId}`);
       })
       .catch((err) => {
