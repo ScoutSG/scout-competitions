@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Badge,
   Button,
@@ -40,9 +41,14 @@ import { useCustomToast } from "../../../../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../../../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../../../../_error";
 import Linkify from "../../../../../components/Linkify";
+import {
+  useHasEditGroup,
+  useHasDeleteGroup,
+} from "../../../../../lib/hooks/useEditDeleteGroup";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
+  const { setHasDelete } = useHasDeleteGroup();
   const { competitionId, groupId } = router.query;
   const { presentToast } = useCustomToast();
   const eventAnalyticsTracker = useAnalyticsTracker("Modify Group buttons");
@@ -57,6 +63,8 @@ const ModifyGroupButtons = () => {
           description: "Group deleted!",
           status: "success",
         });
+        console.log("setting has delete to true");
+        setHasDelete(true); // delete group
         router.push(`/competitions/${competitionId}`);
       })
       .catch((err) => {
@@ -141,6 +149,8 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
   const isLeader = useIsLeader(group?.leaderId);
   const isMember = useIsMember(group?.members);
   const router = useRouter();
+  const { hasEdit, setHasEdit } = useHasEditGroup();
+  const { hasDelete, setHasDelete } = useHasDeleteGroup();
 
   if (
     !group ||
@@ -148,6 +158,22 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
   ) {
     return <NotFound />;
   }
+
+  useEffect(() => {
+    if (hasEdit || hasDelete) {
+      console.log("hasEdit: " + hasEdit);
+      console.log("hasDelete: " + hasDelete);
+      router.reload();
+    }
+
+    if (hasEdit) {
+      setHasEdit(false);
+    }
+
+    if (hasDelete) {
+      setHasDelete(false);
+    }
+  }, [hasEdit, hasDelete]);
 
   return (
     <PageContainer>
