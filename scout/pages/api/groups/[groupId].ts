@@ -155,11 +155,10 @@ export default async function handle(req, res) {
 
       try {
         await res.revalidate(`/competitions/${group.competition.id}/groups/${groupId}`);
-        return res.json({revalidated: true});
+        res.json({revalidated: true});
       } catch (err) {
         // if there was an error, next will continue to show
         // the last successfully generated page
-        return res.status(500).send({message: "Error revalidating"});
       }
     } else {
       res.setHeader("Allow", ["GET", "PATCH", "DELETE"]);
