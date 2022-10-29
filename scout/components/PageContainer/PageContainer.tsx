@@ -35,8 +35,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         .then((res) => {
           setJoinRequest(null);
           let { competitionId, groupId } = res.data;
-          router.replace(`/competitions/${competitionId}/groups/${groupId}`);
-          // router.push(`/competitions/${competitionId}/groups/${groupId}`);
+          router.push(`/competitions/${competitionId}/groups/${groupId}`);
         })
         .catch((err) => {
           presentToast({

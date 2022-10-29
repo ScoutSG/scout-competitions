@@ -134,8 +134,7 @@ const CreateOrEditGroupForm = ({
             );
           }
         }
-        router.replace(`/competitions/${competition.id}/groups/${group_id}`);
-        // router.push(`/competitions/${competition.id}/groups/${group_id}`);
+        router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {
         presentToast({
           position: "top",
