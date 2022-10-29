@@ -17,10 +17,8 @@ import { daysLeft } from "../../core/utils/date";
 
 const CompetitionInformation = ({
   competition,
-  xlDisplay
 }: {
   competition: CompetitionData,
-  xlDisplay: string
 }) => {
   const daysToDeadline = daysLeft(competition.deadline);
   const bgColor = useColorModeValue("gray.50", "gray.700");
@@ -33,7 +31,6 @@ const CompetitionInformation = ({
       p={{ base: 0, xl: 8 }}
       flexDirection="column"
       gap={4}
-      display={{base: xlDisplay, xl: "flex"}}
     >
       <Text
         fontSize="xl"

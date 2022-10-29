@@ -121,36 +121,40 @@ const CompetitionSummaryCard: React.FC<{
                 {show ? "Less" : "More"} details
               </Button>
             </Flex>
-            <Divider />
-            <HStack>
-              <Icon as={AiFillTrophy} size="lg" />
-              <Text fontSize="lg" fontWeight="medium">
-                Prizes
-              </Text>
-              {competition.otherPrizes && (
-                <Badge colorScheme="green">Other prizes available</Badge>
-              )}
-            </HStack>
-            <Wrap spacing={4}>
-              {competition.firstPrize && (
-                <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥇 First place:</Text>
-                  <Text>{competition.firstPrize}</Text>
+            {(competition.firstPrize || competition.otherPrizes) && (
+              <>
+                <Divider />
+                <HStack>
+                  <Icon as={AiFillTrophy} size="lg" />
+                  <Text fontSize="lg" fontWeight="medium">
+                    Prizes
+                  </Text>
+                  {competition.otherPrizes && (
+                    <Badge colorScheme="green">Other prizes available</Badge>
+                  )}
                 </HStack>
-              )}
-              {competition.secondPrize && (
-                <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥈 Second place:</Text>
-                  <Text>{competition.secondPrize}</Text>
-                </HStack>
-              )}
-              {competition.thirdPrize && (
-                <HStack spacing={1.5}>
-                  <Text fontWeight="medium">🥉 Third place:</Text>
-                  <Text>{competition.thirdPrize}</Text>
-                </HStack>
-              )}
-            </Wrap>
+                <Wrap spacing={4}>
+                  {competition.firstPrize && (
+                    <HStack spacing={1.5}>
+                      <Text fontWeight="medium">🥇 First place:</Text>
+                      <Text>{competition.firstPrize}</Text>
+                    </HStack>
+                  )}
+                  {competition.secondPrize && (
+                    <HStack spacing={1.5}>
+                      <Text fontWeight="medium">🥈 Second place:</Text>
+                      <Text>{competition.secondPrize}</Text>
+                    </HStack>
+                  )}
+                  {competition.thirdPrize && (
+                    <HStack spacing={1.5}>
+                      <Text fontWeight="medium">🥉 Third place:</Text>
+                      <Text>{competition.thirdPrize}</Text>
+                    </HStack>
+                  )}
+                </Wrap>
+              </>
+            )}
           </Stack>
         </Box>
         <Center

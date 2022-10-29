@@ -37,12 +37,14 @@ CREATE TABLE "users" (
     "image" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "groupId" INTEGER,
     "yearOfStudy" INTEGER,
+    "school" TEXT,
     "major" TEXT,
     "specialisation" TEXT,
+    "skills" TEXT[],
     "linkedinUrl" TEXT,
     "gitHubUrl" TEXT,
+    "telegramUrl" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -58,7 +60,8 @@ CREATE TABLE "verificationtokens" (
 CREATE TABLE "Question" (
     "id" SERIAL NOT NULL,
     "questionString" TEXT NOT NULL,
-    "formId" INTEGER NOT NULL,
+    "formId" INTEGER,
+    "questionType" TEXT NOT NULL DEFAULT 'Range',
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("id")
 );
@@ -66,7 +69,7 @@ CREATE TABLE "Question" (
 -- CreateTable
 CREATE TABLE "Answer" (
     "id" SERIAL NOT NULL,
-    "answerResponse" INTEGER NOT NULL,
+    "answerResponse" TEXT NOT NULL,
     "applicationId" INTEGER NOT NULL,
     "questionId" INTEGER NOT NULL,
 
@@ -102,6 +105,9 @@ CREATE TABLE "Group" (
     "telegramLink" TEXT,
     "targetSkills" TEXT[],
     "competitionId" INTEGER NOT NULL,
+    "goal" TEXT NOT NULL DEFAULT '',
+    "tags" TEXT[],
+    "leaderId" INTEGER NOT NULL,
 
     CONSTRAINT "Group_pkey" PRIMARY KEY ("id")
 );
@@ -116,8 +122,21 @@ CREATE TABLE "Competition" (
     "link" TEXT NOT NULL,
     "maxSize" INTEGER NOT NULL,
     "minSize" INTEGER NOT NULL,
+    "firstPrize" TEXT,
+    "secondPrize" TEXT,
+    "thirdPrize" TEXT,
+    "otherPrizes" TEXT,
 
     CONSTRAINT "Competition_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Invitation" (
+    "id" TEXT NOT NULL,
+    "groupId" INTEGER NOT NULL,
+    "userId" INTEGER,
+
+    CONSTRAINT "Invitation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -172,13 +191,22 @@ ALTER TABLE "Form" ADD CONSTRAINT "Form_groupId_fkey" FOREIGN KEY ("groupId") RE
 ALTER TABLE "Application" ADD CONSTRAINT "Application_formId_fkey" FOREIGN KEY ("formId") REFERENCES "Form"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Application" ADD CONSTRAINT "Application_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Application" ADD CONSTRAINT "Application_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Application" ADD CONSTRAINT "Application_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Application" ADD CONSTRAINT "Application_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Group" ADD CONSTRAINT "Group_competitionId_fkey" FOREIGN KEY ("competitionId") REFERENCES "Competition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Group" ADD CONSTRAINT "Group_leaderId_fkey" FOREIGN KEY ("leaderId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_GroupToUser" ADD CONSTRAINT "_GroupToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;

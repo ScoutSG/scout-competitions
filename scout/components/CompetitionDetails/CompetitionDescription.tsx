@@ -1,15 +1,18 @@
 import {
+  Box,
   Flex,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { CompetitionData } from "../../core/types/CompetitionDetail";
+import { CompetitionData, GroupSummaryData } from "../../core/types/CompetitionDetail";
 import CompetitionInformation from "./CompetitionInformation";
+import GroupSummaryTab from "./GroupSummary";
 
-const CompetitionDetailsTab = ({
+const CompetitionDescription = ({
   competition,
 }: {
   competition: CompetitionData;
+  groups: GroupSummaryData[];
 }) => {
   return (
     <Flex
@@ -22,10 +25,18 @@ const CompetitionDetailsTab = ({
           About
         </Text>
         <Text whiteSpace="pre-line">{competition.description}</Text>
+        <Box height={8} />
+        <Text fontSize="xl" fontWeight="semibold">
+          Groups
+        </Text>
+        <GroupSummaryTab
+          competition={competition}
+          groups={competition.groups}
+        />
       </Stack>
-      <CompetitionInformation competition={competition} xlDisplay="flex" />
+      <CompetitionInformation competition={competition} />
     </Flex>
   );
 };
 
-export default CompetitionDetailsTab;
+export default CompetitionDescription;

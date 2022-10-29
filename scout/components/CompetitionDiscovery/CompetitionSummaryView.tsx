@@ -39,7 +39,6 @@ const CompetitionSummaryView: React.FC<{
               <Link
                 href={SUGGEST_COMPETITION_LINK}
                 target="_blank"
-                color="teal"
                 fontWeight="semibold"
               >
                 Let us know!
