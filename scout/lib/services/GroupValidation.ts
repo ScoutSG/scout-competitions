@@ -11,7 +11,7 @@ export const validateUserIsNotInGroup = async (userId, groupId) => {
   });
 
   if (group.members.filter((member) => member.id === userId).length > 0) {
-    throw "User is already a member of the group";
+    throw "You're already a member of the group!";
   }
 };
 
@@ -35,6 +35,6 @@ export const validateUserIsNotInCompetition = async (userId, competitionId) => {
   });
 
   if (userGroup.length > 0) {
-    throw "User is already part of a group in the competition";
+    throw "You're already a part of a group in the competition!";
   }
-}
+};

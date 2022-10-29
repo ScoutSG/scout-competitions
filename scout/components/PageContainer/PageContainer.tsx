@@ -41,7 +41,8 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           presentToast({
             position: "top",
             status: "error",
-            description: "Unable to join group",
+            title: "Unable to join group",
+            description: err.response.data || err.response.statusText,
           });
           router.push("/");
         });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import clientApi from "../../core/api/client";
@@ -14,39 +14,42 @@ const JoinPage = () => {
   const { setJoinRequest } = useJoinRequest();
 
   useEffect(() => {
-    if (!session.data || !session.data.user) {
-      setJoinRequest({
-        id: router.query.code,
-      });
-      router.push("/auth/signin");
-      presentToast({
-        title: "Almost there! Login to to join.",
-        position: "top",
-        status: "info",
-      });
-    } else {
-      let code = router.query.code;
-      const body = {
-        userId: session.data.user.id,
-      };
-
-      clientApi
-        .patch(`/invitations/${code}`, body)
-        .then((res) => {
-          let { competitionId, groupId } = res.data;
-
-          router.push(`/competitions/${competitionId}/groups/${groupId}`);
-        })
-        .catch((err) => {
-          presentToast({
-            position: "top",
-            status: "error",
-            description: "Unable to join group",
-          });
-          router.push("/");
+    if (router.query.code) {
+      if (!session.data || !session.data.user) {
+        setJoinRequest({
+          id: router.query.code,
         });
+        router.push("/auth/signin");
+        presentToast({
+          title: "Almost there! Login to to join.",
+          position: "top",
+          status: "info",
+        });
+      } else {
+        let code = router.query.code;
+        const body = {
+          userId: session.data.user.id,
+        };
+
+        clientApi
+          .patch(`/invitations/${code}`, body)
+          .then((res) => {
+            let { competitionId, groupId } = res.data;
+
+            router.push(`/competitions/${competitionId}/groups/${groupId}`);
+          })
+          .catch((err) => {
+            presentToast({
+              position: "top",
+              status: "error",
+              title: "Unable to join group",
+              description: err.response.data || err.response.statusText,
+            });
+            router.push("/");
+          });
+      }
     }
-  }, []);
+  }, [router.query]);
 
   return (
     <Container>

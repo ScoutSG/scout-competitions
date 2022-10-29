@@ -16,6 +16,12 @@ export default async function handle(
     if (httpMethod === "PATCH") {
       const { userId } = req.body;
       const invitation = await getInvitation(id);
+      if (invitation === null) {
+        res.statusMessage = "Invitation is invalid";
+        res.status(400).end();
+        return;
+      }
+
       await validateUserIsNotInGroup(userId, invitation.groupId).catch(
         (err) => {
           res.statusMessage = err;
