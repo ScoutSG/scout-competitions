@@ -74,14 +74,10 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
         {!isMember || isPartOfGroup ? viewButton : null}
       </Wrap>
       <Stack pt={2}>
-        <Stack spacing={2} pb={4}>
-          <Text fontWeight="medium">Description</Text>
-          <Text>{group.description}</Text>
-        </Stack>
-        <Divider />
+        <Text>{group.description}</Text>
         <Stack
           spacing={2}
-          pt={2}
+          pt={4}
           pb={groupSkills.length > 0 || group.targetSkills.length > 0 ? 4 : 0}
         >
           <Text fontWeight="medium">
@@ -99,9 +95,11 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
             })}
           <GroupGoal goal={group.goal} />
         </Stack>
+        {(groupSkills.length > 0 || group.targetSkills.length > 0) && (
+          <Divider />
+        )}
         {groupSkills.length > 0 && (
           <>
-            <Divider />
             <Stack pt={2} pb={4}>
               <Text fontWeight="medium">We're strong in</Text>
               <Wrap spacing={2}>
