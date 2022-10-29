@@ -105,6 +105,23 @@ export const addToGroup = async (groupId: string | number, user: User) => {
   await client.disconnect();
 };
 
+export const getInviteLink = async (groupId: string | number) => {
+  await client.connect();
+  const result = (await client.invoke(
+    new Api.messages.GetExportedChatInvites({
+      peer: new Api.InputPeerChat({ chatId: toBigInt(groupId) }),
+      adminId: "me",
+      limit: 2,
+      revoked: false,
+    })
+  )) as Api.messages.ExportedChatInvites;
+  if (result.invites.length > 0 && "link" in result.invites[0]) {
+    return result.invites[0].link;
+  }
+  client.disconnect();
+  return "";
+};
+
 export const notifyGroup = async (
   groupId: string | number,
   message: string

@@ -22,6 +22,7 @@ import clientApi from "../../core/api/client";
 import { AxiosResponse } from "axios";
 import { useCustomToast } from "../../lib/hooks/useCustomToast";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
+import { TbPlus } from "react-icons/tb";
 
 const useInvite = () => {
   const [code, setCode] = useState<string>("");
@@ -93,18 +94,19 @@ const InviteButton = ({ group }) => {
   return (
     <>
       <Button
+        leftIcon={<TbPlus />}
         variant="ghost"
         color="primary.500"
         _hover={{ color: "white", bgColor: "primary.500" }}
         onClick={onOpen}
         w="fit-content"
       >
-        Invite
+        Add Members
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay>
           <ModalContent>
-            <ModalHeader>Invite</ModalHeader>
+            <ModalHeader>Add Members</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Alert status="warning">

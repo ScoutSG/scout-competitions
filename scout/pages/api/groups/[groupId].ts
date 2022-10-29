@@ -3,6 +3,7 @@ import prisma from "../../../lib/prisma";
 import {
   attemptToAddToGroup,
   createGroup,
+  getInviteLink,
   sendWelcomeMessage,
 } from "../../../core/utils/telegram";
 
@@ -33,7 +34,12 @@ export default async function handle(req, res) {
         },
       });
 
-      res.status(200).json(group);
+      if (group.telegramLink) {
+        const telegramInviteLink = await getInviteLink(group.telegramLink);
+        res.status(200).json({ ...group, telegramInviteLink });
+      } else {
+        res.status(200).json({ ...group });
+      }
     } else if (httpMethod === "DELETE") {
       const group = await prisma.group.delete({
         where: {

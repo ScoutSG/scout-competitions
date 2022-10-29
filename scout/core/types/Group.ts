@@ -39,6 +39,7 @@ export interface Group {
   hasApplied?: boolean;
   isLeader?: boolean;
   telegramLink?: string;
+  telegramInviteLink: string;
   applications?: Application[];
 }
 
