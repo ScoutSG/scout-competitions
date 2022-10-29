@@ -141,4 +141,14 @@ async function handleAdd(req, res) {
   }
 
   res.status(200).json(group);
+
+  // On-demand revalidation. 
+  // Read more here: https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation
+  try {
+    await res.revalidate(`/competitions/${competitionId}`);
+    res.json({revalidated: true});
+  } catch (err) {
+    // if there was an error, next will continue to show
+    // the last successfully generated page
+  }
 }
