@@ -12,7 +12,7 @@ import {
 import { Group } from "../../core/types/Group";
 import GroupMember from "./GroupMember";
 import GroupGoal from "./GroupGoal";
-import useIsMemberOfCompetition from "./useIsMember";
+import useIsMemberOfCompetition from "./useIsMemberOfCompetition";
 import { useIsMember, useIsLeader } from "../../lib/hooks/useUserDetails";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
@@ -33,8 +33,8 @@ const GroupSummaryCard = ({ group }: { group: Group }) => {
     <Button
       as="a"
       href={`/competitions/${group.competitionId}/groups/${group.id}`}
-      variant="outline"
-      colorScheme="cyan"
+      variant="solid"
+      colorScheme="teal"
       visibility="hidden"
       _groupHover={{ visibility: "visible" }}
       size="md"

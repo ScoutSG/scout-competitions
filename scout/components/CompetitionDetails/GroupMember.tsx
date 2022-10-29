@@ -16,7 +16,7 @@ const GroupMember = ({ member, role }: { member: Member; role: String }) => {
     <Wrap spacing={{ base: 2, md: 4 }} align="center">
       <Avatar name={member.name} src={member.image} size="sm" />
       <Text>{member.name}</Text>
-      {role && <Badge colorScheme="cyan">{role}</Badge>}
+      {role && <Badge colorScheme="red">{role}</Badge>}
       <Wrap spacing={{ base: 2, md: 4 }}>
         {member.school && (
           <Tag>

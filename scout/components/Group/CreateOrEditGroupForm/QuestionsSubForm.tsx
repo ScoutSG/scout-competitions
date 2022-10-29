@@ -58,14 +58,14 @@ export default function QuestionsSubForm({
 
   return (
     <Stack>
-      <Heading as="h3" size="md">
+      <Text fontSize="xl" fontWeight="semibold">
         Questions for prospective group members
-      </Heading>
+      </Text>
       <Text>
         You can ask your prospective group members some questions to get to know
         their skillsets and personalities better.
       </Text>
-      <Alert status="info" px={4} py={2} rounded="md" overflowX="scroll">
+      <Alert status="info" px={4} py={4} rounded="md" overflowX="scroll">
         <Stack>
           <AlertTitle>Tips from Google</AlertTitle>
           <AlertDescription>

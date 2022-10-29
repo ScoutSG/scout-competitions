@@ -42,13 +42,13 @@ export async function getStaticProps(context) {
             },
             members: {
               select: {
+                id: true,
                 name: true,
                 image: true,
                 school: true,
                 yearOfStudy: true,
                 major: true,
-                skills: true,
-                id: true,
+                skills: true
               },
             },
           },

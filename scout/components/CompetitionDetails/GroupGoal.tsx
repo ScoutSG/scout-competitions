@@ -22,7 +22,7 @@ const GroupMember = ({ goal }: { goal: String }) => {
   }
 
   return (
-    <Wrap>
+    <Wrap pt={4}>
       <Text>We're here to ...</Text>
       <Tag colorScheme={colorScheme}>
         <TagLeftIcon as={icon} />

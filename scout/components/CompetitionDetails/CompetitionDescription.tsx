@@ -18,7 +18,6 @@ const CompetitionDescription = ({
 }) => {
   return (
     <Flex
-      align="flex-start"
       flexDirection={{ base: "column-reverse", xl: "row" }}
       gap={{ base: 4, xl: 8 }}
     >
