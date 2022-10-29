@@ -13,11 +13,14 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
-import { getCsrfToken } from "next-auth/react";
-import { getProviders, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import ScoutIcon from "../../core/Icons/ScoutIcon";
+import { useState } from "react";
 
-export default function SignInPage({ csrfToken, providers }) {
+export default function SignInPage() {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Flex
       height="100vh"
@@ -46,33 +49,27 @@ export default function SignInPage({ csrfToken, providers }) {
           px={8}
         >
           <Stack spacing={4}>
-            <form method="post" action="/api/auth/signin/email">
-              <Stack spacing={4}>
-                <input
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
+            <Stack spacing={4}>
+              <FormControl>
+                <Input
+                  placeholder="yourname@example.com"
+                  onChange={(event) => setEmail(event.target.value)}
                 />
-                <FormControl id="email">
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="yourname@example.com"
-                  />
-                </FormControl>
-                <Button
-                  type="submit"
-                  bg={"teal.500"}
-                  color={"white"}
-                  _hover={{
-                    bg: "teal.600",
-                  }}
-                >
-                  Continue
-                </Button>
-              </Stack>
-            </form>
+              </FormControl>
+              <Button
+                isLoading={isLoading}
+                onClick={() => {
+                  setIsLoading(true);
+                  signIn("email", {
+                    email: email,
+                    callbackUrl: "/competitions",
+                  });
+                }}
+                colorScheme="teal"
+              >
+                Continue
+              </Button>
+            </Stack>
             <HStack>
               <Divider />
               <Text fontSize="sm" whiteSpace="nowrap" color="muted">
@@ -81,7 +78,7 @@ export default function SignInPage({ csrfToken, providers }) {
               <Divider />
             </HStack>
             <Button
-              onClick={() => signIn(providers.google.id, { callbackUrl: "/" })}
+              onClick={() => signIn("google", { callbackUrl: "/competitions" })}
               w={"full"}
               variant={"outline"}
               leftIcon={<FcGoogle />}
@@ -95,12 +92,4 @@ export default function SignInPage({ csrfToken, providers }) {
       </Stack>
     </Flex>
   );
-}
-
-export async function getServerSideProps(context) {
-  const csrfToken = await getCsrfToken(context);
-  const providers = await getProviders();
-  return {
-    props: { csrfToken, providers },
-  };
 }
