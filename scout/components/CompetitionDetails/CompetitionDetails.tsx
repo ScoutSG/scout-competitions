@@ -11,17 +11,17 @@ import {
 import Link from "next/link";
 import { CompetitionData } from "../../core/types/CompetitionDetail";
 import PageContainer from "../PageContainer";
-import CompetitionDescription from "./CompetitionDescription";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 import NotFound from "../NotFound";
-import useIsMember from "./useIsMember";
+import useIsMemberOfCompetition from "./useIsMemberOfCompetition";
+import CompetitionDescription from "./CompetitionDescription";
 
 const CompetitionDetails: React.FC = ({
   competition,
 }: {
   competition: CompetitionData;
 }) => {
-  const { isMember } = useIsMember(competition.id);
+  const { isMember } = useIsMemberOfCompetition(competition.id);
   const eventAnalyticsTracker = useAnalyticsTracker(
     "Competition Details " + competition?.name
   );
