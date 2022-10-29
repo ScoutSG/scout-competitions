@@ -48,7 +48,7 @@ export async function getStaticProps(context) {
                 school: true,
                 yearOfStudy: true,
                 major: true,
-                skills: true
+                skills: true,
               },
             },
           },
