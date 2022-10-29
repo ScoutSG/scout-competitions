@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -45,17 +45,19 @@ import {
   useHasEditGroup,
   useHasDeleteGroup,
 } from "../../../../../lib/hooks/useEditDeleteGroup";
+import prisma from "../../../../../lib/prisma";
 
 const ModifyGroupButtons = () => {
   const router = useRouter();
-  const { setHasDelete } = useHasDeleteGroup();
   const { competitionId, groupId } = router.query;
   const { presentToast } = useCustomToast();
   const eventAnalyticsTracker = useAnalyticsTracker("Modify Group buttons");
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const handleDelete = async () => {
+    setIsDeleteLoading(true);
     await eventAnalyticsTracker("Delete group " + groupId);
-    clientApi
+    await clientApi
       .delete(`/groups/${groupId}`)
       .then(() => {
         presentToast({
@@ -63,7 +65,7 @@ const ModifyGroupButtons = () => {
           description: "Group deleted!",
           status: "success",
         });
-        setHasDelete(true); // delete group
+
         router.push(`/competitions/${competitionId}`);
       })
       .catch((err) => {
@@ -108,7 +110,11 @@ const ModifyGroupButtons = () => {
           <PopoverFooter display="flex" justifyContent="flex-end">
             <ButtonGroup size="sm">
               <Button variant="outline">Cancel</Button>
-              <Button colorScheme="red" onClick={handleDelete}>
+              <Button
+                colorScheme="red"
+                onClick={handleDelete}
+                isLoading={isDeleteLoading}
+              >
                 Confirm
               </Button>
             </ButtonGroup>
@@ -119,29 +125,40 @@ const ModifyGroupButtons = () => {
   );
 };
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: "blocking", // can also be true or 'blocking'
-  };
-}
+export async function getServerSideProps(context) {
+  const groupId = parseInt(context.params.groupId as string);
 
-export async function getStaticProps(context) {
-  const groupId = context.params.groupId;
-  let group = null;
+  let group = await prisma.group.findUnique({
+    where: {
+      id: groupId,
+    },
+    include: {
+      form: {
+        include: {
+          questions: true,
+        },
+      },
+      members: true,
+      applications: {
+        include: {
+          applicant: true,
+          answers: {
+            include: {
+              question: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
   let form = null;
+  if (group) {
+    group = JSON.parse(JSON.stringify(group));
+    form = group.form;
+  }
 
-  try {
-    const response = await clientApi.get(`/groups/${groupId}`);
-    group = response?.data;
-
-    if (group) {
-      const formResponse = await clientApi.get(`/forms/${group.form.id}`);
-      form = formResponse.data;
-    }
-  } catch (err) {}
-
-  return { props: { group, form }, revalidate: 60 };
+  return { props: { group, form } };
 }
 
 const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
@@ -158,19 +175,26 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
     return <NotFound />;
   }
 
-  useEffect(() => {
-    if (hasEdit || hasDelete) {
-      router.reload();
-    }
+  // const [_group, setGroup] = useState(group);
 
-    if (hasEdit) {
-      setHasEdit(false);
-    }
+  // useEffect(() => {
+  //   if (hasEdit || hasDelete) {
+  //     const updateGroupDetails = async () => {
+  //       const response = await clientApi.get(`/groups${group.id}`);
+  //       setGroup(response.data);
+  //     };
 
-    if (hasDelete) {
-      setHasDelete(false);
-    }
-  }, [hasEdit, hasDelete]);
+  //     updateGroupDetails();
+  //   }
+
+  //   if (hasEdit) {
+  //     setHasEdit(false);
+  //   }
+
+  //   if (hasDelete) {
+  //     setHasDelete(false);
+  //   }
+  // }, [hasEdit, hasDelete]);
 
   return (
     <PageContainer>
