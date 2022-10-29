@@ -13,7 +13,7 @@ import {
   GroupSummaryData,
 } from "../../core/types/CompetitionDetail";
 import GroupSummaryCard from "./GroupSummaryCard";
-import useIsMember from "./useIsMember";
+import useIsMember from "./useIsMemberOfCompetition";
 import useAnalyticsTracker from "../../lib/hooks/useAnalyticsTracker";
 
 const GroupSummary = ({

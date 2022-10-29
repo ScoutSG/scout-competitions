@@ -13,6 +13,8 @@ import {
   Button,
   Spacer,
   FormErrorMessage,
+  Divider,
+  Box,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -157,11 +159,11 @@ const CreateOrEditGroupForm = ({
   };
 
   return (
-    <Stack as="form" width="100%" spacing={5} onSubmit={handleSubmit(onSubmit)}>
-      <Heading as="h2" size="lg">
-        {group === undefined ? "Create a new group" : `Edit ${group.name}`}
+    <Stack as="form" width="100%" spacing={4} onSubmit={handleSubmit(onSubmit)}>
+      <Heading size="lg" fontWeight="semibold">
+        {group === undefined ? "Create a New Group" : `Edit ${group.name}`}
       </Heading>
-      <FormControl isRequired isInvalid={Boolean(errors.name)}>
+      <FormControl isRequired isInvalid={Boolean(errors.name)} pt={4}>
         <FormLabel htmlFor="name">Group name</FormLabel>
         <Input
           id="name"
@@ -199,14 +201,15 @@ const CreateOrEditGroupForm = ({
       </FormControl>
       <SkillsSubForm control={control} />
       <TagsSubForm control={control} />
+      <Box height={4} />
       <QuestionsSubForm control={control} register={register} />
+      <Box height={4} />
       <TelegramSubForm control={control} register={register} group={group} />
       <Spacer />
       <Button
-        color="white"
-        bg={"secondary"}
-        _hover={{ color: "secondary", bg: "gray.50" }}
-        rightIcon={<TbSend />}
+        size="lg"
+        colorScheme="blue"
+        leftIcon={<TbSend />}
         width="fit-content"
         alignSelf="flex-end"
         type="submit"

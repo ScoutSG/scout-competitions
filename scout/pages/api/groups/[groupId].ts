@@ -114,25 +114,29 @@ export default async function handle(req, res) {
         }
       }
 
+      const newGroupData = {
+        name,
+        currentSize,
+        targetSize,
+        description,
+        targetSkills,
+        tags,
+        goal,
+        members: {
+          connect: members.map((x) => ({ id: x })),
+        },
+      } as Record<string, any>;
+      if (telegramGroupId) {
+        newGroupData.telegramLink = String(telegramGroupId);
+      }
+
       const group = await prisma.group.update({
         where: {
           id: groupId,
         },
-        data: {
-          name,
-          currentSize,
-          targetSize,
-          description,
-          targetSkills,
-          tags,
-          goal,
-          members: {
-            connect: members.map((x) => ({ id: x })),
-          },
-          telegramLink: telegramGroupId ? String(telegramGroupId) : null,
-        },
+        data: newGroupData,
         include: {
-          competition: true
+          competition: true,
         }
       });
 

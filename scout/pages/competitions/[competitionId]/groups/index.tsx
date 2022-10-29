@@ -1,56 +1,46 @@
-import React from "react";
-import { Heading, Box, Stack, Flex, useColorModeValue } from "@chakra-ui/react";
-import Head from "next/head";
-import { CompetitionData } from "../../../../core/types/CompetitionDetail";
-import AboutCard from "../../../../components/Competition/AboutCard";
-import clientApi from "../../../../core/api/client";
-import CreateOrEditGroupForm from "../../../../components/Group/CreateOrEditGroupForm";
-import PageContainer from "../../../../components/PageContainer";
+import CreateGroup from "../../../../components/CreateOrEditGroup";
+import prisma from "../../../../lib/prisma";
 
-export async function getServerSideProps(context) {
-  const competitionId = context.params.competitionId;
-  const response = await clientApi.get(`/competitions/${competitionId}`);
-  const competition = response.data;
-  return { props: { competition } };
+export async function getStaticPaths() {
+  const competitions = await prisma.competition.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  const paths = competitions.map((competition) => ({
+    params: { competitionId: String(competition.id) },
+  }));
+
+  return {
+    paths: paths,
+    fallback: "blocking",
+  };
 }
 
-type CreateGroupProps = {
-  competition: CompetitionData;
-};
+export async function getStaticProps(context) {
+  const competitionId = parseInt(context.params.competitionId);
 
-const CreateGroup = ({ competition }: CreateGroupProps) => {
-  return (
-    <PageContainer>
-      <Head>
-        <title>{competition.name} - Scout</title>
-      </Head>
-      <Stack
-        spacing={10}
-        py={5}
-        px={{ base: 4, md: 10 }}
-        direction={{ base: "column", md: "row" }}
-      >
-        <Stack flex={2} spacing={{ base: 1, md: 4 }}>
-          <Box as={"header"}>
-            <Heading>{competition.name}</Heading>
-          </Box>
-          <Box>
-            <AboutCard data={competition} hideFindATeam />
-          </Box>
-        </Stack>
-        <Flex
-          flex={5}
-          justify={"center"}
-          position={"relative"}
-          w={"100%"}
-          bgColor={useColorModeValue("gray.50", "gray.700")}
-          p={4}
-        >
-          <CreateOrEditGroupForm competition={competition} />
-        </Flex>
-      </Stack>
-    </PageContainer>
-  );
-};
+  let competition = null;
+  if (Number.isInteger(competitionId)) {
+    competition = await prisma.competition.findUnique({
+      where: {
+        id: competitionId,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        minSize: true,
+        maxSize: true,
+      },
+    });
+  }
+
+  return {
+    props: { competition: JSON.parse(JSON.stringify(competition)) },
+    revalidate: 60,
+  };
+}
 
 export default CreateGroup;

@@ -9,6 +9,8 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Wrap,
+  Switch,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { UseFormReturn, useWatch } from "react-hook-form";
@@ -32,10 +34,12 @@ const HELPER_TEXT =
 
 const formLabel = (
   <FormLabel htmlFor="withTelegramGroup">
-    <Heading as="h3" size="md" display="inline">
-      One-click Telegram Group Setup
-    </Heading>
-    <Explanation label={HELPER_TEXT} />
+    <Wrap align="center">
+      <Text fontSize="xl" fontWeight="semibold">
+        One-click Telegram Group Setup
+      </Text>
+      <Explanation label={HELPER_TEXT} />
+    </Wrap>
   </FormLabel>
 );
 export default function TelegramSubForm({
@@ -59,9 +63,12 @@ export default function TelegramSubForm({
       <>
         <FormControl>
           {formLabel}
-          <Checkbox {...register("withTelegramGroup")}>
+          <Wrap spacing={4} align="center">
+          <Switch {...register("withTelegramGroup")} />
+          <Text>
             {CHECKBOX_TEXT}
-          </Checkbox>
+          </Text>
+          </Wrap>
         </FormControl>
         {isChecked ? (
           <FormControl isRequired>
