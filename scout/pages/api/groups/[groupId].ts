@@ -110,7 +110,7 @@ export default async function handle(req, res) {
               )
             );
           } catch (err) {
-            res.status(400).json({ message: err });
+            res.status(400).json({ message: err.toString() });
           }
         }
       }

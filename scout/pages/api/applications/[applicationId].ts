@@ -53,7 +53,7 @@ export default async function handle(req, res) {
       // approving / rejecting applications
       const { isApproved, answers } = req.body;
       validateIfApplicationIsReviewed(applicationId).catch((err) => {
-        res.status(400).json({ message: err });
+        res.status(400).json({ message: err.toString() });
       });
       if (res.writableEnded) {
         return;

@@ -68,7 +68,7 @@ async function handleAdd(req, res) {
     withTelegramGroup,
   } = req.body;
   await validateUserIsNotInCompetition(leaderId, competitionId).catch((err) => {
-    res.status(400).json({ message: err });
+    res.status(400).json({ message: err.toString() });
   });
   if (res.writableEnded) {
     return;
@@ -84,7 +84,7 @@ async function handleAdd(req, res) {
     try {
       telegramGroupId = await createGroup(name, leader);
     } catch (err) {
-      res.status(400).json({ message: err });
+      res.status(400).json({ message: err.toString() });
       return;
     }
   }
