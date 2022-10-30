@@ -21,7 +21,7 @@ export default async function handle(
       res.status(405).end(`Method ${httpMethod} Not Allowed`);
     }
   } catch (err) {
-    res.status(500).json(err.toString());
+    res.status(500).json({ message: err.toString() });
   }
 }
 

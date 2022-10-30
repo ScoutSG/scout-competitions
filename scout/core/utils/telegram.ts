@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import bigInt from "big-integer";
 import { Api, TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions";
 
@@ -14,17 +15,15 @@ const client = new TelegramClient(
 );
 
 const toBigInt = (num: number | string): bigInt.BigInteger => {
-  return BigInt(num) as unknown as bigInt.BigInteger;
+  if (typeof num === "string") {
+    return bigInt(num);
+  } else {
+    return bigInt(num);
+  }
 };
 
 const generateRandomId = () => {
   return Math.floor(Math.random() * 999999999999999);
-};
-
-const sendToMyself = async (message: string) => {
-  await client.connect();
-  await client.sendMessage("me", { message });
-  await client.disconnect();
 };
 
 export const addContact = async (user: User) => {
@@ -59,14 +58,20 @@ export const createGroup = async (title: string, user: User) => {
     return chatId;
   } catch (err) {
     if (err.errorMessage === "USERS_TOO_FEW") {
-      client.invoke(
-        new Api.messages.SendMessage({
-          peer: user.telegramUrl,
-          message:
-            "Hello from ScoutSG! I wasn't able to add you to a group chat due to your privacy settings.\nCould you add @scoutsg as a contact? Then I'll be able to add you to a Telegram group!\nAlternatively, you could also add @scoutsg as an exception under Privacy and Security > Groups & Channels.",
-          randomId: toBigInt(generateRandomId()),
-        })
-      );
+      try {
+        await client.invoke(
+          new Api.messages.SendMessage({
+            peer: user.telegramUrl,
+            message:
+              "Hello from ScoutSG! I wasn't able to add you to a group chat due to your privacy settings.\nCould you add @scoutsg as a contact? Then I'll be able to add you to a Telegram group!\nAlternatively, you could also add @scoutsg as an exception under Privacy and Security > Groups & Channels.",
+            randomId: toBigInt(generateRandomId()),
+          })
+        );
+      } catch (err) {
+        // should be a peer flood error if we cannot send as a message
+        // but we have told them in the following error message to add @scoutsg as a contact
+      }
+
       throw new Error(
         "Please add @scoutsg as a contact on Telegram so that we can set up a Telegram group for you!"
       );
@@ -77,8 +82,9 @@ export const createGroup = async (title: string, user: User) => {
         `I couldn't find anyone with the Telegram username you've indicated, @${user.telegramUrl}. Please add a valid Telegram username so that I can create a Telegram group for your team.`
       );
     } else {
-      sendToMyself(`Unknown error in createGroup: ${JSON.stringify(err)}`);
-      throw err;
+      throw new Error(
+        "Unknown error encountered. Please ensure that you've entered a valid Telegram username and added @scoutsg as a contact on Telegram so that we can set up a telegram group for you."
+      );
     }
   } finally {
     client.disconnect();
@@ -171,9 +177,6 @@ export const attemptToAddToGroup = async (
       ) {
         warningMessage = `The Telegram username they indicated in their profile is incorrect. Please contact them at ${member.email}.`;
       } else {
-        sendToMyself(
-          `Unknown error in attemptToAddToGroup: ${JSON.stringify(err)}`
-        );
         warningMessage = `Failed to add ${
           member.name ? member.name : "Anonymous"
         } to the group. Please add @${
