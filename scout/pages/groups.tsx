@@ -35,7 +35,6 @@ export default function MyGroups() {
         presentToast({
           title: "Unable to access your groups!",
           description: "Please log in!",
-          position: "top",
           status: "warning",
         });
         router.push("/");

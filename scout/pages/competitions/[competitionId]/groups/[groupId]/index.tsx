@@ -57,7 +57,6 @@ const ModifyGroupButtons = () => {
       .delete(`/groups/${groupId}`)
       .then(() => {
         presentToast({
-          position: "top",
           description: "Group deleted!",
           status: "success",
         });
@@ -66,7 +65,6 @@ const ModifyGroupButtons = () => {
       })
       .catch((err) => {
         presentToast({
-          position: "top",
           title: "Error occured!",
           description:
             err.response && err.response.statusText

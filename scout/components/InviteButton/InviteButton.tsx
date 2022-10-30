@@ -83,7 +83,6 @@ const InviteButton = ({ group }) => {
       presentToast({
         description: "Failed to generate link",
         status: "error",
-        position: "top",
       });
     } finally {
       if (response && response.data) {

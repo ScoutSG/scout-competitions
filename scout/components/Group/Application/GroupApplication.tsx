@@ -68,13 +68,11 @@ const Application = ({ form }: { form: Form }) => {
         presentToast({
           description: "Request sent!",
           status: "success",
-          position: "top",
         });
         router.push("/requests");
       } catch (err) {
         presentToast({
           title: "Failed to submit your request",
-          position: "top",
           status: "error",
           description: err.response.statusText,
         });
@@ -85,7 +83,6 @@ const Application = ({ form }: { form: Form }) => {
       presentToast({
         title: "Almost there! Login to submit your request to join.",
         description: "Don't worry, your answers will be saved.",
-        position: "top",
         status: "info",
       });
     }

@@ -5,7 +5,7 @@ export const useCustomToast = () => {
 
   const presentToast = (props: ToastProps) => {
     if (!props.duration) {
-      toast({ ...props, duration: 5000, isClosable: true });
+      toast({ duration: 5000, isClosable: true, position: "top", ...props });
     } else {
       toast({ ...props });
     }

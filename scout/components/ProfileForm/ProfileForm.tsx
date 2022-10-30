@@ -59,7 +59,6 @@ const ProfileForm = () => {
             title: "Unable to access profile details",
             description: "Please log in!",
             status: "warning",
-            position: "top",
           });
           router.push("/");
         } else {
@@ -85,12 +84,10 @@ const ProfileForm = () => {
       presentToast({
         description: "Profile updated!",
         status: "success",
-        position: "top",
       });
     } catch (err) {
       presentToast({
         title: "Can't update your profile details",
-        position: "top",
         description: "Please check that you've entered the right details",
         status: "error",
       });
