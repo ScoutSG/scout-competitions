@@ -41,7 +41,7 @@ const JoinPage = () => {
             presentToast({
               status: "error",
               title: "Unable to join group",
-              description: err.response.data || err.response.statusText,
+              description: err.response.data.message,
             });
             router.push("/");
           });

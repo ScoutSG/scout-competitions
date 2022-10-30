@@ -17,8 +17,7 @@ export default async function handle(
       const { userId } = req.body;
       const invitation = await getInvitation(id);
       if (invitation === null) {
-        res.statusMessage = "Invitation is invalid";
-        res.status(400).end();
+        res.status(400).json({ message: "Invitation is invalid" });
         return;
       }
 
