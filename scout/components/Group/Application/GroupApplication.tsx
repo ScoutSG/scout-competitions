@@ -74,7 +74,7 @@ const Application = ({ form }: { form: Form }) => {
         presentToast({
           title: "Failed to submit your request",
           status: "error",
-          description: err.response.statusText,
+          description: err?.response?.data?.message || "",
         });
       }
     } else {

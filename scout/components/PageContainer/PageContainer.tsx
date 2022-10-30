@@ -41,7 +41,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           presentToast({
             status: "error",
             title: "Unable to join group",
-            description: err.response.data || err.response.statusText,
+            description: err?.response?.data?.message || "",
           });
           router.push("/");
         });
@@ -72,7 +72,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           presentToast({
             title: "Failed to submit your request",
             status: "error",
-            description: err.response.statusText,
+            description: err?.response?.data?.message || "",
           });
         } finally {
           setDraftRequest(null);

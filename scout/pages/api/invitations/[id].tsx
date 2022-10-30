@@ -23,8 +23,7 @@ export default async function handle(
 
       await validateUserIsNotInGroup(userId, invitation.groupId).catch(
         (err) => {
-          res.statusMessage = err;
-          res.status(400).end();
+          res.status(400).json({ message: err });
         }
       );
       if (res.writableEnded) {

@@ -66,10 +66,7 @@ const ModifyGroupButtons = () => {
       .catch((err) => {
         presentToast({
           title: "Error occured!",
-          description:
-            err.response && err.response.statusText
-              ? err.response.statusText
-              : "Unable to delete group, please try again later!",
+          description: err?.response?.data?.message || "",
           status: "error",
         });
       });

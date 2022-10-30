@@ -26,9 +26,9 @@ export default async function handle(
 }
 
 async function handleRead(req, res) {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
-    res.status(401).end()
+    res.status(401).end();
     return;
   }
 
@@ -68,8 +68,7 @@ async function handleAdd(req, res) {
     withTelegramGroup,
   } = req.body;
   await validateUserIsNotInCompetition(leaderId, competitionId).catch((err) => {
-    res.statusMessage = err;
-    res.status(400).end();
+    res.status(400).json({ message: err });
   });
   if (res.writableEnded) {
     return;
@@ -85,8 +84,7 @@ async function handleAdd(req, res) {
     try {
       telegramGroupId = await createGroup(name, leader);
     } catch (err) {
-      res.statusMessage = err;
-      res.status(400).end();
+      res.status(400).json({ message: err });
       return;
     }
   }
@@ -118,7 +116,7 @@ async function handleAdd(req, res) {
       },
       telegramLink: telegramGroupId ? String(telegramGroupId) : null,
     },
-  })
+  });
 
   if (telegramGroupId) {
     await sendWelcomeMessage(telegramGroupId, name, competitionId, group.id);
@@ -142,11 +140,11 @@ async function handleAdd(req, res) {
 
   res.status(200).json(group);
 
-  // On-demand revalidation. 
+  // On-demand revalidation.
   // Read more here: https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation
   try {
     await res.revalidate(`/competitions/${competitionId}`);
-    res.json({revalidated: true});
+    res.json({ revalidated: true });
   } catch (err) {
     // if there was an error, next will continue to show
     // the last successfully generated page

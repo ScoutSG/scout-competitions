@@ -139,7 +139,7 @@ const CreateOrEditGroupForm = ({
       } catch (err) {
         presentToast({
           status: "error",
-          description: err.response.statusText,
+          description: err?.response?.data?.message || "",
         });
       }
     } else {
