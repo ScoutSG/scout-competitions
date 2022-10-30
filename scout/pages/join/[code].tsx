@@ -22,7 +22,6 @@ const JoinPage = () => {
         router.push("/auth/signin");
         presentToast({
           title: "Almost there! Login to to join.",
-          position: "top",
           status: "info",
         });
       } else {
@@ -40,10 +39,9 @@ const JoinPage = () => {
           })
           .catch((err) => {
             presentToast({
-              position: "top",
               status: "error",
               title: "Unable to join group",
-              description: err.response.data || err.response.statusText,
+              description: err?.response?.data?.message || "",
             });
             router.push("/");
           });

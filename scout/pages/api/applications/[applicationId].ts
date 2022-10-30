@@ -31,15 +31,16 @@ export default async function handle(req, res) {
       });
 
       res.status(200).json(application);
-      
+
       try {
-        await res.revalidate(`/competitions/${application.group.competition.id}/groups/${application.groupId}`);
-        res.json({revalidated: true});
+        await res.revalidate(
+          `/competitions/${application.group.competition.id}/groups/${application.groupId}`
+        );
+        res.json({ revalidated: true });
       } catch (err) {
         // if there was an error, next will continue to show
         // the last successfully generated page
       }
-
     } else if (httpMethod === "DELETE") {
       const application = await prisma.application.delete({
         where: {
@@ -52,9 +53,7 @@ export default async function handle(req, res) {
       // approving / rejecting applications
       const { isApproved, answers } = req.body;
       validateIfApplicationIsReviewed(applicationId).catch((err) => {
-        res.statusMessage = err;
-        res.status(400);
-        res.end();
+        res.status(400).json({ message: err.toString() });
       });
       if (res.writableEnded) {
         return;
@@ -114,7 +113,7 @@ export default async function handle(req, res) {
               set: updatedMemberIds.map((mem) => ({ ...mem })),
             },
             currentSize: updatedMembers.length,
-          }
+          },
         });
       }
 
@@ -129,18 +128,20 @@ export default async function handle(req, res) {
 
       const updatedGroup = await prisma.group.findUnique({
         where: {
-          id: application.groupId
+          id: application.groupId,
         },
         include: {
-          competition: true
-        }
+          competition: true,
+        },
       });
-      
+
       res.status(200).json({ application, warningMessage });
 
       try {
-        await res.revalidate(`/competitions/${updatedGroup.competition.id}/groups/${application.groupId}`);
-        res.json({revalidated: true});
+        await res.revalidate(
+          `/competitions/${updatedGroup.competition.id}/groups/${application.groupId}`
+        );
+        res.json({ revalidated: true });
       } catch (err) {
         // if there was an error, next will continue to show
         // the last successfully generated page

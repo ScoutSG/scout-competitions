@@ -39,10 +39,9 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         })
         .catch((err) => {
           presentToast({
-            position: "top",
             status: "error",
             title: "Unable to join group",
-            description: err.response.data || err.response.statusText,
+            description: err?.response?.data?.message || "",
           });
           router.push("/");
         });
@@ -54,7 +53,6 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
       presentToast({
         description: "Loading your saved request",
         status: "info",
-        position: "top",
       });
 
       const body = {
@@ -68,15 +66,13 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
           presentToast({
             description: "Request sent!",
             status: "success",
-            position: "top",
           });
           router.push("/requests");
         } catch (err) {
           presentToast({
             title: "Failed to submit your request",
-            position: "top",
             status: "error",
-            description: err.response.statusText,
+            description: err?.response?.data?.message || "",
           });
         } finally {
           setDraftRequest(null);
@@ -116,7 +112,6 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
         presentToast({
           description: "Group created!",
           status: "success",
-          position: "top",
         });
       });
     }

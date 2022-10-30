@@ -47,15 +47,17 @@ export default async function handle(req, res) {
         },
         include: {
           competition: true,
-        }
+        },
       });
 
       res.status(200).json(group);
 
       try {
         await res.revalidate(`/competitions/${group.competition.id}`);
-        await res.revalidate(`/competitions/${group.competition.id}/groups/${groupId}`);
-        res.json({revalidated: true});
+        await res.revalidate(
+          `/competitions/${group.competition.id}/groups/${groupId}`
+        );
+        res.json({ revalidated: true });
       } catch (err) {
         // if there was an error, next will continue to show
         // the last successfully generated page
@@ -108,8 +110,7 @@ export default async function handle(req, res) {
               )
             );
           } catch (err) {
-            res.statusMessage = err;
-            res.status(400).end();
+            res.status(400).json({ message: err.toString() });
           }
         }
       }
@@ -137,7 +138,7 @@ export default async function handle(req, res) {
         data: newGroupData,
         include: {
           competition: true,
-        }
+        },
       });
 
       const updatedGroup = await prisma.group.findUnique({
@@ -154,8 +155,10 @@ export default async function handle(req, res) {
       res.status(200).json(updatedGroup);
 
       try {
-        await res.revalidate(`/competitions/${group.competition.id}/groups/${groupId}`);
-        res.json({revalidated: true});
+        await res.revalidate(
+          `/competitions/${group.competition.id}/groups/${groupId}`
+        );
+        res.json({ revalidated: true });
       } catch (err) {
         // if there was an error, next will continue to show
         // the last successfully generated page

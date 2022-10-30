@@ -59,13 +59,11 @@ const ApplicationReview: React.FC<{
         presentToast({
           description: "Approved!",
           status: "success",
-          position: "top",
         });
         if (res.data.warningMessage) {
           presentToast({
             description: res.data.warningMessage,
             status: "warning",
-            position: "top",
           });
         }
         return res;
@@ -75,7 +73,6 @@ const ApplicationReview: React.FC<{
           title: "Approval failed!",
           description: "Please try again later",
           status: "error",
-          position: "top",
         })
       );
     router.reload();
@@ -97,19 +94,14 @@ const ApplicationReview: React.FC<{
         presentToast({
           description: "Rejected!",
           status: "success",
-          position: "top",
         });
         return res;
       })
       .catch((err) => {
         presentToast({
           title: "Rejection failed!",
-          description:
-            err.response && err.response.statusText
-              ? err.response.statusText
-              : "Please try again later",
+          description: err?.response?.data?.message || "",
           status: "error",
-          position: "top",
         });
       });
   };

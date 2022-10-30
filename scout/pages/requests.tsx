@@ -52,7 +52,6 @@ const ApplicationsPreview = () => {
             title: "Unable to access request details",
             description: "Please log in!",
             status: "warning",
-            position: "top",
           });
           router.push("/");
         } else {

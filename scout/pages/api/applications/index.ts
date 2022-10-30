@@ -57,8 +57,7 @@ async function handleAdd(req, res) {
   const { formId, userId, answers, groupId } = req.body;
 
   validateIfAlreadyRequested(groupId, userId).catch((err) => {
-    res.statusMessage = err;
-    res.status(400).end();
+    res.status(400).json({ message: err.toString() });
   });
   if (res.writableEnded) {
     return;
@@ -83,8 +82,9 @@ async function handleAdd(req, res) {
     ).length > 0;
 
   if (isMember) {
-    res.statusMessage = `You're already a member of a team for ${competition.name}! For each competition, you can only be in one group at a time.`;
-    res.status(400).end();
+    res.status(400).json({
+      message: `You're already a member of a team for ${competition.name}! For each competition, you can only be in one group at a time.`,
+    });
     return;
   }
 

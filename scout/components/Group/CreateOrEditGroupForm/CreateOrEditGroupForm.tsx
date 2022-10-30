@@ -138,9 +138,8 @@ const CreateOrEditGroupForm = ({
         router.push(`/competitions/${competition.id}/groups/${group_id}`);
       } catch (err) {
         presentToast({
-          position: "top",
           status: "error",
-          description: err.response.statusText,
+          description: err?.response?.data?.message || "",
         });
       }
     } else {
@@ -153,7 +152,6 @@ const CreateOrEditGroupForm = ({
       presentToast({
         title: "Almost there! Login to finish creating your group.",
         description: "Don't worry, your group details will be saved.",
-        position: "top",
         status: "info",
       });
     }
