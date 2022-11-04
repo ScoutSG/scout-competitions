@@ -7,6 +7,7 @@ import {
   Link,
   Stack,
   CircularProgress,
+  Divider,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { TbLock } from "react-icons/tb";
@@ -54,9 +55,9 @@ export default function MyGroups() {
         <title>My Groups</title>
       </Head>
       <Container maxW={maxWidth}>
-        <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
+        <Stack p={{ base: "4", md: "8" }} borderRadius="md">
           <Stack direction="row" alignItems="center">
-            <Heading as="h1" size="md">
+            <Heading fontWeight="semibold" size="xl">
               My Groups
             </Heading>
             {status === "unauthenticated" ? <TbLock /> : null}
@@ -85,7 +86,7 @@ export default function MyGroups() {
                 </Text>
               )}
 
-              <Stack spacing={2} alignItems="center" width="100%">
+              <Stack spacing={4} py={8} width="100%">
                 {groups.map((group: Group) => (
                   <GroupSummaryCard group={group} />
                 ))}

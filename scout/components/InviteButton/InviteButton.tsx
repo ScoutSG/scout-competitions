@@ -96,9 +96,8 @@ const InviteButton = ({ group }) => {
     <>
       <Button
         leftIcon={<TbPlus />}
-        variant="ghost"
-        color="primary.500"
-        _hover={{ color: "white", bgColor: "primary.500" }}
+        variant="solid"
+        colorScheme="blue"
         onClick={onOpen}
         w="fit-content"
       >

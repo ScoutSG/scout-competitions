@@ -51,34 +51,34 @@ const MemberCard = ({ member, isSmall = false }) => {
     <Stack
       direction={"row"}
       align="center"
-      spacing={10}
+      spacing={8}
       rounded={"md"}
-      px={{ base: 1, md: 4 }}
-      py={2}
+      py={4}
       w="100%"
     >
       {isSmall ? null : (
         <Avatar src={member.image ? member.image : member.email.charAt(0)} />
       )}
-      <Stack spacing={2} w="full">
-        <Text fontWeight="bold" fontSize="xl">
+      <Stack w="full">
+        <Text fontWeight="medium" fontSize="xl">
           {member.name ? member.name : "Anonymous"}
         </Text>
-        <Stack direction={{ base: "column", md: "row" }} spacing={1}>
-          {member.major ? (
-            <Badge w="fit-content" px={2}>
-              {member.major}
-            </Badge>
-          ) : null}
-          {member.specialisation ? (
-            <Badge w="fit-content" px={2}>
-              {member.specialisation}
-            </Badge>
-          ) : null}
-        </Stack>
-
-        <Stack spacing={1}>
-          <Wrap spacing={0.5}>
+        {(member.major || member.specialisation) && (
+          <Stack direction={{ base: "column", md: "row" }} spacing={1}>
+            {member.major ? (
+              <Badge w="fit-content" px={2}>
+                {member.major}
+              </Badge>
+            ) : null}
+            {member.specialisation ? (
+              <Badge w="fit-content" px={2}>
+                {member.specialisation}
+              </Badge>
+            ) : null}
+          </Stack>
+        )}
+        <Stack marginTop={0}>
+          <Wrap spacing={2}>
             {Object.entries(member).map((attribute) => {
               if (attribute[0] in mapFieldToIcon && attribute[1]) {
                 return (
