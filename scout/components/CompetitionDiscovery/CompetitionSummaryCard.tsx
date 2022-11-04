@@ -58,7 +58,7 @@ const CompetitionSummaryCard: React.FC<{
         spacing={0}
         _hover={{ boxShadow: "md" }}
       >
-        <Box p={8}>
+        <Box p={8} width="100%">
           <Stack spacing={4}>
             <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="semibold">
               {competition.name}
