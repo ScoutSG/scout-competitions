@@ -73,9 +73,9 @@ const ApplicationsPreview = () => {
         <title>My Requests</title>
       </Head>
       <Container maxW={maxWidth}>
-        <Stack p={{ base: "4", md: "10" }} m="4" borderRadius="md">
+        <Stack p={{ base: "4", md: "8" }} borderRadius="md">
           <Stack direction="row" alignItems="center">
-            <Heading as="h1" size="md">
+            <Heading fontWeight="semibold" size="xl">
               My Requests
             </Heading>
             {status === "unauthenticated" ? <TbLock /> : null}

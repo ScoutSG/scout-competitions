@@ -47,9 +47,7 @@ const ShareButton = ({ group }) => {
       <Button
         leftIcon={<TbShare />}
         variant="solid"
-        color="white"
-        bgColor="primary.500"
-        _hover={{ color: "primary.500", bgColor: "transparent" }}
+        colorScheme="gray"
         onClick={onOpen}
         w="fit-content"
       >

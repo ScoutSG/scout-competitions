@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
   Center,
   Divider,
+  HStack,
 } from "@chakra-ui/react";
 
 import Link from "next/link";
@@ -73,7 +74,7 @@ const ModifyGroupButtons = () => {
   };
 
   return (
-    <ButtonGroup>
+    <ButtonGroup pt={4}>
       <Link
         href={`/competitions/${competitionId}/groups/${groupId}/edit`}
         onClick={async () => {
@@ -172,18 +173,18 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
 
       <Center>
         <Stack
-          spacing={10}
-          py={5}
-          px={{ base: 4, md: 10 }}
+          spacing={8}
+          py={8}
+          px={{ base: 4, md: 8 }}
           direction={{ base: "column", md: "row" }}
           w="full"
           maxW={maxWidth}
         >
-          <Stack flex={5} direction="column" spacing={6} px={4}>
-            <Stack spacing={3}>
+          <Stack flex={5} direction="column" spacing={8}>
+            <Stack spacing={8}>
               <Flex justifyContent="space-between" alignItems="center">
-                <Heading fontWeight="black">{group.name}</Heading>
-                <Badge px={4}>
+                <Heading fontWeight="semibold">{group.name}</Heading>
+                <Badge px={2} colorScheme={isLeader ? "red" : "blue"}>
                   {isLeader ? "Leader" : isMember ? "Member" : null}
                 </Badge>
               </Flex>
@@ -201,7 +202,7 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
             )}
             {isMember || isLeader ? (
               <Stack spacing={4}>
-                <Heading size="md" fontWeight="black">
+                <Heading size="lg" fontWeight="semibold">
                   Members
                 </Heading>
                 <Stack>
@@ -212,42 +213,41 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
               </Stack>
             ) : null}
           </Stack>
-          <Stack flex={2} rounded="md" px={4} w={"full"}>
-            <Heading size="md" fontWeight="black">
-              Group Details
-            </Heading>
+          <Stack flex={2} rounded="md" px={4} w={"full"} spacing={4}>
+            <Stack>
+              <Heading size="lg" fontWeight="semibold">
+                Group Details
+              </Heading>
 
-            <Text
-              color={"secondary"}
-              textTransform={"uppercase"}
-              fontWeight={800}
-              fontSize={"sm"}
-            >
-              {group.targetSize - group.currentSize} spots left!
-            </Text>
+              <Text color={"gray.500"} fontWeight="medium" fontSize={"xl"}>
+                {group.targetSize - group.currentSize} spots left
+              </Text>
+            </Stack>
 
             <Linkify>
               <Text>{group.description}</Text>
             </Linkify>
             {group.targetSkills.length === 0 ? null : (
-              <>
-                <Text fontWeight={800}>Looking for</Text>
-                <Box>
+              <Stack>
+                <Text fontSize="lg" fontWeight="medium">
+                  Looking for
+                </Text>
+                <HStack spacing={2}>
                   {group.targetSkills.map((skill) => (
-                    <Badge textTransform="capitalize">{skill}</Badge>
+                    <Badge textTransform="capitalize" colorScheme="blue">{skill}</Badge>
                   ))}
-                </Box>
-              </>
+                </HStack>
+              </Stack>
             )}
             {group.tags.length === 0 ? null : (
-              <>
-                <Text fontWeight={800}>Tags</Text>
-                <Box>
+              <Stack>
+                <Text fontWeight="medium" fontSize="xl">Tags</Text>
+                <HStack spacing={2}>
                   {group.tags.map((tag) => (
-                    <Badge textTransform="capitalize">{tag}</Badge>
+                    <Badge textTransform="capitalize" colorScheme="orange">{tag}</Badge>
                   ))}
-                </Box>
-              </>
+                </HStack>
+              </Stack>
             )}
             {(isMember || isLeader) && group.telegramInviteLink ? (
               <>
