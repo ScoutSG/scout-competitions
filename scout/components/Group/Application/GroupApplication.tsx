@@ -1,13 +1,14 @@
+import { useEffect, useState } from "react";
 import { Stack, Heading, List, Button } from "@chakra-ui/react";
-import { useState } from "react";
 import { TbSend } from "react-icons/tb";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-import { Form, QuestionType } from "../../../core/types/Group";
+import { Form, Question, QuestionType } from "../../../core/types/Group";
 import clientApi from "../../../core/api/client";
 import { useCustomToast } from "../../../lib/hooks/useCustomToast";
-import { useRouter } from "next/router";
 import { useDraftRequest } from "../../../lib/hooks/useDraftRequest";
+import { useDraftTelegram } from "../../../lib/hooks/useDraftGroup";
 import RangeQuestion from "./RangeQuestion";
 import OpenEndedQuestion from "./OpenEndedQuestion";
 
@@ -23,11 +24,41 @@ interface RequestBody {
   answers: Answer[];
 }
 
+const TELEGRAM_HELPER_TEXT =
+  "The group you're requesting to join has a Telegram group. For a smoother user experience, please indicate your Telegram username so that you can be added to the group upon approval! Please also add @scoutsg as a contact on Telegram.";
+
+const DUMMY_TELEGRAM_QUESTION: Question = {
+  id: -1,
+  questionString: "Telegram username",
+  questionType: QuestionType.OpenEnded,
+};
+
 const Application = ({ form }: { form: Form }) => {
   const router = useRouter();
   const session = useSession();
   const { presentToast } = useCustomToast();
   const { setDraftRequest } = useDraftRequest();
+  const { setTelegramUrlDraft } = useDraftTelegram();
+
+  const [telegramUsername, setTelegramUsername] = useState("");
+  const [shouldAskForTelegram, setShouldAskForTelegram] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const [profileHasTelegram, groupHasTelegram] = await Promise.all([
+        clientApi
+          .get("/profile")
+          .then(({ data }) => !!data.telegramUrl)
+          .catch(() => false),
+        clientApi
+          .get(`/groups/${form.groupId}`)
+          .then(({ data }) => !!data.telegramLink),
+      ]);
+
+      if (groupHasTelegram && !profileHasTelegram) {
+        setShouldAskForTelegram(true);
+      }
+    })();
+  }, [form.groupId]);
 
   const [application, setApplication] = useState(
     form.questions.map((question) => {
@@ -59,6 +90,14 @@ const Application = ({ form }: { form: Form }) => {
       })),
     };
     if (session.status === "authenticated") {
+      if (telegramUsername) {
+        const cleanTelegramUsername = telegramUsername.startsWith("@")
+          ? telegramUsername.substring(1)
+          : telegramUsername;
+        await clientApi.patch("/profile", {
+          telegramUrl: cleanTelegramUsername,
+        });
+      }
       const body: RequestBody = {
         ...applicationInfo,
         userId: session.data.user.id,
@@ -79,6 +118,12 @@ const Application = ({ form }: { form: Form }) => {
       }
     } else {
       setDraftRequest(applicationInfo);
+      if (telegramUsername) {
+        const cleanTelegramUsername = telegramUsername.startsWith("@")
+          ? telegramUsername.substring(1)
+          : telegramUsername;
+        setTelegramUrlDraft({ telegramUrl: cleanTelegramUsername });
+      }
       router.push("/auth/signin");
       presentToast({
         title: "Almost there! Login to submit your request to join.",
@@ -96,6 +141,13 @@ const Application = ({ form }: { form: Form }) => {
           : "Tell the team a bit about yourself!"}
       </Heading>
       <List spacing={5}>
+        {shouldAskForTelegram ? (
+          <OpenEndedQuestion
+            question={DUMMY_TELEGRAM_QUESTION}
+            setAnswer={setTelegramUsername}
+            explanation={TELEGRAM_HELPER_TEXT}
+          />
+        ) : null}
         {application.map((question) => {
           if (question.questionType === QuestionType.Range) {
             return (

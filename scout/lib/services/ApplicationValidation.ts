@@ -33,6 +33,6 @@ export const validateIfAlreadyRequested = async (
   });
 
   if (existingApplication) {
-    throw "User has already requested to join group.";
+    throw "You've already requested to join this group!";
   }
 };
