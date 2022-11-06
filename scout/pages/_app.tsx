@@ -16,21 +16,27 @@ import "@fontsource/open-sans/600.css";
 import "@fontsource/open-sans/700.css";
 import "@fontsource/open-sans/800.css";
 import "../core/styles/global.scss";
+import { useDrafts } from "../lib/hooks/useDrafts";
 
 if (process.env.NEXT_PUBLIC_APP_TRACKING_ID) {
   ReactGA.initialize(process.env.NEXT_PUBLIC_APP_TRACKING_ID);
 }
 
-const App = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
+const InnerApp = ({ Component, pageProps }: AppProps) => {
+  useDrafts();
+  return <Component {...pageProps} />;
+};
+
+const App = (props: AppProps<{ session: Session }>) => {
   return (
-    <SessionProvider session={pageProps.session}>
+    <SessionProvider session={props.pageProps.session}>
       <Auth>
         <RecoilRoot>
           <ChakraProvider theme={theme}>
             <Head>
               <title>Scout</title>
             </Head>
-            <Component {...pageProps} />
+            <InnerApp {...props} />
           </ChakraProvider>
         </RecoilRoot>
       </Auth>
