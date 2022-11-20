@@ -112,4 +112,4 @@ npm run dev
 
 ## Tech Stack
 
-Scout is built with NextJS, Prisma, Chakra UI and the Telegram API.
+Scout is built with NextJS, Prisma, Typescript, Chakra UI and the Telegram API.
