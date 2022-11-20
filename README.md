@@ -1,2 +1,6 @@
 # Scout
-Scout has a simple mission: to enable every ambitious student to achieve their potential by finding a group that can complement their skills in order to excel at their competitions or modules, simplifying the group management process.
+
+Scout is a responsive web app with a mission to help university students find and form teams rapidly for undergraduate competitions.  
+
+Use Scout today to find a dream team for your next competition: [https://scoutsg.vercel.app/](https://scoutsg.vercel.app/
+)
