@@ -31,7 +31,7 @@ Feel free to give it a try at: [https://scoutsg.vercel.app/](https://scoutsg.ver
 | Didymus Ne          | Full Stack Developer, Marketing, User Interviews |
 | Keith Gan           | Full Stack Developer, Product Designer           |
 | Lee Yong Ler        | Backend Developer, Marketing                     |
-| Toh Kar Wi          | Full Stack Developer, User Interviews            |
+| Lye Wen Jun         | Full Stack Developer, User Interviews            |
 
 ## Submission
 
@@ -80,7 +80,7 @@ Find competitions of your interest.
 
 <p align="center"><img src="doc/request.png" width="800px"/></p>
 
-8. View personal Profile, Groups, and Requests
+9. View personal Profile, Groups, and Requests
 
 <p align="center">
   <img src="doc/my-profile.png" width="800px"/>
@@ -88,7 +88,7 @@ Find competitions of your interest.
   <img src="doc/my-groups.png" width="800px"/>
 </p>
 
-9. Light / Dark Mode
+10. Light / Dark Mode
 Scout is available in light and dark mode.
 
 <p align="center">
