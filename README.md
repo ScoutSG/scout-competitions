@@ -31,7 +31,7 @@ Feel free to give it a try at: [https://scoutsg.vercel.app/](https://scoutsg.ver
 | Didymus Ne          | Full Stack Developer, Marketing, User Interviews |
 | Keith Gan           | Full Stack Developer, Product Designer           |
 | Lee Yong Ler        | Backend Developer, Marketing                     |
-| Toh Kar Wi          | Full Stack Developer, User Interviews            |
+| Lye Wen Jun         | Full Stack Developer, User Interviews            |
 
 ## Submission
 
