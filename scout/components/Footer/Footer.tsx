@@ -73,7 +73,10 @@ const Footer: React.FC = () => {
             >
               <TbBrandLinkedin />
             </SocialButton>
-            <SocialButton label={"GitHub"} href={"#"}>
+            <SocialButton
+              label={"GitHub"}
+              href={"https://github.com/ScoutSG/scout-competitions"}
+            >
               <TbBrandGithub />
             </SocialButton>
           </Stack>
