@@ -34,6 +34,8 @@ const TwoStat: React.FC = () => {
             will create a Telegram group for your group and update the group if
             anyone requests to join!
           </Text>
+          <br /> 
+          <Text textAlign="center">*Stay tuned for this feature</Text>
         </Box>
       </Stack>
 
@@ -55,7 +57,8 @@ const TwoStat: React.FC = () => {
             fontWeight="medium"
             color={useColorModeValue("gray.500", "gray.400")}
           >
-            Not sure what to ask? We've got you covered! Our template questions are adapted from Google's research on what drives effective teams.
+            Not sure what to ask? We've got you covered! Our template questions
+            are adapted from Google's research on what drives effective teams.
           </Text>
         </Box>
       </Stack>

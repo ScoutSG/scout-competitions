@@ -68,7 +68,7 @@ const CreateOrEditGroupForm = ({
   const session = useSession();
   const router = useRouter();
   const { setDraftGroup } = useDraftGroup();
-  const { setTelegramUrlDraft } = useDraftTelegram();
+  // const { setTelegramUrlDraft } = useDraftTelegram();
   const { presentToast } = useCustomToast();
 
   const onSubmit = async (values: CreateOrEditGroupFormValue) => {
@@ -89,23 +89,23 @@ const CreateOrEditGroupForm = ({
       goal:
         values.tags.find(({ value }) => value.startsWith("Here to"))?.value ??
         "",
-      withTelegramGroup: values.withTelegramGroup,
+      // withTelegramGroup: values.withTelegramGroup,
     };
 
-    const telegramUrl = values.telegramUrl;
+    // const telegramUrl = values.telegramUrl;
 
     if (session.status === "authenticated") {
-      if (telegramUrl) {
-        const updateProfileTelegram = async () => {
-          const profileBody = {
-            telegramUrl: telegramUrl,
-          };
+      // if (telegramUrl) {
+      //   const updateProfileTelegram = async () => {
+      //     const profileBody = {
+      //       telegramUrl: telegramUrl,
+      //     };
 
-          await clientApi.patch("/profile", profileBody);
-        };
+      //     await clientApi.patch("/profile", profileBody);
+      //   };
 
-        updateProfileTelegram();
-      }
+      //   updateProfileTelegram();
+      // }
 
       const body = {
         ...groupInfo,
@@ -144,9 +144,9 @@ const CreateOrEditGroupForm = ({
       }
     } else {
       setDraftGroup(groupInfo);
-      if (telegramUrl) {
-        setTelegramUrlDraft({ telegramUrl: telegramUrl });
-      }
+      // if (telegramUrl) {
+      //   setTelegramUrlDraft({ telegramUrl: telegramUrl });
+      // }
 
       router.push("/auth/signin");
       presentToast({
@@ -203,7 +203,7 @@ const CreateOrEditGroupForm = ({
       <Box height={4} />
       <QuestionsSubForm control={control} register={register} />
       <Box height={4} />
-      <TelegramSubForm control={control} register={register} group={group} />
+      {/* <TelegramSubForm control={control} register={register} group={group} /> */}
       <Spacer />
       <Button
         size="lg"

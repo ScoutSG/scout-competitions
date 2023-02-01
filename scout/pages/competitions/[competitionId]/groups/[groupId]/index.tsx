@@ -234,17 +234,23 @@ const GroupDetail = ({ group, form }: { group: Group; form: Form }) => {
                 </Text>
                 <HStack spacing={2}>
                   {group.targetSkills.map((skill) => (
-                    <Badge textTransform="capitalize" colorScheme="blue">{skill}</Badge>
+                    <Badge textTransform="capitalize" colorScheme="blue">
+                      {skill}
+                    </Badge>
                   ))}
                 </HStack>
               </Stack>
             )}
             {group.tags.length === 0 ? null : (
               <Stack>
-                <Text fontWeight="medium" fontSize="xl">Tags</Text>
+                <Text fontWeight="medium" fontSize="xl">
+                  Tags
+                </Text>
                 <HStack spacing={2}>
                   {group.tags.map((tag) => (
-                    <Badge textTransform="capitalize" colorScheme="orange">{tag}</Badge>
+                    <Badge textTransform="capitalize" colorScheme="orange">
+                      {tag}
+                    </Badge>
                   ))}
                 </HStack>
               </Stack>

@@ -7,6 +7,11 @@ export async function getServerSideProps(context) {
   let group = null;
   let form = null;
 
+  console.log("---------------");
+  console.log(competition);
+  console.log(group);
+  console.log("---------------");
+
   try {
     const [competitionResponse, groupResponse] = await Promise.all([
       clientApi.get(`/competitions/${competitionId}`),

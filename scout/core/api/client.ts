@@ -9,7 +9,7 @@ export const client = axios.create({
   withCredentials: true,
 });
 
-const clientApi = {
+const   clientApi = {
   get: client.get,
   delete: client.delete,
   post: client.post,

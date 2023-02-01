@@ -320,9 +320,9 @@ interface NavItem {
 
 export const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Discover",
+    label: "Competitions",
     href: "/competitions",
-    isExternal: false
+    isExternal: false,
   },
   {
     label: "Feedback",
